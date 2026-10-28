@@ -57,24 +57,23 @@ test("a reply steers the thread agent's running turn and shows its receipt", asy
     await expect(page.locator(`[data-run-id="${turnId}"]`)).toBeVisible({ timeout: 45_000 });
 
     const shell = page.getByTestId("reply-composer-shell").first();
-    // The empty box makes no claim about who a reply goes to; the send button
-    // says so once there is text and the recipient is known.
+    // The empty box makes no claim about who a reply goes to; the chip says
+    // so once there is text and the recipient is known.
     await expect(shell).toHaveText("Leave a reply...");
     await shell.click();
     const placeholder = "Leave a reply...";
     const editor = page.locator(`.ProseMirror[data-placeholder="${placeholder}"], .ProseMirror:has([data-placeholder="${placeholder}"])`).first();
     await editor.fill("This PR only fixes web; leave the desktop login page alone.");
-    const send = page.getByRole("button", { name: "Add to current run", exact: true });
-    await expect(send).toBeVisible({ timeout: 15_000 });
-    await expect(send).toHaveAttribute("data-tone", "steer");
+    const chip = page.getByRole("button", { name: "Lambda trigger: Add to current run" });
+    await expect(chip).toBeVisible({ timeout: 15_000 });
     await page.screenshot({ path: testInfo.outputPath("steer-composer.png") });
-    await page.getByRole("button", { name: "Choose what each agent does with this message" }).first().click();
+    await chip.click();
     await expect(page.getByRole("menuitemradio", { name: /Stop and start over/ })).toBeVisible();
     await page.screenshot({ path: testInfo.outputPath("steer-menu.png") });
     await page.keyboard.press("Escape");
 
     const posted = page.waitForResponse((response) => response.request().method() === "POST" && response.url().endsWith(`/api/issues/${issue.id}/comments`));
-    await send.click();
+    await page.getByRole("button", { name: "Send", exact: true }).first().click();
     const response = await posted;
     expect(response.status()).toBe(201);
     const reply = await response.json();

@@ -5,6 +5,7 @@ import { ReplyAnnotations } from "./reply-annotations";
 import { useRef, useState, useEffect, useMemo } from "react";
 import { ContentEditor, type ContentEditorRef, useFileDropZone, FileDropOverlay, useLazyEditor, useUploadGate, useComposerSubmit } from "../../editor";
 import { FileUploadButton } from "@multica/ui/components/common/file-upload-button";
+import { SubmitButton } from "@multica/ui/components/common/submit-button";
 import { ActorAvatar } from "../../common/actor-avatar";
 import { contentReferencesAttachment, type AgentTask } from "@multica/core/types";
 import { useShortcut } from "@multica/core/shortcuts";
@@ -13,7 +14,7 @@ import { useCommentDraftStore, type CommentDraftKey } from "@multica/core/issues
 import { cn } from "@multica/ui/lib/utils";
 import type { AvatarSize } from "@multica/ui/lib/avatar-size";
 import { useT } from "../../i18n";
-import { CommentSendButton } from "./comment-send-button";
+import { CommentTriggerChips } from "./comment-trigger-chips";
 import { useCommentTriggerPreview } from "../hooks/use-comment-trigger-preview";
 import { useRecipientActions } from "../hooks/use-recipient-actions";
 import { SteerAttachmentNotice } from "./steer-attachment-notice";
@@ -303,19 +304,23 @@ function ReplyInput({
             <p className="text-muted-foreground">{placeholderText}</p>
           </div>
         )}
+        <div className="absolute bottom-0 left-0 right-24 min-w-0">
+          <CommentTriggerChips
+            recipients={recipients}
+            blocked={triggerPreview.blocked}
+            hasAllMembersMention={triggerPreview.hasAllMembersMention}
+            draftContent={composedContent}
+            onActionChange={setAction}
+          />
+        </div>
         <div className="absolute bottom-0 right-0 flex items-center gap-1">
           <FileUploadButton
             size="sm"
             multiple
             onSelect={(file) => lazy.uploadOrQueue([file])}
           />
-          <CommentSendButton
-            recipients={recipients}
-            blocked={triggerPreview.blocked}
-            hasAllMembersMention={triggerPreview.hasAllMembersMention}
-            draftContent={composedContent}
-            onActionChange={setAction}
-            onSubmit={submit}
+          <SubmitButton
+            onClick={submit}
             disabled={!canSend}
             loading={submitting}
             busy={gate.uploading}
@@ -331,6 +336,9 @@ function ReplyInput({
                   <ShortcutKeycaps shortcut={sendShortcut} decorative />
                 </>
               )
+              : t(($) => $.comment.send_tooltip)}
+            ariaLabel={gate.uploading
+              ? tEditor(($) => $.upload.in_progress)
               : t(($) => $.comment.send_tooltip)}
           />
         </div>

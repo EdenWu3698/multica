@@ -37,6 +37,13 @@ const bob: CommentTriggerPreviewAgent = {
   reason: "",
 };
 
+const cleo: CommentTriggerPreviewAgent = {
+  id: "agent-3",
+  name: "Cleo",
+  source: "mention_agent",
+  reason: "",
+};
+
 
 function turn(status: AgentTask["status"]): AgentTask {
   return { id: `turn-${status}`, agent_id: "agent-1", issue_id: "issue", status, priority: 0,
@@ -54,7 +61,7 @@ function entry(agent: CommentTriggerPreviewAgent, state: AgentRunState, chosen?:
 describe("CommentTriggerChips", () => {
   it("renders nothing without recipients", () => {
     const { container } = renderWithI18n(<CommentTriggerChips recipients={[]} onActionChange={vi.fn()} />);
-    expect(container).toBeEmptyDOMElement();
+    expect(container.firstElementChild).toBeEmptyDOMElement();
   });
 
   it("describes @all semantics without promising any recipients", () => {
@@ -106,24 +113,40 @@ describe("CommentTriggerChips", () => {
     expect(screen.getByText("Won't start this time")).toBeInTheDocument();
   });
 
-  it("stacks several recipients, counting only those that will receive the message", () => {
-    renderWithI18n(<CommentTriggerChips recipients={[entry(walt, running), entry(bob, idle, "skip")]} onActionChange={vi.fn()} />);
-    expect(screen.getByText("1 agent will receive this")).toBeInTheDocument();
-  });
-
-  it("switches to the none-will-trigger state when every recipient is skipped", () => {
-    renderWithI18n(<CommentTriggerChips recipients={[entry(walt, idle, "skip"), entry(bob, idle, "skip")]} onActionChange={vi.fn()} />);
-    expect(screen.getByText("No agents will start")).toBeInTheDocument();
-  });
-
-  it("gives each stacked recipient its own state and choice", async () => {
+  it("gives each of two recipients its own chip and menu", async () => {
     const onActionChange = vi.fn();
     renderWithI18n(<CommentTriggerChips recipients={[entry(walt, running), entry(bob, idle)]} onActionChange={onActionChange} />);
-    fireEvent.click(screen.getByText("2 agents will receive this"));
-    expect(await screen.findByText(/· Running/)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Walt trigger: Add to current run" })).toHaveAttribute("data-tone", "steer");
     fireEvent.click(screen.getByRole("button", { name: "Bob trigger: Will start when sent" }));
     const menu = await screen.findByRole("menu");
     fireEvent.click(within(menu).getByRole("menuitemradio", { name: /Won't start this time/ }));
+    expect(onActionChange).toHaveBeenCalledWith("agent-2", "skip");
+  });
+
+  it("colours a restart chip as destructive", () => {
+    renderWithI18n(<CommentTriggerChips recipients={[entry(walt, running, "restart")]} onActionChange={vi.fn()} />);
+    expect(screen.getByRole("button", { name: "Walt trigger: Stop and start over" })).toHaveAttribute("data-tone", "restart");
+  });
+
+  it("collapses three or more recipients, counting only those that will receive the message", () => {
+    renderWithI18n(<CommentTriggerChips recipients={[entry(walt, running), entry(bob, idle, "skip"), entry(cleo, idle)]} onActionChange={vi.fn()} />);
+    expect(screen.getByText("2 agents will receive this")).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /trigger:/ })).not.toBeInTheDocument();
+  });
+
+  it("switches to the none-will-trigger state when every recipient is skipped", () => {
+    renderWithI18n(<CommentTriggerChips recipients={[entry(walt, idle, "skip"), entry(bob, idle, "skip"), entry(cleo, idle, "skip")]} onActionChange={vi.fn()} />);
+    expect(screen.getByText("No agents will start")).toBeInTheDocument();
+  });
+
+  it("groups every collapsed recipient's choices in one menu", async () => {
+    const onActionChange = vi.fn();
+    renderWithI18n(<CommentTriggerChips recipients={[entry(walt, running), entry(bob, idle), entry(cleo, idle)]} onActionChange={onActionChange} />);
+    fireEvent.click(screen.getByText("3 agents will receive this"));
+    const menu = await screen.findByRole("menu");
+    expect(within(menu).getByText("Running")).toBeInTheDocument();
+    expect(within(menu).getAllByRole("menuitemradio")).toHaveLength(8);
+    fireEvent.click(within(menu).getAllByRole("menuitemradio", { name: /Won't start this time/ })[1]!);
     expect(onActionChange).toHaveBeenCalledWith("agent-2", "skip");
   });
 

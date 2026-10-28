@@ -668,11 +668,6 @@
     "recipient_count_other": "{{count}} agents recevront ce message",
     "steer_attachment_notice": "Seul du texte peut rejoindre une exécution en cours : un message avec des fichiers sera traité après.",
     "restart_send": "Arrêter et envoyer",
-    "send_action_comment": "Commenter",
-    "send_action_start": "Envoyer et démarrer",
-    "send_action_count_one": "Envoyer à {{count}} agent",
-    "send_action_count_other": "Envoyer à {{count}} agents",
-    "send_choose_aria": "Choisir ce que fait chaque agent de ce message",
     "restart_failed": "Impossible d'arrêter l'exécution en cours. Votre message n'a pas été envoyé."
   },
   "reply": {

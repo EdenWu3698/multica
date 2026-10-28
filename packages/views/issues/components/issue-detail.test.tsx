@@ -1314,7 +1314,7 @@ describe("IssueDetail (shared)", () => {
     const editor = await screen.findByPlaceholderText("Leave a comment...");
     fireEvent.change(editor, { target: { value: "A new update" } });
     const composer = editor.closest<HTMLElement>("[aria-busy], .relative.flex.flex-col.rounded-lg")!;
-    fireEvent.click(within(composer).getByRole("button", { name: "Comment" }));
+    fireEvent.click(within(composer).getByRole("button", { name: "Send" }));
 
     expect(scrollToIndexSpy).not.toHaveBeenCalled();
     await waitFor(() => {

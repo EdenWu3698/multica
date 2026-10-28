@@ -649,10 +649,6 @@
     "recipient_count_other": "{{count}} 个智能体会收到",
     "steer_attachment_notice": "插话只支持文字，带附件的消息会在本轮结束后处理。",
     "restart_send": "停止并发送",
-    "send_action_comment": "评论",
-    "send_action_start": "发送后开始",
-    "send_action_count_other": "发送给 {{count}} 个智能体",
-    "send_choose_aria": "选择每个智能体的处理方式",
     "restart_failed": "没能停止当前运行，消息还没有发送。"
   },
   "reply": {

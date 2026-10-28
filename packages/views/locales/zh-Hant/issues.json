@@ -648,10 +648,6 @@
     "recipient_count_other": "{{count}} 個智慧體會收到",
     "steer_attachment_notice": "插話只支援文字，帶附件的訊息會在本輪結束後處理。",
     "restart_send": "停止併傳送",
-    "send_action_comment": "評論",
-    "send_action_start": "傳送後開始",
-    "send_action_count_other": "傳送給 {{count}} 個智慧體",
-    "send_choose_aria": "選擇每個智慧體的處理方式",
     "restart_failed": "沒能停止當前執行，訊息還沒有傳送。"
   },
   "reply": {
