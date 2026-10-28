@@ -56,9 +56,9 @@ interface CommentTriggerChipsProps {
   onActionChange: (agentId: string, action: RecipientAction) => void;
 }
 
-type IssuesT = ReturnType<typeof useT<"issues">>["t"];
+export type IssuesT = ReturnType<typeof useT<"issues">>["t"];
 
-function sourceLabel(source: string, t: IssuesT): string {
+export function sourceLabel(source: string, t: IssuesT): string {
   switch (source) {
     case "issue_assignee":
       return t(($) => $.comment.trigger_source_issue_assignee);
@@ -73,7 +73,7 @@ function sourceLabel(source: string, t: IssuesT): string {
 
 // Presence is display metadata only — the trigger list itself is always the
 // backend preview. Online-ish agents start right away; offline ones queue.
-function useTriggerPresenceLine(agentId: string, t: IssuesT): string | null {
+export function useTriggerPresenceLine(agentId: string, t: IssuesT): string | null {
   const ws = useCurrentWorkspace();
   const detail = useAgentPresenceDetail(ws?.id, agentId);
   if (detail === "loading") return null;
@@ -82,7 +82,7 @@ function useTriggerPresenceLine(agentId: string, t: IssuesT): string | null {
     : t(($) => $.comment.trigger_starts_when_online);
 }
 
-function stateLabel(state: AgentRunState, t: IssuesT): string | null {
+export function stateLabel(state: AgentRunState, t: IssuesT): string | null {
   switch (state.kind) {
     case "running":
       return t(($) => $.comment.recipient_state_running);
@@ -95,7 +95,7 @@ function stateLabel(state: AgentRunState, t: IssuesT): string | null {
   }
 }
 
-function actionLabel(action: RecipientAction, state: AgentRunState, t: IssuesT): string {
+export function actionLabel(action: RecipientAction, state: AgentRunState, t: IssuesT): string {
   switch (action) {
     case "steer":
       return t(($) => $.comment.recipient_steer);
@@ -113,7 +113,7 @@ function actionLabel(action: RecipientAction, state: AgentRunState, t: IssuesT):
 }
 
 // Only choices whose consequence is not obvious from the label carry a line.
-function actionDescription(action: RecipientAction, entry: RecipientEntry, presenceLine: string | null, t: IssuesT): string | null {
+export function actionDescription(action: RecipientAction, entry: RecipientEntry, presenceLine: string | null, t: IssuesT): string | null {
   const name = entry.agent.name;
   switch (action) {
     case "steer":
@@ -429,7 +429,7 @@ function MultiRecipientChip({
   );
 }
 
-function TriggerAgentAvatar({
+export function TriggerAgentAvatar({
   agent,
   suppressed,
   showDot = true,

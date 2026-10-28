@@ -404,7 +404,7 @@ describe("comment thread — selection reply", () => {
     expect(container.querySelector('[data-annotation-thread="reply:issue-1:comment-1"]')).toHaveTextContent("1 annotation");
     expect(screen.queryByRole("button", { name: "Done" })).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Preview reply" })).not.toBeInTheDocument();
-    fireEvent.click(screen.getByRole("button", { name: "Send" }));
+    fireEvent.click(screen.getByRole("button", { name: "Comment" }));
     await waitFor(() => expect(onReply).toHaveBeenCalledTimes(1));
     expect(onReply).toHaveBeenCalledWith("agent-child", "> Selected agent text\n\nReply-specific note", undefined, undefined, undefined);
     await waitFor(() => {

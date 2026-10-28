@@ -4,8 +4,6 @@ import { useRef, useState, useEffect, useMemo } from "react";
 import { cn } from "@multica/ui/lib/utils";
 import { ContentEditor, type ContentEditorRef, useFileDropZone, FileDropOverlay, useLazyEditor, useUploadGate, useComposerSubmit } from "../../editor";
 import { FileUploadButton } from "@multica/ui/components/common/file-upload-button";
-import { SubmitButton } from "@multica/ui/components/common/submit-button";
-import { Button } from "@multica/ui/components/ui/button";
 import { contentReferencesAttachment, type AgentTask } from "@multica/core/types";
 import { useShortcut } from "@multica/core/shortcuts";
 import { ShortcutKeycaps } from "../../common/shortcut-keycaps";
@@ -13,7 +11,7 @@ import { useCommentDraftStore } from "@multica/core/issues/stores";
 import { composeAnnotatedReply, hasReplyIntent } from "@multica/core/drafts/reply-annotation";
 import { ReplyAnnotations } from "./reply-annotations";
 import { useT } from "../../i18n";
-import { CommentTriggerChips } from "./comment-trigger-chips";
+import { CommentSendButton } from "./comment-send-button";
 import { useCommentTriggerPreview } from "../hooks/use-comment-trigger-preview";
 import { useRecipientActions } from "../hooks/use-recipient-actions";
 import { SteerAttachmentNotice } from "./steer-attachment-notice";
@@ -300,33 +298,19 @@ function CommentInput({ issueId, onSubmit, onAccepted, onEditAnnotation }: Comme
           </div>
         </div>
       )}
-      <div className="absolute bottom-1 left-2 right-28 min-w-0">
-        <CommentTriggerChips
-          recipients={recipients}
-          blocked={triggerPreview.blocked}
-          hasAllMembersMention={triggerPreview.hasAllMembersMention}
-          draftContent={composedContent}
-          onActionChange={setAction}
-        />
-      </div>
       <div className="absolute bottom-1 right-1.5 flex items-center gap-1">
         <FileUploadButton
           size="sm"
           multiple
           onSelect={(file) => lazy.uploadOrQueue([file])}
         />
-        {routing.restartTaskIds.length > 0 ? (
-          <Button
-            size="sm"
-            variant="destructive"
-            className="rounded-full"
-            onClick={submit}
-            disabled={!canSend || submitting || gate.uploading}
-          >
-            {t(($) => $.comment.restart_send)}
-          </Button>
-        ) : <SubmitButton
-          onClick={submit}
+        <CommentSendButton
+          recipients={recipients}
+          blocked={triggerPreview.blocked}
+          hasAllMembersMention={triggerPreview.hasAllMembersMention}
+          draftContent={composedContent}
+          onActionChange={setAction}
+          onSubmit={submit}
           disabled={!canSend}
           loading={submitting}
           busy={gate.uploading}
@@ -343,10 +327,7 @@ function CommentInput({ issueId, onSubmit, onAccepted, onEditAnnotation }: Comme
               </>
             )
             : t(($) => $.comment.send_tooltip)}
-          ariaLabel={gate.uploading
-            ? tEditor(($) => $.upload.in_progress)
-            : t(($) => $.comment.send_tooltip)}
-        />}
+        />
       </div>
       {isDragOver && <FileDropOverlay />}
     </div>

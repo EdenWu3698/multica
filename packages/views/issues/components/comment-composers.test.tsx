@@ -281,12 +281,12 @@ function isSendBlocked(button: HTMLButtonElement): boolean {
 }
 
 function getSubmitButton(container: HTMLElement): HTMLButtonElement {
-  // Submit is always the last button in a composer's action cluster.
-  const buttons = container.querySelectorAll("button");
-  const button = buttons[buttons.length - 1];
+  const button = container.querySelector<HTMLButtonElement>('[data-slot="comment-send"]');
   if (!button) throw new Error("Expected submit button to render");
   return button;
 }
+
+const CHOOSE_ACTION = "Choose what each agent does with this message";
 
 beforeEach(() => {
   uploadWithToast.mockReset();
@@ -393,13 +393,14 @@ describe("quick action `/` menu", () => {
 });
 
 /**
- * Pick a recipient's action from its chip menu. Under CI load the composer can
- * still re-render the chips (the previous send settling, the preview catching
- * up) right after the menu opens, closing it; reopen until the item shows.
+ * Pick a recipient's action from the send button's menu. Under CI load the
+ * composer can still re-render (the previous send settling, the preview
+ * catching up) right after the menu opens, closing it; reopen until the item
+ * shows.
  */
-async function chooseRecipientAction(chip: string, action: RegExp) {
+async function chooseRecipientAction(action: RegExp) {
   await waitFor(() => {
-    const trigger = screen.getByRole("button", { name: chip });
+    const trigger = screen.getByRole("button", { name: CHOOSE_ACTION });
     if (trigger.getAttribute("aria-expanded") !== "true") fireEvent.click(trigger);
     expect(screen.getByRole("menuitemradio", { name: action })).toBeInTheDocument();
   }, { timeout: 5000 });
@@ -416,7 +417,9 @@ describe("comment composers", () => {
     activateComposer("comment-composer-shell");
     expect(screen.getByPlaceholderText("Leave a comment...")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Attach file" })).toBeInTheDocument();
-    expect(container.querySelectorAll("button")).toHaveLength(2);
+    expect(screen.getByRole("button", { name: "Comment" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: CHOOSE_ACTION })).toBeDisabled();
+    expect(container.querySelectorAll("button")).toHaveLength(3);
 
     const shell = screen.getByTestId("drop-zone");
     expect(shell.className).not.toMatch(/max-h-/);
@@ -430,7 +433,7 @@ describe("comment composers", () => {
     activateComposer("reply-composer-shell");
     expect(screen.getByPlaceholderText("Leave a reply...")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Attach file" })).toBeInTheDocument();
-    expect(container.querySelectorAll("button")).toHaveLength(2);
+    expect(container.querySelectorAll("button")).toHaveLength(3);
 
     const shell = screen.getByTestId("drop-zone");
     expect(shell.className).not.toMatch(/max-h-/);
@@ -471,15 +474,18 @@ describe("comment composers", () => {
 
     activateComposer("reply-composer-shell");
     fireEvent.change(screen.getByTestId("editor"), { target: { value: "only fix web" } });
-    await screen.findByText("Add to current run", {}, { timeout: 5000 });
+    await waitFor(() => expect(screen.getByRole("button", { name: "Add to current run" }))
+      .toHaveAttribute("data-tone", "steer"), { timeout: 5000 });
     fireEvent.click(getSubmitButton(container));
     await waitFor(() => expect(onSubmit).toHaveBeenCalledWith("only fix web", undefined, undefined,
       ["turn-1"]), { timeout: 5000 });
     expect(apiCancelTask).not.toHaveBeenCalled();
 
     fireEvent.change(screen.getByTestId("editor"), { target: { value: "start over on web" } });
-    await chooseRecipientAction("Lambda trigger: Add to current run", /Stop and start over/);
-    fireEvent.click(await screen.findByRole("button", { name: "Stop and send" }, { timeout: 5000 }));
+    await chooseRecipientAction(/Stop and start over/);
+    const restart = await screen.findByRole("button", { name: "Stop and start over" }, { timeout: 5000 });
+    expect(restart).toHaveAttribute("data-tone", "restart");
+    fireEvent.click(restart);
     await waitFor(() => expect(onSubmit).toHaveBeenCalledWith("start over on web", undefined, undefined, undefined), { timeout: 5000 });
     expect(apiCancelTask).toHaveBeenCalledWith("issue-1", "turn-1");
     expect(apiCancelTask.mock.invocationCallOrder[0]!).toBeLessThan(onSubmit.mock.invocationCallOrder[1]!);
@@ -503,14 +509,14 @@ describe("comment composers", () => {
 
     activateComposer("reply-composer-shell");
     fireEvent.change(screen.getByTestId("editor"), { target: { value: "only fix web" } });
-    await screen.findByRole("button", { name: "Lambda trigger: Start after this run" }, { timeout: 5000 });
+    await screen.findByRole("button", { name: "Start after this run" }, { timeout: 5000 });
     fireEvent.click(getSubmitButton(container));
     await waitFor(() => expect(onSubmit).toHaveBeenCalledWith("only fix web", undefined, undefined, undefined), { timeout: 5000 });
 
     // One message can still go into the running turn.
     fireEvent.change(screen.getByTestId("editor"), { target: { value: "and keep desktop as is" } });
-    await chooseRecipientAction("Lambda trigger: Start after this run", /Add to current run/);
-    await screen.findByRole("button", { name: "Lambda trigger: Add to current run" }, { timeout: 5000 });
+    await chooseRecipientAction(/Add to current run/);
+    await screen.findByRole("button", { name: "Add to current run" }, { timeout: 5000 });
     fireEvent.click(getSubmitButton(container));
     await waitFor(() => expect(onSubmit).toHaveBeenLastCalledWith("and keep desktop as is", undefined, undefined,
       ["turn-1"]), { timeout: 5000 });
@@ -535,9 +541,12 @@ describe("comment composers", () => {
     );
     activateComposer("reply-composer-shell");
     fireEvent.change(screen.getByTestId("editor"), { target: { value: "only fix web" } });
-    fireEvent.click(await screen.findByText("2 agents will receive this", {}, { timeout: 5000 }));
-    expect(await screen.findByRole("button", { name: "Lambda trigger: Add to current run" }, { timeout: 5000 })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Orion trigger: Add to current run" })).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByRole("button", { name: "Send to 2 agents" }))
+      .toHaveAttribute("data-tone", "steer"), { timeout: 5000 });
+    fireEvent.click(screen.getByRole("button", { name: CHOOSE_ACTION }));
+    const steering = (await screen.findAllByRole("menuitemradio", { name: /Add to current run/ }, { timeout: 5000 }))
+      .filter((item) => item.getAttribute("aria-checked") === "true");
+    expect(steering).toHaveLength(2);
     fireEvent.click(getSubmitButton(container));
     await waitFor(() => expect(onSubmit).toHaveBeenCalledWith("only fix web", undefined, undefined,
       ["turn-1", "turn-2"]), { timeout: 5000 });
@@ -558,14 +567,14 @@ describe("comment composers", () => {
       onSubmit={onSubmit} steerByDefault={(task) => task.id === "turn-1"} />);
     activateComposer("reply-composer-shell");
     fireEvent.change(screen.getByTestId("editor"), { target: { value: "start over" } });
-    await chooseRecipientAction("Lambda trigger: Add to current run", /Stop and start over/);
+    await chooseRecipientAction(/Stop and start over/);
     // A slow preview still holds Lambda's restart, though the comment now
     // explicitly addresses only a different agent.
     apiPreviewCommentTriggers.mockImplementation(() => new Promise(() => {}));
     fireEvent.change(screen.getByTestId("editor"), {
       target: { value: "[@Orion](mention://agent/11111111-1111-4111-8111-111111111111) review desktop" },
     });
-    fireEvent.click(screen.getByRole("button", { name: "Stop and send" }));
+    fireEvent.click(screen.getByRole("button", { name: "Stop and start over" }));
     await waitFor(() => expect(onSubmit).toHaveBeenCalled(), { timeout: 5000 });
     expect(apiCancelTask).not.toHaveBeenCalled();
   }, 15_000);
@@ -1297,7 +1306,7 @@ describe.each(["reply", "description"])("annotations in %s drafts", (source) => 
     const onSubmit = vi.fn().mockResolvedValue("reply-new");
     renderAnnotatedComposer(onSubmit);
     expect(screen.queryByTestId("editor")).not.toBeInTheDocument();
-    const send = screen.getByRole("button", { name: "Send" });
+    const send = screen.getByRole("button", { name: "Comment" });
     fireEvent.click(send);
     fireEvent.click(send);
     await waitFor(() => expect(onSubmit).toHaveBeenCalledTimes(1));
@@ -1311,7 +1320,7 @@ describe.each(["reply", "description"])("annotations in %s drafts", (source) => 
     useCommentDraftStore.getState().addAnnotation(draftKey, annotation);
     const onSubmit = vi.fn().mockResolvedValue("reply-new");
     renderAnnotatedComposer(onSubmit);
-    fireEvent.click(screen.getByRole("button", { name: "Send" }));
+    fireEvent.click(screen.getByRole("button", { name: "Comment" }));
     await waitFor(() => expect(onSubmit).toHaveBeenCalledTimes(1));
     expect(onSubmit.mock.calls[0]?.[0]).toBe("> Selected text\n\nPlease revise\n\n---\n\nOverall reply");
   });
@@ -1320,10 +1329,10 @@ describe.each(["reply", "description"])("annotations in %s drafts", (source) => 
     useCommentDraftStore.getState().addAnnotation(draftKey, { ...annotation, note: "" });
     const onSubmit = vi.fn().mockResolvedValue(false);
     renderAnnotatedComposer(onSubmit);
-    expect(isSendBlocked(screen.getByRole("button", { name: "Send" }) as HTMLButtonElement)).toBe(true);
+    expect(isSendBlocked(screen.getByRole("button", { name: "Comment" }) as HTMLButtonElement)).toBe(true);
     expect(screen.queryByRole("button", { name: /1 annotation/ })).not.toBeInTheDocument();
     act(() => { useCommentDraftStore.getState().addAnnotation(draftKey, { ...annotation, note: "New note" }); });
-    fireEvent.click(screen.getByRole("button", { name: "Send" }));
+    fireEvent.click(screen.getByRole("button", { name: "Comment" }));
     await waitFor(() => expect(onSubmit).toHaveBeenCalledTimes(1));
     expect(useCommentDraftStore.getState().getAnnotations(draftKey)[0]?.note).toBe("New note");
   });
@@ -1333,7 +1342,7 @@ describe.each(["reply", "description"])("annotations in %s drafts", (source) => 
     let accept!: (id: string) => void;
     const onSubmit = vi.fn(() => new Promise<string>((resolve) => { accept = resolve; }));
     renderAnnotatedComposer(onSubmit);
-    fireEvent.click(screen.getByRole("button", { name: "Send" }));
+    fireEvent.click(screen.getByRole("button", { name: "Comment" }));
     await waitFor(() => expect(onSubmit).toHaveBeenCalledTimes(1));
     act(() => { useCommentDraftStore.getState().addAnnotation(draftKey, { ...annotation, id: "b", quote: "Another point" }); });
     await act(async () => accept("reply-new"));
