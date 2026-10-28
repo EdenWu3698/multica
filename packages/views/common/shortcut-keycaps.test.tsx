@@ -13,8 +13,8 @@ describe("ShortcutKeycaps", () => {
     );
 
     expect(screen.getByRole("img", { name: "⌘↵" })).toBeInTheDocument();
-    expect(container.querySelector(".lucide-command")).toBeInTheDocument();
-    expect(container.querySelector(".lucide-corner-down-left")).toBeInTheDocument();
+    expect(container.querySelector(".icon-command")).toBeInTheDocument();
+    expect(container.querySelector(".icon-corner-down-left")).toBeInTheDocument();
     expect(container.querySelector("[title='Enter']")?.textContent).toBe("");
   });
 
@@ -28,8 +28,8 @@ describe("ShortcutKeycaps", () => {
 
     expect(screen.getByRole("img", { name: "Ctrl+Enter" })).toBeInTheDocument();
     expect(container.querySelector("[title='Ctrl']")).toHaveTextContent("Ctrl");
-    expect(container.querySelector(".lucide-corner-down-left")).toBeInTheDocument();
-    expect(container.querySelector(".lucide-command")).not.toBeInTheDocument();
+    expect(container.querySelector(".icon-corner-down-left")).toBeInTheDocument();
+    expect(container.querySelector(".icon-command")).not.toBeInTheDocument();
   });
 
   it("uses the canonical macOS Control glyph instead of an unrelated icon", () => {
@@ -42,7 +42,7 @@ describe("ShortcutKeycaps", () => {
 
     expect(screen.getByRole("img", { name: "⌃F" })).toBeInTheDocument();
     expect(container.querySelector("[title='Control']")).toHaveTextContent("⌃");
-    expect(container.querySelector(".lucide-command")).not.toBeInTheDocument();
+    expect(container.querySelector(".icon-command")).not.toBeInTheDocument();
   });
 
   it("falls back to compact text when Lucide has no exact semantic icon", () => {
