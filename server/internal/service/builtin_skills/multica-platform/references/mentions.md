@@ -265,6 +265,8 @@ Rules:
 - only runs that are running now and accept additional messages
   (`can_supplement: true` in `multica issue runs <issue-id> --active --output json`);
 - no attachments. The CLI refuses `--steer` with `--attachment`.
+- a CLI that answers `unknown flag: --steer` predates steering: post the
+  comment without the flag.
 
 The CLI prints one line per run on stderr. `Steered run …` means the comment
 was added to the running turn. If that turn ends before reading it, the comment
@@ -272,7 +274,8 @@ is handled in a follow-up run, so do not re-post it. `queued`, `coalesced`,
 `deferred` or `blocked` means the comment went through the normal mention path.
 
 The other agent sees your message labelled as coming from an agent, not a
-human. It cannot cancel or replace that agent's objective or override a human's
+human. A run on an older daemon, which cannot show that label, does not read it
+mid-run; it gets the comment in a follow-up run instead. It cannot cancel or replace that agent's objective or override a human's
 instructions, so write it as input, not as a command.
 
 ## Incorrect to correct

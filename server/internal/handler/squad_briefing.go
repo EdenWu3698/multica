@@ -206,8 +206,12 @@ const squadOperatingProtocolHardRules = `Hard rules:
   work, the agent runs twice in parallel (once from the mention, once
   from the assignment). Pick exactly one path: either delegate by
   @mention on this issue, or create a ` + "`" + `todo` + "`" + ` child issue assigned to
-  them. Never both for the same work.
-- A worker already running on this issue gets a new comment only after its
+  them. Never both for the same work.`
+
+// squadSteerRule is added to the hard rules only for a daemon that ships a
+// CLI with --steer (protocol.DaemonCapabilityCLICommentSteerV1): an older CLI
+// rejects the flag and the comment is never posted.
+const squadSteerRule = `- A worker already running on this issue gets a new comment only after its
   run ends. To correct it mid-run (wrong direction, a missing fact, a
   narrower scope), steer that run instead: add the comment with
   ` + "`" + `--steer <run-id>` + "`" + ` (run ids from ` + "`" + `multica issue runs <issue-id> --active` + "`" + `), or
@@ -255,9 +259,15 @@ func squadOperatingProtocolFor(ownsIssueStatus bool, workflow leaderWorkflow) st
 // Archived agent members are skipped — there's no point asking the leader
 // to delegate to a retired agent. Members whose underlying record can't be
 // loaded (deleted user/agent races, FK weirdness) are also skipped silently.
-func buildSquadLeaderBriefing(ctx context.Context, q *db.Queries, squad db.Squad, ownsIssueStatus bool, workflow leaderWorkflow) string {
+//
+// steer adds the rule for steering a running worker; see squadSteerRule.
+func buildSquadLeaderBriefing(ctx context.Context, q *db.Queries, squad db.Squad, ownsIssueStatus bool, workflow leaderWorkflow, steer bool) string {
 	var sb strings.Builder
 	sb.WriteString(squadOperatingProtocolFor(ownsIssueStatus, workflow))
+	if steer {
+		sb.WriteString("\n")
+		sb.WriteString(squadSteerRule)
+	}
 	sb.WriteString("\n\n")
 	sb.WriteString(buildSquadRoster(ctx, q, squad))
 

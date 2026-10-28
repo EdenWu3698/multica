@@ -3,8 +3,8 @@ package handler
 import (
 	"context"
 	"fmt"
-	"net/http"
 	"strings"
+	"net/http"
 	"sync"
 	"testing"
 
@@ -206,6 +206,11 @@ func TestAgentSteeredCommentReplaysUnlessDelivered(t *testing.T) {
 			if n := dbfx.Count(t, `SELECT count(*) FROM agent_task_queue WHERE agent_id = $1 AND trigger_comment_id = $2`, f.agentID, created.ID); n != tc.wantFollowUps {
 				t.Fatalf("follow-ups = %d, want %d", n, tc.wantFollowUps)
 			}
+			// A replayed steer loses its failed receipt, so no client offers to
+			// resend what the follow-up already handles.
+			if n := dbfx.Count(t, `SELECT count(*) FROM task_supplement WHERE comment_id = $1`, created.ID); n != 1-tc.wantFollowUps {
+				t.Fatalf("receipts after completion = %d, want %d", n, 1-tc.wantFollowUps)
+			}
 		})
 	}
 }
@@ -219,25 +224,23 @@ func TestClaimTaskSupplementAttributesAgentMessages(t *testing.T) {
 		t.Fatalf("not steered: %+v", created.TriggerOutcomes)
 	}
 	claim := func(capabilities []string) map[string]string {
-		dbfx.Exec(t, `UPDATE task_supplement SET status = 'pending' WHERE comment_id = $1`, created.ID)
-		body := map[string]any{}
-		if capabilities != nil {
-			body["capabilities"] = capabilities
-		}
+		body := map[string]any{"capabilities": capabilities}
 		req := withURLParam(newOwnerDaemonRequest(http.MethodPost, "/claim", body), "taskId", f.taskID)
 		var got map[string]string
 		testutil.Call(t, testHandler.ClaimTaskSupplement, req).Want(http.StatusOK).JSON(&got)
 		return got
 	}
 
-	old := claim(nil)
-	if old["author_type"] != "agent" || old["author_name"] != "Steer caller" ||
-		!strings.HasPrefix(old["content"], `[This message is from agent "Steer caller", not from a human.`) {
-		t.Fatalf("old-daemon claim = %+v", old)
+	// A daemon that frames every message as a human's is never handed one.
+	req := withURLParam(newOwnerDaemonRequest(http.MethodPost, "/claim", map[string]any{}), "taskId", f.taskID)
+	var old map[string]string
+	testutil.Call(t, testHandler.ClaimTaskSupplement, req).Want(http.StatusOK).JSON(&old)
+	if len(old) != 0 {
+		t.Fatalf("old-daemon claim = %+v, want nothing", old)
 	}
 	current := claim([]string{protocol.DaemonCapabilityTaskSupplementAuthorV1})
-	if current["author_type"] != "agent" || current["content"] != created.Content {
-		t.Fatalf("author-aware claim = %+v, want the plain content", current)
+	if current["author_type"] != "agent" || current["author_name"] != "Steer caller" || current["content"] != created.Content {
+		t.Fatalf("author-aware claim = %+v", current)
 	}
 }
 
@@ -260,5 +263,38 @@ func TestTaskRunsCanSupplementAnswersForTheAgentCaller(t *testing.T) {
 	dbfx.Exec(t, `UPDATE agent_task_queue SET originator_user_id = NULL, accountable_user_id = NULL, originator_source = NULL WHERE id = $1`, f.callerTask)
 	if got := runs(); got[f.taskID] {
 		t.Fatalf("can_supplement = %v for a chain that may not invoke the target", got)
+	}
+}
+
+// A worker's plain reply reaches its squad leader without a mention. When it
+// steered the leader's turn and was never read, completion still replays it.
+func TestAgentImplicitSteerReplaysWhenUnread(t *testing.T) {
+	f := newAgentSteerFixture(t)
+	squadID := dbfx.Squad(t, "Implicit steer squad", f.agentID)
+	dbfx.SquadMember(t, squadID, "agent", f.callerAgent)
+	dbfx.Exec(t, `UPDATE issue SET assignee_type = 'squad', assignee_id = $2 WHERE id = $1`, f.issueID, squadID)
+	dbfx.Exec(t, `UPDATE agent_task_queue SET squad_id = $2, is_leader_task = true WHERE id = $1`, f.taskID, squadID)
+	dbfx.Exec(t, `UPDATE agent_task_queue SET squad_id = $2, trigger_comment_id = $3 WHERE id = $1`, f.callerTask, squadID, f.triggerID)
+	created := postAgentComment(t, f.issueID, f.callerAgent, f.callerTask, map[string]any{
+		"content": "The premise is wrong; use the corrected result", "parent_id": f.triggerID, "steer": true,
+	})
+	if n := dbfx.Count(t, `SELECT count(*) FROM task_supplement WHERE task_id = $1 AND comment_id = $2`, f.taskID, created.ID); n != 1 {
+		t.Fatalf("setup: %d steering bindings; outcomes %+v", n, created.TriggerOutcomes)
+	}
+	completeTaskViaDaemon(t, f.taskID)
+	if n := dbfx.Count(t, `SELECT count(*) FROM agent_task_queue WHERE agent_id = $1 AND trigger_comment_id = $2`, f.agentID, created.ID); n != 1 {
+		t.Fatalf("unread implicit steer follow-ups = %d, want 1", n)
+	}
+}
+
+func TestSquadSteerRuleFollowsTheDaemonsCLI(t *testing.T) {
+	if testHandler == nil {
+		t.Skip("database not available")
+	}
+	squad := db.Squad{Name: "Steer rule"}
+	with := buildSquadLeaderBriefing(t.Context(), testHandler.Queries, squad, false, leaderNoWorkflow, true)
+	without := buildSquadLeaderBriefing(t.Context(), testHandler.Queries, squad, false, leaderNoWorkflow, false)
+	if !strings.Contains(with, "--steer-active") || strings.Contains(without, "--steer") {
+		t.Fatalf("steer rule: with=%v without=%v", strings.Contains(with, "--steer-active"), strings.Contains(without, "--steer"))
 	}
 }

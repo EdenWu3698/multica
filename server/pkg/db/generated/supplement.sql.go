@@ -208,6 +208,12 @@ WITH next AS MATERIALIZED (
       AND s.status = 'pending'
       AND t.status = 'running'
       AND cap.capability = 'task-supplement-v1'
+      -- A daemon that cannot present an agent's message as an agent's never
+      -- receives one: it stays pending until the turn ends, and completion
+      -- replays it as an ordinary mention.
+      AND ($2::bool OR NOT EXISTS (
+          SELECT 1 FROM comment ac WHERE ac.id = s.comment_id AND ac.author_type = 'agent'
+      ))
     ORDER BY s.created_at, s.comment_id
     FOR UPDATE OF s SKIP LOCKED
     LIMIT 1
@@ -231,6 +237,11 @@ LEFT JOIN "user" u ON u.id = claimed.author_id AND c.author_type = 'member'
 LEFT JOIN agent a ON a.id = claimed.author_id AND c.author_type = 'agent'
 `
 
+type ClaimNextTaskSupplementParams struct {
+	TaskID               pgtype.UUID `json:"task_id"`
+	IncludeAgentAuthored bool        `json:"include_agent_authored"`
+}
+
 type ClaimNextTaskSupplementRow struct {
 	CommentID    pgtype.UUID `json:"comment_id"`
 	AttemptCount int32       `json:"attempt_count"`
@@ -239,8 +250,8 @@ type ClaimNextTaskSupplementRow struct {
 	AuthorName   string      `json:"author_name"`
 }
 
-func (q *Queries) ClaimNextTaskSupplement(ctx context.Context, taskID pgtype.UUID) (ClaimNextTaskSupplementRow, error) {
-	row := q.db.QueryRow(ctx, claimNextTaskSupplement, taskID)
+func (q *Queries) ClaimNextTaskSupplement(ctx context.Context, arg ClaimNextTaskSupplementParams) (ClaimNextTaskSupplementRow, error) {
+	row := q.db.QueryRow(ctx, claimNextTaskSupplement, arg.TaskID, arg.IncludeAgentAuthored)
 	var i ClaimNextTaskSupplementRow
 	err := row.Scan(
 		&i.CommentID,
@@ -415,6 +426,27 @@ type DeleteTaskSupplementByCommentParams struct {
 func (q *Queries) DeleteTaskSupplementByComment(ctx context.Context, arg DeleteTaskSupplementByCommentParams) error {
 	_, err := q.db.Exec(ctx, deleteTaskSupplementByComment, arg.CommentID, arg.WorkspaceID)
 	return err
+}
+
+const deleteUndeliveredTaskSupplementForRun = `-- name: DeleteUndeliveredTaskSupplementForRun :execrows
+DELETE FROM task_supplement
+WHERE comment_id = $1 AND task_id = $2 AND status <> 'delivered'
+`
+
+type DeleteUndeliveredTaskSupplementForRunParams struct {
+	CommentID pgtype.UUID `json:"comment_id"`
+	TaskID    pgtype.UUID `json:"task_id"`
+}
+
+// Drops the receipt of an agent comment that completion replayed: the comment
+// is now handled by the follow-up run like any other mention, so no client
+// should offer to resend it.
+func (q *Queries) DeleteUndeliveredTaskSupplementForRun(ctx context.Context, arg DeleteUndeliveredTaskSupplementForRunParams) (int64, error) {
+	result, err := q.db.Exec(ctx, deleteUndeliveredTaskSupplementForRun, arg.CommentID, arg.TaskID)
+	if err != nil {
+		return 0, err
+	}
+	return result.RowsAffected(), nil
 }
 
 const getRunningTaskForAgentOnIssue = `-- name: GetRunningTaskForAgentOnIssue :one
@@ -628,6 +660,33 @@ func (q *Queries) ListTaskSupplementsByCommentIDs(ctx context.Context, arg ListT
 			return nil, err
 		}
 		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const listUndeliveredTaskSupplementCommentIDs = `-- name: ListUndeliveredTaskSupplementCommentIDs :many
+SELECT comment_id FROM task_supplement
+WHERE task_id = $1 AND status <> 'delivered'
+`
+
+// Comments bound to this run that it never read. Completion replays the
+// agent-authored ones as the mention they replaced.
+func (q *Queries) ListUndeliveredTaskSupplementCommentIDs(ctx context.Context, taskID pgtype.UUID) ([]pgtype.UUID, error) {
+	rows, err := q.db.Query(ctx, listUndeliveredTaskSupplementCommentIDs, taskID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []pgtype.UUID{}
+	for rows.Next() {
+		var comment_id pgtype.UUID
+		if err := rows.Scan(&comment_id); err != nil {
+			return nil, err
+		}
+		items = append(items, comment_id)
 	}
 	if err := rows.Err(); err != nil {
 		return nil, err

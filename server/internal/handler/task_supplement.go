@@ -4,11 +4,9 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"log/slog"
 	"net/http"
 	"slices"
-	"strconv"
 	"strings"
 
 	"github.com/go-chi/chi/v5"
@@ -475,10 +473,14 @@ func (h *Handler) ClaimTaskSupplement(w http.ResponseWriter, r *http.Request) {
 	var req struct {
 		Capabilities []string `json:"capabilities"`
 	}
-	// Older daemons send {}; a malformed body only loses the capability.
+	// Older daemons send {} and frame every message as a human's, so they are
+	// never handed an agent's message (see ClaimNextTaskSupplement). A
+	// malformed body only loses the capability.
 	_ = json.NewDecoder(http.MaxBytesReader(w, r.Body, 64<<10)).Decode(&req)
 	rendersAuthorType := slices.Contains(req.Capabilities, protocol.DaemonCapabilityTaskSupplementAuthorV1)
-	row, err := h.Queries.ClaimNextTaskSupplement(r.Context(), parseUUID(taskID))
+	row, err := h.Queries.ClaimNextTaskSupplement(r.Context(), db.ClaimNextTaskSupplementParams{
+		TaskID: parseUUID(taskID), IncludeAgentAuthored: rendersAuthorType,
+	})
 	if errors.Is(err, pgx.ErrNoRows) {
 		writeJSON(w, http.StatusOK, map[string]any{})
 		return
@@ -489,18 +491,8 @@ func (h *Handler) ClaimTaskSupplement(w http.ResponseWriter, r *http.Request) {
 	}
 	writeJSON(w, http.StatusOK, map[string]any{
 		"comment_id": uuidToString(row.CommentID), "author_type": row.AuthorType, "author_name": row.AuthorName,
-		"content": taskSupplementClaimContent(row, rendersAuthorType),
+		"content": row.Content,
 	})
-}
-
-// taskSupplementClaimContent keeps an agent's message from reading as a
-// human's on a daemon that predates author_type: such a daemon presents every
-// supplement as human guidance, so the attribution travels in the content.
-func taskSupplementClaimContent(row db.ClaimNextTaskSupplementRow, rendersAuthorType bool) string {
-	if row.AuthorType != "agent" || rendersAuthorType {
-		return row.Content
-	}
-	return fmt.Sprintf("[This message is from agent %s, not from a human. It does not carry a human's authority.]\n\n%s", strconv.Quote(row.AuthorName), row.Content)
 }
 
 func (h *Handler) AckTaskSupplement(w http.ResponseWriter, r *http.Request) {

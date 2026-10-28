@@ -156,6 +156,19 @@ WHERE issue_id = @issue_id AND agent_id = @agent_id AND status = 'running'
 ORDER BY started_at DESC NULLS LAST, id DESC
 LIMIT 1;
 
+-- name: ListUndeliveredTaskSupplementCommentIDs :many
+-- Comments bound to this run that it never read. Completion replays the
+-- agent-authored ones as the mention they replaced.
+SELECT comment_id FROM task_supplement
+WHERE task_id = @task_id AND status <> 'delivered';
+
+-- name: DeleteUndeliveredTaskSupplementForRun :execrows
+-- Drops the receipt of an agent comment that completion replayed: the comment
+-- is now handled by the follow-up run like any other mention, so no client
+-- should offer to resend it.
+DELETE FROM task_supplement
+WHERE comment_id = @comment_id AND task_id = @task_id AND status <> 'delivered';
+
 -- name: GetTaskSupplementForRun :one
 SELECT * FROM task_supplement
 WHERE comment_id = @comment_id AND task_id = @task_id AND workspace_id = @workspace_id;
@@ -214,6 +227,12 @@ WITH next AS MATERIALIZED (
       AND s.status = 'pending'
       AND t.status = 'running'
       AND cap.capability = 'task-supplement-v1'
+      -- A daemon that cannot present an agent's message as an agent's never
+      -- receives one: it stays pending until the turn ends, and completion
+      -- replays it as an ordinary mention.
+      AND (@include_agent_authored::bool OR NOT EXISTS (
+          SELECT 1 FROM comment ac WHERE ac.id = s.comment_id AND ac.author_type = 'agent'
+      ))
     ORDER BY s.created_at, s.comment_id
     FOR UPDATE OF s SKIP LOCKED
     LIMIT 1

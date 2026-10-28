@@ -86,6 +86,10 @@ const (
 	// message is presented as an agent's. Without it the server marks an
 	// agent's message in its content instead.
 	DaemonCapabilityTaskSupplementAuthorV1 = "task-supplement-author-v1"
+	// DaemonCapabilityCLICommentSteerV1 advertises that the multica CLI this
+	// daemon puts on the agent's PATH has `issue comment add --steer`. The
+	// server tells a squad leader about steering only then.
+	DaemonCapabilityCLICommentSteerV1 = "cli-comment-steer-v1"
 
 	TaskSupplementFailureTurnNotStarted   = "turn_not_started"
 	TaskSupplementFailureProviderRejected = "provider_rejected"
