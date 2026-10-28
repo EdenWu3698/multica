@@ -47,6 +47,7 @@ import { SlashCommandExtension } from "./slash-command-extension";
 import { createSlashCommandSuggestion, createBuiltinCommandSuggestion } from "./slash-command-suggestion";
 import type { BuiltinCommandSuggestionOptions } from "./slash-command-suggestion";
 import { SuggestionTriggerArmingExtension } from "./suggestion-trigger-arming";
+import { createBlockMenuSuggestion } from "./block-menu";
 import { CodeBlockView } from "./code-block-view";
 import { TableView } from "./table-view";
 import { RICH_TABLE_CHROME_ATTRIBUTE } from "../../rich-content/rich-table";
@@ -180,8 +181,10 @@ export interface EditorExtensionsOptions {
    * Which `/` menu to attach when enableSlashCommands is true:
    * - "skill" (default) — the chat picker listing the active agent's skills.
    * - "command" — the fixed built-in command menu (issue comments), e.g. /note.
+   * - "block" — the block menu of document editors (descriptions): turn the
+   *   current block into another type or insert a table, code block, etc.
    */
-  slashCommandMode?: "skill" | "command";
+  slashCommandMode?: "skill" | "command" | "block";
   /**
    * Quick actions offered in the "command" `/` menu, plus the resolver that
    * turns a pick into the text it would post (MUL-5465). Both are functions so
@@ -309,7 +312,9 @@ export function createEditorExtensions(
         ? { char: "/", allow: () => false }
         : options.slashCommandMode === "command"
           ? createBuiltinCommandSuggestion(options.quickActionMenu)
-          : options.queryClient
+          : options.slashCommandMode === "block"
+            ? createBlockMenuSuggestion({ onUploadFileRef: options.onUploadFileRef })
+            : options.queryClient
             ? createSlashCommandSuggestion(options.queryClient)
             : { char: "/", allow: () => false },
     }),

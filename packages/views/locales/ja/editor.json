@@ -184,6 +184,21 @@
     "collapse": "折りたたむ",
     "summary_placeholder": "サマリー"
   },
+  "block_menu": {
+    "turn_into": "変換",
+    "insert": "挿入",
+    "divider": "区切り線",
+    "table": "表",
+    "code_block": "コードブロック",
+    "mermaid": "Mermaid 図",
+    "details": "折りたたみブロック",
+    "file": "画像またはファイル"
+  },
+  "block_handle": {
+    "label": "ドラッグで移動、クリックでメニュー",
+    "duplicate": "複製",
+    "delete": "削除"
+  },
   "table_edit": {
     "row_options": "行の操作",
     "column_options": "列の操作",

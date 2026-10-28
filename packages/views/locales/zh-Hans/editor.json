@@ -184,6 +184,21 @@
     "collapse": "折叠",
     "summary_placeholder": "折叠块标题"
   },
+  "block_menu": {
+    "turn_into": "转换为",
+    "insert": "插入",
+    "divider": "分割线",
+    "table": "表格",
+    "code_block": "代码块",
+    "mermaid": "Mermaid 图表",
+    "details": "折叠块",
+    "file": "图片或文件"
+  },
+  "block_handle": {
+    "label": "拖动以移动，点击打开菜单",
+    "duplicate": "复制",
+    "delete": "删除"
+  },
   "table_edit": {
     "row_options": "行操作",
     "column_options": "列操作",

@@ -188,6 +188,21 @@
     "collapse": "Réduire",
     "summary_placeholder": "Résumé"
   },
+  "block_menu": {
+    "turn_into": "Transformer en",
+    "insert": "Insérer",
+    "divider": "Séparateur",
+    "table": "Tableau",
+    "code_block": "Bloc de code",
+    "mermaid": "Diagramme Mermaid",
+    "details": "Bloc repliable",
+    "file": "Image ou fichier"
+  },
+  "block_handle": {
+    "label": "Glisser pour déplacer, cliquer pour les options",
+    "duplicate": "Dupliquer",
+    "delete": "Supprimer"
+  },
   "table_edit": {
     "row_options": "Options de ligne",
     "column_options": "Options de colonne",
