@@ -133,6 +133,7 @@ function RailSpaceLink({
       <TooltipHint label={label === fullLabel ? null : fullLabel} side="right">
         <AppLink
           href={href}
+          data-space={space}
           newTabTitle={fullLabel}
           aria-current={active ? "page" : undefined}
           onPointerEnter={(e) => {
@@ -240,6 +241,7 @@ export function AppRail({ topSlot, className }: { topSlot?: React.ReactNode; cla
             key={id}
             space={id}
             {...items[id]}
+            href={shell?.spaceHref(id, items[id].href) ?? items[id].href}
             active={space === id}
             badge={badges[id]}
           />
@@ -249,7 +251,7 @@ export function AppRail({ topSlot, className }: { topSlot?: React.ReactNode; cla
         <HelpLauncher />
         <TooltipHint label={t(($) => $.nav.settings)} side="right">
           <AppLink
-            href={p.settings()}
+            href={shell?.spaceHref("settings", p.settings()) ?? p.settings()}
             aria-label={t(($) => $.nav.settings)}
             aria-current={space === "settings" ? "page" : undefined}
             className={RAIL_ICON_BUTTON_CLASS}

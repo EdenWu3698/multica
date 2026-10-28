@@ -7,10 +7,13 @@ import {
   useListColumnCollapsed,
 } from "./app-shell-context";
 
-const navigation = vi.hoisted(() => ({ pathname: "/acme/issues" }));
+const navigation = vi.hoisted(() => ({ pathname: "/acme/issues", search: "" }));
 
 vi.mock("../navigation", () => ({
-  useNavigation: () => ({ pathname: navigation.pathname }),
+  useNavigation: () => ({
+    pathname: navigation.pathname,
+    searchParams: new URLSearchParams(navigation.search),
+  }),
 }));
 
 let shell: ReturnType<typeof useAppShell> = null;
@@ -49,6 +52,7 @@ function renderShell() {
 beforeEach(() => {
   vi.useFakeTimers();
   navigation.pathname = "/acme/issues";
+  navigation.search = "";
   shell = null;
 });
 
@@ -137,5 +141,29 @@ describe("AppShellProvider", () => {
     act(() => shell!.toggleNav());
     expect(sidebarState).toBe("expanded");
     expect(listColumnCollapsed).toBe(true);
+  });
+
+  it("sends each rail space back to the last page visited in it", () => {
+    const { rerender } = renderShell();
+    const visit = (pathname: string, search = "") => {
+      navigation.pathname = pathname;
+      navigation.search = search;
+      rerender(
+        <AppShellProvider>
+          <Reader />
+        </AppShellProvider>,
+      );
+    };
+
+    visit("/acme/projects/p-1", "tab=issues");
+    visit("/acme/agents/a-1");
+    expect(shell!.spaceHref("work", "/acme/issues")).toBe("/acme/projects/p-1?tab=issues");
+    expect(shell!.spaceHref("chat", "/acme/chat")).toBe("/acme/chat");
+    // The current space's item leads home, so clicking it again resets.
+    expect(shell!.spaceHref("team", "/acme/agents")).toBe("/acme/agents");
+
+    // Memory is per workspace.
+    visit("/beta/inbox");
+    expect(shell!.spaceHref("work", "/beta/issues")).toBe("/beta/issues");
   });
 });

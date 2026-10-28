@@ -31,6 +31,11 @@ interface AppShellContextValue {
   setListCollapsed: (collapsed: boolean) => void;
   /** The sidebar toggle: the space panel, the list column, or the compact sheet. */
   toggleNav: () => void;
+  /**
+   * Where a rail item leads: the last page visited in that space of this
+   * workspace, or `home` for the current space and spaces not yet visited.
+   */
+  spaceHref: (space: AppSpaceId, home: string) => string;
   /** Space previewed over the content while the panel is collapsed. */
   peekSpace: AppSpaceId | null;
   requestPeek: (space: AppSpaceId) => void;
@@ -42,9 +47,14 @@ interface AppShellContextValue {
 const AppShellContext = createContext<AppShellContextValue | null>(null);
 
 export function AppShellProvider({ children }: { children: React.ReactNode }) {
-  const { pathname } = useNavigation();
+  const { pathname, searchParams } = useNavigation();
   const sidebar = useSidebarSafe();
   const space = spaceForPath(pathname);
+  const workspaceSlug = pathname.split("/").filter(Boolean)[0] ?? "";
+  const search = searchParams?.toString() ?? "";
+  // Keyed by `${workspaceSlug}/${space}`. The fragment is left out so a
+  // comment deep link is not replayed on every return to the space.
+  const [spaceUrls, setSpaceUrls] = useState<Record<string, string>>({});
   const hasPanel = space !== null && PANEL_SPACES.has(space);
   const [listCollapsed, setListCollapsed] = useState(false);
   const [peekSpace, setPeekSpace] = useState<AppSpaceId | null>(null);
@@ -93,6 +103,19 @@ export function AppShellProvider({ children }: { children: React.ReactNode }) {
   }, [pathname, closePeek]);
   useEffect(() => clearTimers, [clearTimers]);
 
+  useEffect(() => {
+    if (!space || !workspaceSlug) return;
+    const key = `${workspaceSlug}/${space}`;
+    const url = search ? `${pathname}?${search}` : pathname;
+    setSpaceUrls((urls) => (urls[key] === url ? urls : { ...urls, [key]: url }));
+  }, [pathname, search, space, workspaceSlug]);
+
+  const spaceHref = useCallback(
+    (target: AppSpaceId, home: string) =>
+      target === space ? home : (spaceUrls[`${workspaceSlug}/${target}`] ?? home),
+    [space, spaceUrls, workspaceSlug],
+  );
+
   const toggleSidebar = sidebar?.toggleSidebar;
   const isCompact = sidebar?.isCompact ?? false;
   const toggleNav = useCallback(() => {
@@ -107,13 +130,25 @@ export function AppShellProvider({ children }: { children: React.ReactNode }) {
       listCollapsed,
       setListCollapsed,
       toggleNav,
+      spaceHref,
       peekSpace,
       requestPeek,
       holdPeek,
       releasePeek,
       closePeek,
     }),
-    [space, hasPanel, listCollapsed, toggleNav, peekSpace, requestPeek, holdPeek, releasePeek, closePeek],
+    [
+      space,
+      hasPanel,
+      listCollapsed,
+      toggleNav,
+      spaceHref,
+      peekSpace,
+      requestPeek,
+      holdPeek,
+      releasePeek,
+      closePeek,
+    ],
   );
 
   return <AppShellContext.Provider value={value}>{children}</AppShellContext.Provider>;
