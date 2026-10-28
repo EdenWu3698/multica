@@ -2,6 +2,14 @@ import eslint from "@eslint/js";
 import tseslint from "typescript-eslint";
 import importPlugin from "eslint-plugin-import-x";
 
+// Icons are owned by @multica/ui/icons so a glyph can be redrawn in one place.
+// Exported because flat config replaces a rule's options wholesale: a package
+// that sets its own `no-restricted-imports` must include this entry again.
+export const ICON_LIBRARY_IMPORT_RESTRICTION = {
+  name: "lucide-react",
+  message: "Import icons from @multica/ui/icons instead.",
+};
+
 /** @type {import("eslint").Linter.Config[]} */
 export default [
   eslint.configs.recommended,
@@ -31,6 +39,9 @@ export default [
           "**/src/preload/**",
         ],
         peerDependencies: true,
+      }],
+      "no-restricted-imports": ["error", {
+        paths: [ICON_LIBRARY_IMPORT_RESTRICTION],
       }],
     },
   },

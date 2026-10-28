@@ -1,5 +1,6 @@
 import globals from "globals";
 import reactConfig from "@multica/eslint-config/react";
+import { ICON_LIBRARY_IMPORT_RESTRICTION } from "@multica/eslint-config/base";
 
 export default [
   ...reactConfig,
@@ -56,6 +57,7 @@ export default [
         "error",
         {
           paths: [
+            ICON_LIBRARY_IMPORT_RESTRICTION,
             {
               name: "react-router-dom",
               importNames: ["useNavigate", "Navigate"],
