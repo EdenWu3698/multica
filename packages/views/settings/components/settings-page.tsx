@@ -428,11 +428,10 @@ export function SettingsPage({ extraDeviceTabs = [] }: SettingsPageProps = {}) {
   return (
     <div className="flex min-h-0 flex-1 flex-col overflow-hidden bg-background md:flex-row">
       <ListColumn
-        className={cn(
-          // Below md the navigation stacks above the content as a select.
-          "block h-auto w-full border-r-0 border-b border-surface-border md:flex md:h-full md:w-(--sidebar-width) md:border-b-0 md:border-r",
-          listCollapsed && "md:hidden",
-        )}
+        collapsed={listCollapsed}
+        // Below md the navigation stacks above the content as a select.
+        className="max-md:h-auto max-md:w-full"
+        innerClassName="border-surface-border max-md:h-auto max-md:w-full max-md:border-r-0 max-md:border-b"
       >
         <div className="flex h-16 shrink-0 items-center gap-1 px-4 md:px-5">
           <CollapsedNavTrigger />

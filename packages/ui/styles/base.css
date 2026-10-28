@@ -256,7 +256,8 @@ html[data-dnd-dragging="true"] * {
 [data-sidebar-resizing="true"] [data-slot="sidebar-gap"],
 [data-sidebar-resizing="true"] [data-slot="sidebar-container"],
 [data-sidebar-resizing="true"] [data-sidebar-resize-consumer],
-[data-sidebar-resizing="true"] [data-slot="space-panel"] {
+[data-sidebar-resizing="true"] [data-slot="space-panel"],
+[data-sidebar-resizing="true"] [data-slot="list-column"] {
   transition: none !important;
 }
 

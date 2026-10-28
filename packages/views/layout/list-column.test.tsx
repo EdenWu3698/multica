@@ -37,4 +37,14 @@ describe("ListColumn", () => {
     const { container } = renderWithI18n(<ListColumn>list</ListColumn>);
     expect(container.querySelector("[data-slot='space-panel-resize']")).toBeNull();
   });
+
+  // Collapsing animates the width rather than unmounting, like the space panel.
+  it("stays mounted and inert while collapsed", () => {
+    const { container } = renderWithI18n(<ListColumn collapsed>list</ListColumn>);
+    const column = container.querySelector("[data-slot='list-column']");
+    expect(column).toHaveAttribute("data-state", "collapsed");
+    expect(column).toHaveAttribute("inert");
+    expect(column).toHaveClass("w-0", "transition-[width]");
+    expect(column).toHaveTextContent("list");
+  });
 });
