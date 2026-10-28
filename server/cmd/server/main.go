@@ -679,7 +679,9 @@ func main() {
 		os.Exit(1)
 	}
 
+	health := newServerHealth(pool)
 	r, h := NewRouterWithOptions(pool, hub, bus, analyticsClient, storeRedis, RouterOptions{
+		Health:              health,
 		HTTPMetrics:         httpMetrics,
 		BusinessMetrics:     businessMetrics,
 		ChannelLeaseMetrics: channelLeaseMetrics,
@@ -890,6 +892,7 @@ func main() {
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 	sig := <-quit
+	health.beginDrain()
 	holdBeforeShutdown(sig, quit, shutdownHoldDuration)
 	// Restore the default behavior so another signal during graceful shutdown
 	// can still terminate the process instead of being left unread in quit.

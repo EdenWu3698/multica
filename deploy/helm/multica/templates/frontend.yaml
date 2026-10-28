@@ -9,6 +9,11 @@ metadata:
     app.kubernetes.io/component: frontend
 spec:
   replicas: {{ .Values.frontend.replicas }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: multica
@@ -27,6 +32,25 @@ spec:
           ports:
             - containerPort: 3000
               name: http
+          # /health proxies to the backend; /login checks the web server itself.
+          startupProbe:
+            httpGet:
+              path: /login
+              port: http
+            failureThreshold: 30
+            periodSeconds: 2
+            timeoutSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /login
+              port: http
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 1
+          lifecycle:
+            preStop:
+              exec:
+                command: ["sleep", "10"]
           env:
             - name: HOSTNAME
               value: "0.0.0.0"

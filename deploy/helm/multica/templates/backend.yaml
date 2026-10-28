@@ -1,6 +1,13 @@
 {{- $backendImageTag := default .Chart.AppVersion .Values.images.backend.tag -}}
 {{- /* `helm upgrade --reuse-values` from a chart without extraCACerts carries no such key. */ -}}
 {{- $extraCACerts := (default dict .Values.backend.extraCACerts).configMap -}}
+{{- $strategy := default "Recreate" .Values.backend.strategy -}}
+{{- if not (has $strategy (list "Recreate" "RollingUpdate")) -}}
+{{- fail "backend.strategy must be Recreate or RollingUpdate" -}}
+{{- end -}}
+{{- if and (eq $strategy "RollingUpdate") .Values.backend.uploads.persistence.enabled (not (has "ReadWriteMany" .Values.backend.uploads.persistence.accessModes)) -}}
+{{- fail "backend.strategy=RollingUpdate requires S3 with uploads.persistence.enabled=false, or a ReadWriteMany uploads volume" -}}
+{{- end -}}
 {{- if .Values.backend.uploads.persistence.enabled -}}
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -31,10 +38,16 @@ spec:
   # The backend entrypoint runs migrations before starting. Concurrent
   # runs are protected by a Postgres advisory lock in cmd/migrate (see
   # GitHub multica-ai/multica#3647), so multiple replicas no longer race;
-  # 1 is still the chart default (strategy: Recreate, no leader split).
+  # Recreate remains the default for single-pod installations. RollingUpdate
+  # is opt-in and requires shared storage and cross-replica realtime routing.
   replicas: {{ .Values.backend.replicas }}
   strategy:
-    type: Recreate
+    type: {{ $strategy }}
+    {{- if eq $strategy "RollingUpdate" }}
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+    {{- end }}
   selector:
     matchLabels:
       app.kubernetes.io/name: multica
@@ -62,6 +75,7 @@ spec:
         {{- include "multica.labels" . | nindent 8 }}
         app.kubernetes.io/component: backend
     spec:
+      terminationGracePeriodSeconds: {{ default 120 .Values.backend.terminationGracePeriodSeconds }}
       containers:
         - name: backend
           image: "{{ .Values.images.backend.repository }}:{{ $backendImageTag }}"
@@ -116,8 +130,8 @@ spec:
             httpGet:
               path: /healthz
               port: 8080
-            initialDelaySeconds: 10
-            periodSeconds: 10
+            failureThreshold: 1
+            periodSeconds: 5
           livenessProbe:
             httpGet:
               # Liveness must not depend on PostgreSQL. A database outage makes

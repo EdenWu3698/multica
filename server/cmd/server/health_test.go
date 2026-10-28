@@ -19,10 +19,14 @@ type stubReadinessDB struct {
 	appliedCount int
 	pingCalls    atomic.Int32
 	queryCalls   atomic.Int32
+	pingHook     func()
 }
 
 func (s *stubReadinessDB) Ping(context.Context) error {
 	s.pingCalls.Add(1)
+	if s.pingHook != nil {
+		s.pingHook()
+	}
 	return s.pingErr
 }
 
@@ -158,6 +162,69 @@ func TestServerHealthReadinessCachesResult(t *testing.T) {
 	}
 	if got := db.queryCalls.Load(); got != 1 {
 		t.Fatalf("QueryRow calls = %d, want 1", got)
+	}
+}
+
+func TestServerHealthDrainOverridesCachedReadiness(t *testing.T) {
+	db := &stubReadinessDB{appliedCount: 1}
+	h := &serverHealth{
+		db:                 db,
+		requiredMigrations: []string{"056_example"},
+		cacheTTL:           time.Minute,
+	}
+	if _, status := h.readiness(context.Background()); status != http.StatusOK {
+		t.Fatalf("initial readiness = %d, want 200", status)
+	}
+
+	h.beginDrain()
+	h.beginDrain()
+	for _, path := range []string{"/readyz", "/healthz"} {
+		rec := httptest.NewRecorder()
+		h.readyHandler(rec, httptest.NewRequest(http.MethodGet, path, nil))
+		if rec.Code != http.StatusServiceUnavailable {
+			t.Fatalf("%s during drain = %d, want 503", path, rec.Code)
+		}
+		var resp readinessResponse
+		if err := json.Unmarshal(rec.Body.Bytes(), &resp); err != nil {
+			t.Fatal(err)
+		}
+		if resp.Status != "not_ready" {
+			t.Fatalf("%s status = %q, want not_ready", path, resp.Status)
+		}
+	}
+	if got := db.pingCalls.Load(); got != 1 {
+		t.Fatalf("Ping calls = %d, want only the initial check", got)
+	}
+	if got := db.queryCalls.Load(); got != 1 {
+		t.Fatalf("QueryRow calls = %d, want only the initial check", got)
+	}
+
+	rec := httptest.NewRecorder()
+	h.liveHandler(rec, httptest.NewRequest(http.MethodGet, "/health", nil))
+	if rec.Code != http.StatusOK {
+		t.Fatalf("liveness during drain = %d, want 200", rec.Code)
+	}
+}
+
+func TestServerHealthDrainDuringReadinessCheck(t *testing.T) {
+	h := &serverHealth{requiredMigrations: []string{"056_example"}}
+	h.db = &stubReadinessDB{appliedCount: 1, pingHook: h.beginDrain}
+	rec := httptest.NewRecorder()
+	h.readyHandler(rec, httptest.NewRequest(http.MethodGet, "/readyz", nil))
+	if rec.Code != http.StatusServiceUnavailable {
+		t.Fatalf("probe completing after drain began = %d, want 503", rec.Code)
+	}
+}
+
+func TestServerHealthDrainSkipsDatabaseChecks(t *testing.T) {
+	db := &stubReadinessDB{pingErr: errors.New("database unavailable")}
+	h := &serverHealth{db: db}
+	h.beginDrain()
+	if _, status := h.readiness(context.Background()); status != http.StatusServiceUnavailable {
+		t.Fatalf("readiness during drain = %d, want 503", status)
+	}
+	if got := db.pingCalls.Load(); got != 0 {
+		t.Fatalf("Ping calls = %d, want 0 while draining", got)
 	}
 }
 

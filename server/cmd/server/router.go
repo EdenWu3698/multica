@@ -218,6 +218,9 @@ func NewRouter(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus, analytics
 }
 
 type RouterOptions struct {
+	// Health is shared with main so termination can withdraw readiness before
+	// the listener and its dependencies stop accepting traffic.
+	Health              *serverHealth
 	HTTPMetrics         *obsmetrics.HTTPMetrics
 	BusinessMetrics     *obsmetrics.BusinessMetrics
 	ChannelLeaseMetrics *obsmetrics.ChannelLeaseMetrics
@@ -1408,7 +1411,10 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 	// WS-first claim (MUL-4257): route daemon:rpc_request frames (e.g.
 	// tasks.claim) through the same handlers as the HTTP endpoints.
 	daemonHub.SetRPCHandler(h.DaemonRPCHandler)
-	health := newServerHealth(pool)
+	health := opts.Health
+	if health == nil {
+		health = newServerHealth(pool)
+	}
 
 	r := chi.NewRouter()
 

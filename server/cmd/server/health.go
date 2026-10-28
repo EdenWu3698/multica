@@ -37,6 +37,7 @@ type serverHealth struct {
 	cacheTTL           time.Duration
 	refreshMu          sync.Mutex
 	cache              atomic.Pointer[cachedReadiness]
+	draining           atomic.Bool
 	// startedAt and pid identify the process answering /health. A 200 alone
 	// only proves something is listening on the port: when a restart fails to
 	// bind, the previous instance keeps serving and every readiness check
@@ -90,12 +91,28 @@ func (h *serverHealth) liveHandler(w http.ResponseWriter, _ *http.Request) {
 	writeJSON(w, http.StatusOK, resp)
 }
 
+func (h *serverHealth) beginDrain() {
+	h.draining.Store(true)
+}
+
 func (h *serverHealth) readyHandler(w http.ResponseWriter, r *http.Request) {
 	resp, status := h.readiness(r.Context())
+	// A probe already querying PostgreSQL when drain began must also fail.
+	if h.draining.Load() {
+		resp.Status = "not_ready"
+		status = http.StatusServiceUnavailable
+	}
 	writeJSON(w, status, resp)
 }
 
 func (h *serverHealth) readiness(parent context.Context) (readinessResponse, int) {
+	// Do not let a cached success keep a terminating instance in rotation.
+	if h.draining.Load() {
+		return readinessResponse{
+			Status: "not_ready",
+			Checks: readinessChecks{DB: "unknown", Migrations: "unknown"},
+		}, http.StatusServiceUnavailable
+	}
 	if h.cacheTTL <= 0 {
 		return h.computeReadiness(parent)
 	}

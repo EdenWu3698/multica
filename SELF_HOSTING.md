@@ -265,6 +265,8 @@ helm install multica deploy/helm/multica -n multica
 
 If the backend has to reach services whose certificates come from an internal CA, such as a self-hosted Gitea, set `backend.extraCACerts.configMap`. See [Advanced Configuration → Private CA Certificates](SELF_HOSTING_ADVANCED.md#private-ca-certificates-optional).
 
+The backend defaults to `Recreate`, which has an upgrade availability gap. For installations that need to keep serving during upgrades, see [Deployment availability](deploy/helm/multica/README.md) for rolling update prerequisites, readiness and shutdown configuration, and rollback constraints.
+
 Watch the pods come up:
 
 ```bash

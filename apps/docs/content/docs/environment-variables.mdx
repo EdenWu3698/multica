@@ -48,7 +48,7 @@ You also need to pick an email service, otherwise verification codes and invitat
 | `MULTICA_SHUTDOWN_HOLD_DURATION` | `0` | How long to wait after a termination signal before graceful shutdown begins |
 | `MULTICA_RUNTIME_RECONNECT_GRACE` | `3h` | How long an offline runtime may reconnect before its in-flight runs fail; values below `150s` are clamped |
 
-When setting a shutdown hold on Kubernetes, `terminationGracePeriodSeconds` must exceed the hold plus the time the actual shutdown needs.
+On termination, `/readyz` and `/healthz` immediately return 503 while `/health` stays live. During a configured shutdown hold, ordinary requests continue to run so load balancers can remove the instance before its listener closes. Use `/readyz` or `/healthz` for load-balancer readiness and size the hold for the probe and propagation delay. On Kubernetes, `terminationGracePeriodSeconds` must exceed the hold plus the time the actual shutdown needs. A hold does not prevent the availability gap of a `Recreate` deployment; see [Deployment availability](https://github.com/multica-ai/multica/blob/main/deploy/helm/multica/README.md).
 
 The primary and replica connection limits are independent. Budget their sum across every API process against the PostgreSQL cluster's connection ceiling. Replica connections are recycled after five minutes by default to refresh read-only validation after promotion. Replica connection failures transparently fall back to primary and open a short passive circuit; no background database probe is added. Replica reads have no application-enforced staleness bound, so monitor lag in the database layer and keep consistency-sensitive reads on primary.
 

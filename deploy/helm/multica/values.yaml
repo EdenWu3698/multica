@@ -79,11 +79,13 @@ backend:
   # Concurrent backend pods are now safe to start: cmd/migrate uses a
   # Postgres session-level advisory lock to serialize the startup
   # `migrate up` run, so late-arriving pods queue and then no-op (see
-  # GitHub multica-ai/multica#3647). 1 is still the recommended default
-  # because the chart Deployment uses strategy: Recreate and there is no
-  # leader-elected workload split — increase this only if you actually
-  # need horizontal scale of the API/WS server.
+  # GitHub multica-ai/multica#3647). Recreate remains the default for local
+  # uploads and single-pod operation. See README.md before opting in to
+  # RollingUpdate: overlapping pods need shared uploads and Redis routing.
   replicas: 1
+  strategy: Recreate
+  # Includes the shutdown hold, in-flight HTTP requests, and worker teardown.
+  terminationGracePeriodSeconds: 120
   uploads:
     persistence:
       # When true (default) the chart provisions a PersistentVolumeClaim for
@@ -122,6 +124,10 @@ backend:
     configMap: ""
   # All non-secret backend env. Secret values come from `existingSecret`.
   config:
+    # Set e.g. 10s for RollingUpdate to serve traffic while load balancers
+    # remove the pod. 0s preserves immediate shutdown for Recreate installs.
+    # Keep the termination grace longer than hold + teardown.
+    shutdownHoldDuration: 0s
     # Optional container-loopback maintenance API; empty disables it. Never expose via Service/Ingress.
     maintenancePort: ""
     # The migrator and API server retry transient PostgreSQL startup failures

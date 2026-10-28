@@ -36,6 +36,7 @@ require_rendered_value "$default_config" 'MULTICA_VCS_INTEGRATION_ENABLED: "true
 require_rendered_value "$default_config" 'MULTICA_CLOUD_URL: ""'
 require_rendered_value "$default_config" 'MULTICA_DATABASE_STARTUP_TIMEOUT: "3m"'
 require_rendered_value "$default_config" 'MULTICA_DATABASE_CONNECT_TIMEOUT: "5s"'
+require_rendered_value "$default_config" 'MULTICA_SHUTDOWN_HOLD_DURATION: "0s"'
 
 require_rendered_value "$default_config" 'MAINTENANCE_PORT: ""'
 maintenance_config="$(helm template multica "$CHART_DIR" --show-only templates/configmap.yaml --set-string backend.config.maintenancePort=6061)"
@@ -49,6 +50,13 @@ default_backend="$(
     --show-only templates/backend.yaml
 )"
 require_rendered_value "$default_backend" 'failureThreshold: 60'
+require_rendered_value "$default_backend" 'type: Recreate'
+reject_rendered_value "$default_backend" 'rollingUpdate:'
+require_rendered_value "$default_backend" 'terminationGracePeriodSeconds: 120'
+readiness_block="$(sed -n '/readinessProbe:/,/livenessProbe:/p' <<<"$default_backend")"
+require_rendered_value "$readiness_block" 'path: /healthz'
+require_rendered_value "$readiness_block" 'periodSeconds: 5'
+require_rendered_value "$readiness_block" 'failureThreshold: 1'
 liveness_block="$(sed -n '/livenessProbe:/,/resources:/p' <<<"$default_backend")"
 require_rendered_value "$liveness_block" 'path: /health'
 reject_rendered_value "$liveness_block" 'path: /healthz'
@@ -63,6 +71,61 @@ legacy_backend="$(
     --set backend.extraCACerts=null
 )"
 reject_rendered_value "$legacy_backend" 'SSL_CERT_DIR'
+
+# Old saved values have no rollout or shutdown keys.
+legacy_rollout="$(helm template multica "$CHART_DIR" \
+  --set backend.strategy=null \
+  --set backend.terminationGracePeriodSeconds=null \
+  --set backend.config.shutdownHoldDuration=null)"
+require_rendered_value "$legacy_rollout" 'type: Recreate'
+require_rendered_value "$legacy_rollout" 'terminationGracePeriodSeconds: 120'
+require_rendered_value "$legacy_rollout" 'MULTICA_SHUTDOWN_HOLD_DURATION: "0s"'
+
+rolling_backend="$(helm template multica "$CHART_DIR" \
+  --show-only templates/backend.yaml \
+  --set backend.strategy=RollingUpdate \
+  --set backend.uploads.persistence.enabled=false \
+  --set backend.terminationGracePeriodSeconds=150)"
+require_rendered_value "$rolling_backend" 'type: RollingUpdate'
+require_rendered_value "$rolling_backend" 'maxUnavailable: 0'
+require_rendered_value "$rolling_backend" 'maxSurge: 1'
+require_rendered_value "$rolling_backend" 'terminationGracePeriodSeconds: 150'
+
+rwx_backend="$(helm template multica "$CHART_DIR" \
+  --show-only templates/backend.yaml \
+  --set backend.strategy=RollingUpdate \
+  --set 'backend.uploads.persistence.accessModes[0]=ReadWriteMany')"
+require_rendered_value "$rwx_backend" 'type: RollingUpdate'
+require_rendered_value "$rwx_backend" 'ReadWriteMany'
+
+if invalid_backend="$(helm template multica "$CHART_DIR" --set backend.strategy=RollingUpdate 2>&1)"; then
+  echo "RollingUpdate unexpectedly accepted a single-writer uploads volume"
+  exit 1
+fi
+require_rendered_value "$invalid_backend" 'requires S3 with uploads.persistence.enabled=false, or a ReadWriteMany uploads volume'
+
+if invalid_backend="$(helm template multica "$CHART_DIR" --set backend.strategy=invalid 2>&1)"; then
+  echo "Invalid backend strategy unexpectedly rendered"
+  exit 1
+fi
+require_rendered_value "$invalid_backend" 'backend.strategy must be Recreate or RollingUpdate'
+
+hold_config="$(helm template multica "$CHART_DIR" \
+  --show-only templates/configmap.yaml \
+  --set-string backend.config.shutdownHoldDuration=10s)"
+require_rendered_value "$hold_config" 'MULTICA_SHUTDOWN_HOLD_DURATION: "10s"'
+
+default_frontend="$(helm template multica "$CHART_DIR" --show-only templates/frontend.yaml)"
+require_rendered_value "$default_frontend" 'type: RollingUpdate'
+require_rendered_value "$default_frontend" 'maxUnavailable: 0'
+require_rendered_value "$default_frontend" 'maxSurge: 1'
+startup_block="$(sed -n '/startupProbe:/,/readinessProbe:/p' <<<"$default_frontend")"
+require_rendered_value "$startup_block" 'path: /login'
+require_rendered_value "$startup_block" 'port: http'
+frontend_readiness="$(sed -n '/readinessProbe:/,/lifecycle:/p' <<<"$default_frontend")"
+require_rendered_value "$frontend_readiness" 'path: /login'
+require_rendered_value "$frontend_readiness" 'port: http'
+require_rendered_value "$default_frontend" 'command: ["sleep", "10"]'
 
 extra_ca_backend="$(
   helm template multica "$CHART_DIR" \
