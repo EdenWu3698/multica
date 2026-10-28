@@ -11,13 +11,11 @@ import {
   Monitor,
   Moon,
   Palette,
-  Plus,
   Sun,
   User,
 } from "lucide-react";
 import { useAuthStore } from "@multica/core/auth";
-import { useConfigStore } from "@multica/core/config";
-import { paths, useWorkspacePaths } from "@multica/core/paths";
+import { useWorkspacePaths } from "@multica/core/paths";
 import type { SupportedLocale } from "@multica/core/i18n";
 import { resolvePublicFileUrl } from "@multica/core/workspace/avatar-url";
 import { ActorAvatar } from "@multica/ui/components/common/actor-avatar";
@@ -80,7 +78,6 @@ export function AccountMenu() {
   const logout = useLogout();
   const { theme, setTheme } = useTheme();
   const language = useLanguageSwitch();
-  const workspaceCreationDisabled = useConfigStore((s) => s.workspaceCreationDisabled);
   const themeValue = (theme ?? "system") as (typeof THEMES)[number]["value"];
   const name = user?.name ?? "";
   const avatar = (size: "md" | "lg") => (
@@ -163,17 +160,6 @@ export function AccountMenu() {
             {t(($) => $.account.shortcuts)}
           </DropdownMenuItem>
         </DropdownMenuGroup>
-        {!workspaceCreationDisabled && (
-          <>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem render={<AppLink href={paths.newWorkspace()} />}>
-                <Plus />
-                {t(($) => $.sidebar.create_workspace)}
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-          </>
-        )}
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <ExternalItem

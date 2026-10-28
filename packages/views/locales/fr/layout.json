@@ -73,8 +73,7 @@
     "team": "Équipe",
     "chat": "Chat",
     "autopilots": "Auto",
-    "more_workspaces": "Autres espaces de travail",
-    "invitation_tooltip": "Invitation à {{workspace}}",
+    "switch_workspace": "Changer d'espace de travail",
     "invitation_from": "{{name}} vous a invité"
   },
   "panels": {

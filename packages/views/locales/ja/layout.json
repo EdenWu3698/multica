@@ -73,8 +73,7 @@
     "team": "チーム",
     "chat": "チャット",
     "autopilots": "自動化",
-    "more_workspaces": "その他のワークスペース",
-    "invitation_tooltip": "{{workspace}} への招待",
+    "switch_workspace": "ワークスペースを切り替え",
     "invitation_from": "{{name}} さんから招待されています"
   },
   "panels": {

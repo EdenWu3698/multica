@@ -73,8 +73,7 @@
     "team": "團隊",
     "chat": "聊天",
     "autopilots": "自動化",
-    "more_workspaces": "更多工作區",
-    "invitation_tooltip": "來自 {{workspace}} 的邀請",
+    "switch_workspace": "切換工作區",
     "invitation_from": "{{name}} 邀請你加入"
   },
   "panels": {

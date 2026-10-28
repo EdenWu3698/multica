@@ -73,8 +73,7 @@
     "team": "팀",
     "chat": "채팅",
     "autopilots": "자동화",
-    "more_workspaces": "워크스페이스 더 보기",
-    "invitation_tooltip": "{{workspace}} 초대",
+    "switch_workspace": "워크스페이스 전환",
     "invitation_from": "{{name}} 님이 초대했습니다"
   },
   "panels": {

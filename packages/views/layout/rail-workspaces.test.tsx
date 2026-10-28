@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { screen } from "@testing-library/react";
+import { fireEvent, screen, within } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { renderWithI18n } from "../test/i18n";
 import { RailWorkspaces } from "./rail-workspaces";
@@ -14,6 +14,12 @@ const state = vi.hoisted(() => ({
   decline: vi.fn(),
   invalidateQueries: vi.fn(),
   mutations: [] as Array<Record<string, unknown>>,
+  workspaceCreationDisabled: false,
+}));
+
+vi.mock("@multica/core/config", () => ({
+  useConfigStore: (selector: (s: { workspaceCreationDisabled: boolean }) => unknown) =>
+    selector({ workspaceCreationDisabled: state.workspaceCreationDisabled }),
 }));
 
 vi.mock("../navigation", () => ({
@@ -70,58 +76,69 @@ vi.mock("@multica/ui/components/common/tooltip-hint", () => ({
 }));
 
 const ws = (n: number): Ws => ({ id: `ws-${n}`, name: n === 1 ? "Active WS" : `WS ${n}`, slug: n === 1 ? "active" : `ws${n}`, avatar_url: null });
-const tile = (name: string) => screen.queryByRole("link", { name });
-const hasDot = (name: string) => !!tile(name)?.querySelector(".bg-brand");
+const trigger = () => screen.getByRole("button", { name: "Switch workspace" });
+const triggerHasDot = () => !!trigger().querySelector(".bg-brand");
+const openMenu = async () => {
+  fireEvent.click(trigger());
+  return screen.findByRole("menu");
+};
 
 beforeEach(() => {
   state.workspaces = [ws(1), ws(2)];
   state.invitations = [];
   state.summary = [];
   state.mutations.length = 0;
+  state.workspaceCreationDisabled = false;
 });
 
 describe("RailWorkspaces", () => {
-  it("renders a tile per workspace and marks the current one", () => {
+  it("shows only the current workspace on the rail, however many there are", async () => {
+    state.workspaces = [ws(2), ws(3), ws(4), ws(5), ws(6), ws(1)];
     renderWithI18n(<RailWorkspaces />);
-    expect(tile("Active WS")).toHaveAttribute("aria-current", "page");
-    expect(tile("Active WS")).toHaveAttribute("href", "/active/issues");
-    expect(tile("WS 2")).not.toHaveAttribute("aria-current");
+    expect(screen.queryAllByRole("link")).toHaveLength(0);
+
+    const menu = await openMenu();
+    const items = within(menu).getAllByRole("menuitem").filter((el) => el.getAttribute("href") !== "/workspaces/new");
+    expect(items.map((el) => el.textContent?.slice(1))).toEqual(["WS 2", "WS 3", "WS 4", "WS 5", "WS 6", "Active WS"]);
+    expect(within(menu).getByRole("menuitem", { name: /Active WS$/ })).toHaveAttribute("aria-current", "page");
+    expect(within(menu).getByRole("menuitem", { name: /WS 3$/ })).toHaveAttribute("href", "/ws3/issues");
   });
 
-  it("dots another workspace with unread inbox items", () => {
+  it("dots the switcher while another workspace has unread inbox items", async () => {
     state.summary = [{ workspace_id: "ws-2", count: 3 }];
     renderWithI18n(<RailWorkspaces />);
-    expect(hasDot("WS 2")).toBe(true);
-    expect(hasDot("Active WS")).toBe(false);
+    expect(triggerHasDot()).toBe(true);
+    const menu = await openMenu();
+    expect(within(menu).getByRole("menuitem", { name: /WS 2$/ }).querySelector(".bg-brand")).not.toBeNull();
   });
 
   // The current workspace's unread is the Inbox space's count.
-  it("never dots the current workspace", () => {
-    state.summary = [{ workspace_id: "ws-1", count: 5 }];
+  it("does not dot the switcher for the current workspace or zero counts", () => {
+    state.summary = [
+      { workspace_id: "ws-1", count: 5 },
+      { workspace_id: "ws-2", count: 0 },
+    ];
     renderWithI18n(<RailWorkspaces />);
-    expect(hasDot("Active WS")).toBe(false);
+    expect(triggerHasDot()).toBe(false);
   });
 
-  it("does not dot a workspace whose unread count is zero", () => {
-    state.summary = [{ workspace_id: "ws-2", count: 0 }];
-    renderWithI18n(<RailWorkspaces />);
-    expect(hasDot("WS 2")).toBe(false);
-  });
-
-  it("moves extra workspaces behind an overflow menu but keeps the current one", () => {
-    state.workspaces = [ws(2), ws(3), ws(4), ws(5), ws(6), ws(1)];
-    renderWithI18n(<RailWorkspaces />);
-    expect(tile("Active WS")).not.toBeNull();
-    expect(tile("WS 2")).not.toBeNull();
-    expect(tile("WS 3")).not.toBeNull();
-    expect(tile("WS 4")).toBeNull();
-    expect(screen.getByRole("button", { name: "More workspaces" })).toBeInTheDocument();
-  });
-
-  it("shows pending invitations as their own tiles", () => {
+  it("lists pending invitations in the menu and dots the switcher", async () => {
     state.invitations = [{ id: "inv-1", workspace_id: "ws-9", workspace_name: "Copilot Hub" }];
     renderWithI18n(<RailWorkspaces />);
-    expect(screen.getByRole("button", { name: "Invitation to Copilot Hub" })).toBeInTheDocument();
+    expect(triggerHasDot()).toBe(true);
+    const menu = await openMenu();
+    expect(within(menu).getByText("Pending invitations")).toBeInTheDocument();
+    expect(within(menu).getByRole("menuitem", { name: /Copilot Hub$/ })).toBeInTheDocument();
+  });
+
+  it("offers workspace creation unless the instance disables it", async () => {
+    const { unmount } = renderWithI18n(<RailWorkspaces />);
+    expect(within(await openMenu()).getByRole("menuitem", { name: "Create workspace" })).toBeInTheDocument();
+    unmount();
+
+    state.workspaceCreationDisabled = true;
+    renderWithI18n(<RailWorkspaces />);
+    expect(within(await openMenu()).queryByRole("menuitem", { name: "Create workspace" })).toBeNull();
   });
 });
 
