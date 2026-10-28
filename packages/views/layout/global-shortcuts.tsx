@@ -16,6 +16,7 @@ import { useModalStore } from "@multica/core/modals";
 import { useWorkspacePaths } from "@multica/core/paths";
 import { isImeComposing } from "@multica/core/utils";
 import { isFloatingChatRouteSuppressed } from "../chat/floating-chat-visibility";
+import { useAppShell } from "./app-shell-context";
 import { useNavigation } from "../navigation";
 import { useSearchStore } from "../search/search-store";
 
@@ -47,6 +48,7 @@ export function shouldIgnoreGlobalShortcutEvent(event: KeyboardEvent): boolean {
 /** Executes configurable product-level shortcuts inside the dashboard shell. */
 export function GlobalShortcuts() {
   const { toggleSidebar } = useSidebar();
+  const toggleNav = useAppShell()?.toggleNav ?? toggleSidebar;
   const navigation = useNavigation();
   const workspacePaths = useWorkspacePaths();
 
@@ -106,7 +108,7 @@ export function GlobalShortcuts() {
         return;
       }
       if (actionId === "toggleSidebar") {
-        toggleSidebar();
+        toggleNav();
         return;
       }
       if (actionId === "goBack") {
@@ -139,7 +141,7 @@ export function GlobalShortcuts() {
 
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [navigation, overrides, toggleSidebar, workspacePaths]);
+  }, [navigation, overrides, toggleNav, workspacePaths]);
 
   return null;
 }

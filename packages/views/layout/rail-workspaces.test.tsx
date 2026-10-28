@@ -10,7 +10,6 @@ const state = vi.hoisted(() => ({
   workspaces: [] as Ws[],
   invitations: [] as { id: string; workspace_id: string; workspace_name?: string; inviter_name?: string }[],
   summary: [] as { workspace_id: string; count: number }[],
-  creationDisabled: false,
   accept: vi.fn(),
   decline: vi.fn(),
   invalidateQueries: vi.fn(),
@@ -41,10 +40,6 @@ vi.mock("@multica/core/api", async (importOriginal) => {
     },
   };
 });
-vi.mock("@multica/core/config", () => ({
-  useConfigStore: (selector: (s: { workspaceCreationDisabled: boolean }) => unknown) =>
-    selector({ workspaceCreationDisabled: state.creationDisabled }),
-}));
 vi.mock("@multica/core/inbox/queries", () => ({
   inboxUnreadSummaryOptions: () => ({ queryKey: ["inbox", "unread-summary"] }),
   inboxUnreadSummaryEnabled: () => true,
@@ -82,7 +77,6 @@ beforeEach(() => {
   state.workspaces = [ws(1), ws(2)];
   state.invitations = [];
   state.summary = [];
-  state.creationDisabled = false;
   state.mutations.length = 0;
 });
 
@@ -122,16 +116,6 @@ describe("RailWorkspaces", () => {
     expect(tile("WS 3")).not.toBeNull();
     expect(tile("WS 4")).toBeNull();
     expect(screen.getByRole("button", { name: "More workspaces" })).toBeInTheDocument();
-  });
-
-  it("offers create unless workspace creation is disabled", () => {
-    const { unmount } = renderWithI18n(<RailWorkspaces />);
-    expect(screen.getByRole("link", { name: "Create workspace" })).toHaveAttribute("href", "/workspaces/new");
-    unmount();
-
-    state.creationDisabled = true;
-    renderWithI18n(<RailWorkspaces />);
-    expect(screen.queryByRole("link", { name: "Create workspace" })).toBeNull();
   });
 
   it("shows pending invitations as their own tiles", () => {

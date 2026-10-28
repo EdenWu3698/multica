@@ -7,10 +7,7 @@ import {
   type PointerEventHandler,
 } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import {
-  SidebarTrigger,
-  useSidebar,
-} from "@multica/ui/components/ui/sidebar";
+import { SidebarTrigger } from "@multica/ui/components/ui/sidebar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -180,11 +177,7 @@ function HistoryMenuItem({
 
 export function WindowToolbar() {
   const { t } = useT("layout");
-  const { isCompact } = useSidebar();
-  // Below `md` the toggle opens the nav sheet; above it, the space panel,
-  // which Inbox, Chat and Settings do not have.
   const shell = useAppShell();
-  const toggleDisabled = !isCompact && shell !== null && !shell.hasPanel;
   const {
     canGoBack,
     canGoForward,
@@ -365,9 +358,16 @@ export function WindowToolbar() {
           </TooltipContent>
         </Tooltip>
         <SidebarTrigger
-          disabled={toggleDisabled}
-          className="size-7 text-faint-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground disabled:opacity-30"
+          className="size-7 text-faint-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
           shortcut={<ActionShortcutKeycaps action="toggleSidebar" />}
+          onClick={
+            shell
+              ? (event) => {
+                  event.preventDefault();
+                  shell.toggleNav();
+                }
+              : undefined
+          }
           style={{ WebkitAppRegion: "no-drag" } as React.CSSProperties}
         />
       </div>

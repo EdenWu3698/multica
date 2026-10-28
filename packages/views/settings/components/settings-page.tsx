@@ -63,6 +63,7 @@ import { HighlightText } from "../../search/highlight-text";
 import { useSettingsSearchIndex } from "./use-settings-search-index";
 import { WakeupsTab } from "./wakeups-tab";
 import { CollapsedNavTrigger } from "../../layout/page-header";
+import { useListColumnCollapsed } from "../../layout/app-shell-context";
 import { useT } from "../../i18n";
 
 export interface ExtraSettingsTab {
@@ -110,6 +111,7 @@ export function SettingsPage({ extraDeviceTabs = [] }: SettingsPageProps = {}) {
   const { role } = useCurrentMember(workspace?.id ?? "");
   const isMember = role === "member";
   const navigation = useNavigation();
+  const listCollapsed = useListColumnCollapsed();
   const pluginsEnabled = useFeatureEnabled(PLUGINS_V1_FLAG, false);
   const billingEnabled = useFeatureEnabled(
     BILLING_WORKSPACE_SUBSCRIPTIONS_FLAG,
@@ -424,7 +426,12 @@ export function SettingsPage({ extraDeviceTabs = [] }: SettingsPageProps = {}) {
 
   return (
     <div className="flex min-h-0 flex-1 flex-col overflow-hidden bg-background md:flex-row">
-      <aside className="shrink-0 border-b border-surface-border md:flex md:w-60 md:flex-col md:border-b-0 md:border-r">
+      <aside
+        className={cn(
+          "shrink-0 border-b border-surface-border md:flex md:w-60 md:flex-col md:border-b-0 md:border-r",
+          listCollapsed && "md:hidden",
+        )}
+      >
         <div className="flex h-16 shrink-0 items-center gap-1 px-4 md:px-5">
           <CollapsedNavTrigger />
           <h1 className="text-title font-semibold tracking-tight">
@@ -561,8 +568,13 @@ export function SettingsPage({ extraDeviceTabs = [] }: SettingsPageProps = {}) {
       <div
         ref={contentRef}
         key={`${active.value}:${location.integration ?? ""}`}
-        className="min-w-0 flex-1 overflow-y-auto overscroll-contain"
+        className="relative min-w-0 flex-1 overflow-y-auto overscroll-contain"
       >
+        {listCollapsed && (
+          <div className="absolute left-3 top-3">
+            <CollapsedNavTrigger />
+          </div>
+        )}
         <div
           className={cn(
             "mx-auto w-full px-4 py-6 sm:px-6 md:px-10 md:py-8",

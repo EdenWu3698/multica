@@ -25,14 +25,8 @@ import { DISCORD_URL, DiscordIcon } from "./discord";
 import { useT } from "../i18n";
 import { docsLocalePrefix } from "../common/docs-locale";
 import { RAIL_ICON_BUTTON_CLASS } from "./rail-styles";
+import { CHANGELOG_URL, DOCS_URL, DOWNLOAD_URL } from "./help-links";
 
-const DOCS_URL = "https://multica.ai/docs";
-const CHANGELOG_URL = "https://multica.ai/changelog";
-// Absolute, including on self-hosted deployments: the installers we ship are
-// the same binaries either way, and the desktop client can point at a
-// self-hosted backend once installed. A self-host-relative /download would
-// only serve a copy of this page that still has to reach our release assets.
-const DOWNLOAD_URL = "https://multica.ai/download";
 
 export function HelpLauncher() {
   const { t, i18n } = useT("layout");

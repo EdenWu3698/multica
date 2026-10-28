@@ -101,11 +101,13 @@
       "members_other": "{{count}} members",
       "resources": "Resources",
       "runtimes_offline_one": "{{count}} offline",
-      "runtimes_offline_other": "{{count}} offline"
+      "runtimes_offline_other": "{{count}} offline",
+      "invite_member": "Invite member"
     },
     "autopilots": {
       "all": "All autopilots",
-      "list": "Autopilots"
+      "list": "Autopilots",
+      "templates": "From a template"
     }
   },
   "account": {

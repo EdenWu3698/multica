@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { BarChart3, BookOpenText, Bot, Monitor, Plus, User, Users } from "lucide-react";
+import { BarChart3, BookOpenText, Bot, Monitor, Plus, User, UserPlus, Users } from "lucide-react";
 import { cn } from "@multica/ui/lib/utils";
 import { ActorAvatar } from "@multica/ui/components/common/actor-avatar";
 import { IconButton } from "@multica/ui/components/common/icon-button";
@@ -128,6 +128,8 @@ export function TeamPanel() {
   }, [runtimes]);
 
   const mineCount = userId ? agents.filter((agent) => agent.owner_id === userId).length : 0;
+  const myRole = members.find((member) => member.user_id === userId)?.role;
+  const canInvite = myRole === "owner" || myRole === "admin";
   const onAgents = pathname === p.agents();
   // Member pages live under /members/:id; the list itself is a Settings tab.
   const membersRoot = p.memberDetail("").replace(/\/$/, "");
@@ -135,6 +137,16 @@ export function TeamPanel() {
   return (
     <>
       <PanelHeader title={t(($) => $.spaces.team)}>
+        {canInvite && (
+          <IconButton
+            label={t(($) => $.panels.team.invite_member)}
+            tooltipSide="bottom"
+            className="text-muted-foreground"
+            onClick={() => push(`${p.settings()}?tab=members&invite=1`)}
+          >
+            <UserPlus />
+          </IconButton>
+        )}
         <IconButton
           label={t(($) => $.panels.team.new_agent)}
           tooltipSide="bottom"

@@ -72,7 +72,8 @@ vi.mock("@multica/views/layout", () => ({
   GlobalShortcuts: () => null,
   NavigationProgress: () => null,
   SpacePanel: () => null,
-  useAppShell: () => ({ hasPanel: true }),
+  // In a panel space the shell's toggleNav is the sidebar toggle.
+  useAppShell: () => ({ toggleNav: useSidebar().toggleSidebar }),
   useTabPresentation: () => ({ visual: { kind: "icon", icon: "Inbox" }, title: "" }),
   ResourceLeadingVisual: () => null,
 }));

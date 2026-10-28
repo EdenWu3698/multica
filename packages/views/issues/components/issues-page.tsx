@@ -14,6 +14,7 @@ import { RefreshablePageIcon } from "../../layout/refreshable-page-icon";
 import { useT } from "../../i18n";
 import { IssueSurface } from "../surface/issue-surface";
 import { IssuesHeader } from "./issues-header";
+import { NewIssueHeaderAction } from "./new-issue-header-action";
 
 function IssuesSurfaceHeader({
   issues,
@@ -41,6 +42,7 @@ function IssuesSurfaceHeader({
           <ListTodo className="size-4" />
         </RefreshablePageIcon>
         <h1 className="text-body font-medium">{t(($) => $.page.breadcrumb_title)}</h1>
+        <NewIssueHeaderAction className="ml-auto" />
       </PageHeader>
       <IssuesHeader
         scopedIssues={issues}

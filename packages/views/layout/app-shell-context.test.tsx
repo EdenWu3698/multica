@@ -1,6 +1,11 @@
-import { act, render } from "@testing-library/react";
+import { act, cleanup, render } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { AppShellProvider, useAppShell } from "./app-shell-context";
+import { SidebarProvider, useSidebar } from "@multica/ui/components/ui/sidebar";
+import {
+  AppShellProvider,
+  useAppShell,
+  useListColumnCollapsed,
+} from "./app-shell-context";
 
 const navigation = vi.hoisted(() => ({ pathname: "/acme/issues" }));
 
@@ -12,6 +17,25 @@ let shell: ReturnType<typeof useAppShell> = null;
 function Reader() {
   shell = useAppShell();
   return null;
+}
+
+let sidebarState: string | null = null;
+let listColumnCollapsed = false;
+function NavReader() {
+  shell = useAppShell();
+  sidebarState = useSidebar().state;
+  listColumnCollapsed = useListColumnCollapsed();
+  return null;
+}
+
+function renderNavShell() {
+  return render(
+    <SidebarProvider>
+      <AppShellProvider>
+        <NavReader />
+      </AppShellProvider>
+    </SidebarProvider>,
+  );
 }
 
 function renderShell() {
@@ -97,5 +121,21 @@ describe("AppShellProvider", () => {
       </AppShellProvider>,
     );
     expect(shell!.peekSpace).toBeNull();
+  });
+
+  it("toggles the panel in panel spaces and the list column elsewhere", () => {
+    renderNavShell();
+    act(() => shell!.toggleNav());
+    expect(sidebarState).toBe("collapsed");
+    expect(listColumnCollapsed).toBe(false);
+    act(() => shell!.toggleNav());
+    expect(sidebarState).toBe("expanded");
+    cleanup();
+
+    navigation.pathname = "/acme/inbox";
+    renderNavShell();
+    act(() => shell!.toggleNav());
+    expect(sidebarState).toBe("expanded");
+    expect(listColumnCollapsed).toBe(true);
   });
 });

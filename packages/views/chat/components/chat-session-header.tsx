@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Archive, ArchiveRestore, MoreHorizontal, Pencil, Trash2, UserRound } from "lucide-react";
 import { IconButton } from "@multica/ui/components/common/icon-button";
 import {
@@ -44,6 +44,7 @@ export function ChatSessionHeader({
   session,
   agent,
   onArchive,
+  leading,
 }: {
   session: ChatSession;
   agent: Agent | null;
@@ -51,6 +52,8 @@ export function ChatSessionHeader({
   // next chat on desktop, back to the list on mobile), so the parent owns it —
   // see ChatPage.handleArchive. Falls back to a plain status flip if unwired.
   onArchive?: (session: ChatSession) => void;
+  /** Rendered before the avatar (the nav toggle while the list is collapsed). */
+  leading?: ReactNode;
 }) {
   const { t } = useT("chat");
   const { t: tCommon } = useT("common");
@@ -128,6 +131,7 @@ export function ChatSessionHeader({
 
   return (
     <div className="flex h-12 shrink-0 items-center gap-3 border-b px-4">
+      {leading}
       {agent ? (
         <ActorAvatar actorType="agent" actorId={agent.id} size="lg" enableHoverCard showStatusDot />
       ) : (

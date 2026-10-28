@@ -12,6 +12,7 @@ import { RefreshablePageIcon } from "../../layout/refreshable-page-icon";
 import { IssueSurface } from "../../issues/surface/issue-surface";
 import { useT } from "../../i18n";
 import { MyIssuesHeader } from "./my-issues-header";
+import { NewIssueHeaderAction } from "../../issues/components/new-issue-header-action";
 
 export function MyIssuesPage() {
   const { t } = useT("my-issues");
@@ -25,6 +26,7 @@ export function MyIssuesPage() {
         <ListTodo className="size-4" />
       </RefreshablePageIcon>
       <h1 className="text-body font-medium">{t(($) => $.page.breadcrumb)}</h1>
+      <NewIssueHeaderAction className="ml-auto" />
     </PageHeader>
   );
 

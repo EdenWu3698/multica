@@ -69,17 +69,27 @@ export function CollapsedNavTrigger() {
   const shell = useAppShell();
   if (!sidebar || sidebar.hasExternalTrigger) return null;
   // In the app shell the rail is always on screen from `md` up, so the
-  // trigger only has a job there while the space panel is collapsed. The
-  // `md:hidden` gate is CSS so the compact case is right before hydration.
-  const className = shell
-    ? shell.hasPanel && sidebar.state === "collapsed"
-      ? undefined
-      : "md:hidden"
-    : "xl:hidden";
+  // trigger only has a job there while the space panel or list column is
+  // collapsed. The `md:hidden` gate is CSS so the compact case is right
+  // before hydration.
+  const collapsed = shell
+    ? shell.hasPanel
+      ? sidebar.state === "collapsed"
+      : shell.listCollapsed
+    : false;
+  const className = shell ? (collapsed ? undefined : "md:hidden") : "xl:hidden";
   return (
     <SidebarTrigger
       className={className}
       shortcut={<ActionShortcutKeycaps action="toggleSidebar" />}
+      onClick={
+        shell
+          ? (event) => {
+              event.preventDefault();
+              shell.toggleNav();
+            }
+          : undefined
+      }
     />
   );
 }

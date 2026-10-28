@@ -96,11 +96,13 @@
       "squads_and_members": "小隊與成員",
       "members_other": "{{count}} 位成員",
       "resources": "資源",
-      "runtimes_offline_other": "{{count}} 個離線"
+      "runtimes_offline_other": "{{count}} 個離線",
+      "invite_member": "邀請成員"
     },
     "autopilots": {
       "all": "全部自動化",
-      "list": "自動化"
+      "list": "自動化",
+      "templates": "從範本開始"
     }
   },
   "account": {

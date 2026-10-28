@@ -20,7 +20,8 @@ import { useQuickActionsPendingTimeout } from "@multica/core/chat/use-quick-acti
 import { useQuickActionsFailureToast } from "./components/use-quick-actions-failure-toast";
 import { useQuery } from "@tanstack/react-query";
 import type { Agent, ChatSession } from "@multica/core/types";
-import { PageHeader } from "../layout/page-header";
+import { CollapsedNavTrigger, PageHeader } from "../layout/page-header";
+import { useListColumnCollapsed } from "../layout/app-shell-context";
 import { useNavigation } from "../navigation";
 import { useT } from "../i18n";
 import { ChatMessageList, ChatMessageSkeleton } from "./components/chat-message-list";
@@ -131,6 +132,7 @@ export function ChatPage() {
   const { defaultLayout, onLayoutChanged } = useDefaultLayout({
     id: "multica_chat_layout",
   });
+  const listCollapsed = useListColumnCollapsed();
 
   // `?agent=` intent bookkeeping. The ref holds the param value already
   // consumed (or superseded) so the effect below fires at most once per deep
@@ -258,6 +260,7 @@ export function ChatPage() {
     <div className="flex flex-1 flex-col min-h-0 @container">
       {c.currentSession && (
         <ChatSessionHeader
+          leading={listCollapsed ? <CollapsedNavTrigger /> : undefined}
           session={c.currentSession}
           agent={c.activeAgent}
           onArchive={handleArchive}
@@ -402,6 +405,8 @@ export function ChatPage() {
       defaultLayout={defaultLayout}
       onLayoutChanged={onLayoutChanged}
     >
+      {!listCollapsed && (
+      <>
       <ResizablePanel
         id="list"
         defaultSize={260}
@@ -415,12 +420,15 @@ export function ChatPage() {
         </div>
       </ResizablePanel>
       <ResizableHandle />
+      </>
+      )}
       <ResizablePanel id="detail" minSize="40%">
         <div className="flex flex-col min-h-0 h-full">
+          {listCollapsed && !c.currentSession && <PageHeader>{newChatButton}</PageHeader>}
           {hasTarget ? (
             conversation
           ) : (
-            <div className="flex h-full flex-col items-center justify-center gap-3 text-muted-foreground">
+            <div className="flex min-h-0 flex-1 flex-col items-center justify-center gap-3 text-muted-foreground">
               <MessageSquare className="h-10 w-10 text-faint-foreground" />
               <p className="text-body">{t(($) => $.page.select_prompt)}</p>
             </div>

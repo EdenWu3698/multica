@@ -96,11 +96,13 @@
       "squads_and_members": "스쿼드 및 멤버",
       "members_other": "멤버 {{count}}명",
       "resources": "리소스",
-      "runtimes_offline_other": "{{count}}개 오프라인"
+      "runtimes_offline_other": "{{count}}개 오프라인",
+      "invite_member": "멤버 초대"
     },
     "autopilots": {
       "all": "전체 오토파일럿",
-      "list": "오토파일럿"
+      "list": "오토파일럿",
+      "templates": "템플릿으로 시작"
     }
   },
   "account": {

@@ -2,12 +2,14 @@
 
 import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Code, Clock, Webhook, Zap } from "lucide-react";
+import { Code, Clock, Plus, Webhook, Zap } from "lucide-react";
+import { IconButton } from "@multica/ui/components/common/icon-button";
 import { autopilotListOptions } from "@multica/core/autopilots/queries";
 import { useCurrentWorkspace, useWorkspacePaths } from "@multica/core/paths";
 import type { Autopilot } from "@multica/core/types";
 import { useNavigation } from "../../navigation";
 import { useT } from "../../i18n";
+import { AUTOPILOT_TEMPLATES } from "../../autopilots/components/autopilot-templates";
 import {
   PanelBody,
   PanelCount,
@@ -19,6 +21,7 @@ import {
 } from "../panel-nav";
 
 const EMPTY_AUTOPILOTS: Autopilot[] = [];
+const PANEL_TEMPLATE_LIMIT = 3;
 
 // Server-driven enum: unknown kinds get the generic icon.
 const TRIGGER_ICONS: Record<string, typeof Zap> = {
@@ -70,8 +73,9 @@ function AutopilotDescription({ autopilot }: { autopilot: Autopilot }) {
 
 export function AutopilotsPanel() {
   const { t } = useT("layout");
+  const { t: tAutopilots } = useT("autopilots");
   const p = useWorkspacePaths();
-  const { pathname } = useNavigation();
+  const { pathname, push } = useNavigation();
   const wsId = useCurrentWorkspace()?.id;
   const { data: autopilots = EMPTY_AUTOPILOTS } = useQuery({
     ...autopilotListOptions(wsId ?? ""),
@@ -84,7 +88,16 @@ export function AutopilotsPanel() {
 
   return (
     <>
-      <PanelHeader title={t(($) => $.nav.autopilots)} />
+      <PanelHeader title={t(($) => $.nav.autopilots)}>
+        <IconButton
+          label={tAutopilots(($) => $.page.new_autopilot)}
+          tooltipSide="bottom"
+          className="text-muted-foreground"
+          onClick={() => push(`${p.autopilots()}?create=1`)}
+        >
+          <Plus />
+        </IconButton>
+      </PanelHeader>
       <PanelBody>
         <PanelList>
           <PanelLink
@@ -118,6 +131,24 @@ export function AutopilotsPanel() {
             </PanelList>
           </PanelSection>
         )}
+
+        <PanelSection label={t(($) => $.panels.autopilots.templates)}>
+          <PanelList>
+            {AUTOPILOT_TEMPLATES.slice(0, PANEL_TEMPLATE_LIMIT).map((template) => {
+              const Icon = template.icon;
+              return (
+                <PanelLink
+                  key={template.id}
+                  href={`${p.autopilots()}?template=${template.id}`}
+                  icon={<Icon />}
+                  label={tAutopilots(($) => $.templates[template.id].title)}
+                  active={false}
+                  className="text-muted-foreground"
+                />
+              );
+            })}
+          </PanelList>
+        </PanelSection>
       </PanelBody>
     </>
   );

@@ -9,7 +9,7 @@ const DEFAULT_E2E_WORKSPACE = `e2e-workspace-${E2E_WORKER}-${E2E_RUN_ID}`;
 
 async function waitForIssuesPage(page: Page) {
   // The Issues panel's create button is icon-only; its label is the name.
-  await expect(page.getByRole("button", { name: "New Issue" })).toBeVisible({
+  await expect(page.getByRole("button", { name: "New Issue" }).first()).toBeVisible({
     timeout: 15000,
   });
 }

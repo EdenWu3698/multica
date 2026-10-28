@@ -101,11 +101,13 @@
       "members_other": "{{count}} membres",
       "resources": "Ressources",
       "runtimes_offline_one": "{{count}} hors ligne",
-      "runtimes_offline_other": "{{count}} hors ligne"
+      "runtimes_offline_other": "{{count}} hors ligne",
+      "invite_member": "Inviter un membre"
     },
     "autopilots": {
       "all": "Toutes les automatisations",
-      "list": "Automatisations"
+      "list": "Automatisations",
+      "templates": "À partir d’un modèle"
     }
   },
   "account": {

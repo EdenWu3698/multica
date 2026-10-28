@@ -2,9 +2,8 @@
 
 import { useMemo } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { MoreHorizontal, Plus } from "lucide-react";
+import { MoreHorizontal } from "lucide-react";
 import { api } from "@multica/core/api";
-import { useConfigStore } from "@multica/core/config";
 import {
   inboxUnreadSummaryEnabled,
   inboxUnreadSummaryOptions,
@@ -220,17 +219,16 @@ function OverflowWorkspaces({
 
 /**
  * Workspace stack at the top of the rail: one tile per workspace (the
- * current one marked), pending invitations as dashed tiles, then create.
+ * current one marked), then pending invitations as dashed tiles. Creating a
+ * workspace is rare enough to live in the account menu.
  * A dot on a tile means that workspace has unread inbox items; the current
  * workspace's unread shows on the Inbox space instead.
  */
 export function RailWorkspaces() {
-  const { t } = useT("layout");
   const workspace = useCurrentWorkspace();
   const wsId = workspace?.id;
   const { data: workspaces = EMPTY_WORKSPACES } = useQuery(workspaceListOptions());
   const { data: invitations = EMPTY_INVITATIONS } = useQuery(myInvitationListOptions());
-  const workspaceCreationDisabled = useConfigStore((s) => s.workspaceCreationDisabled);
   // One cross-workspace cache entry; gated on an active workspace since the
   // endpoint resolves through the workspace-member middleware.
   const { data: unreadSummary = EMPTY_INBOX_SUMMARY } = useQuery({
@@ -267,17 +265,6 @@ export function RailWorkspaces() {
       {invitations.map((invitation) => (
         <InvitationTile key={invitation.id} invitation={invitation} actions={actions} />
       ))}
-      {!workspaceCreationDisabled && (
-        <TooltipHint label={t(($) => $.sidebar.create_workspace)} side="right">
-          <AppLink
-            href={paths.newWorkspace()}
-            aria-label={t(($) => $.sidebar.create_workspace)}
-            className={cn(RAIL_ICON_BUTTON_CLASS, "size-[34px]")}
-          >
-            <Plus />
-          </AppLink>
-        </TooltipHint>
-      )}
     </div>
   );
 }

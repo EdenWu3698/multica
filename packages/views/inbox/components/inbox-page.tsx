@@ -95,6 +95,7 @@ import {
 import { useIsCompact } from "@multica/ui/hooks/use-mobile";
 import { cn } from "@multica/ui/lib/utils";
 import { PAGE_GUTTER, PageHeader } from "../../layout/page-header";
+import { useListColumnCollapsed } from "../../layout/app-shell-context";
 import { useTimeAgo } from "./inbox-list-item";
 import { InboxList } from "./inbox-list";
 import { InboxFilterMenu } from "./inbox-filter-menu";
@@ -330,6 +331,7 @@ export function InboxPage() {
   });
 
   const isCompact = useIsCompact();
+  const listCollapsed = useListColumnCollapsed();
   const unreadCount = useInboxUnreadCount(wsId);
 
   const markReadMutation = useMarkInboxRead();
@@ -788,8 +790,9 @@ export function InboxPage() {
           highlightCommentId={detailItem.details?.comment_id ?? undefined}
           highlightRequestToken={highlightRequestToken}
           // The split layout already has a nav trigger in the list header.
-          // Explicit false suppresses the detail header's fallback trigger.
-          leadingAction={compactBackAction ?? false}
+          // Explicit false suppresses the detail header's fallback trigger,
+          // which is the way back once the list column is collapsed.
+          leadingAction={compactBackAction ?? (listCollapsed ? undefined : false)}
           onDelete={() => {
             // Issue deletion CASCADE-deletes the inbox item server-side, and the
             // issue:deleted WS event prunes it from the inbox cache. Just clear
@@ -980,6 +983,8 @@ export function InboxPage() {
   if (viewLoading) {
     return (
       <ResizablePanelGroup orientation="horizontal" className="flex-1 min-h-0" defaultLayout={defaultLayout} onLayoutChanged={onLayoutChanged}>
+        {!listCollapsed && (
+        <>
         <ResizablePanel
           id="list"
           defaultSize={INBOX_LIST_DEFAULT_SIZE}
@@ -1005,6 +1010,8 @@ export function InboxPage() {
           </div>
         </ResizablePanel>
         <ResizableHandle />
+        </>
+        )}
         <ResizablePanel id="detail" minSize="40%">
           <div className="p-6">
             <Skeleton className="h-6 w-48" />
@@ -1017,6 +1024,8 @@ export function InboxPage() {
 
   return (
     <ResizablePanelGroup orientation="horizontal" className="flex-1 min-h-0" defaultLayout={defaultLayout} onLayoutChanged={onLayoutChanged}>
+      {!listCollapsed && (
+      <>
       <ResizablePanel
         id="list"
         defaultSize={INBOX_LIST_DEFAULT_SIZE}
@@ -1029,10 +1038,18 @@ export function InboxPage() {
       </div>
       </ResizablePanel>
       <ResizableHandle />
+      </>
+      )}
       <ResizablePanel id="detail" minSize="40%">
       <div className="flex flex-col min-h-0 h-full">
         {detailContent ?? (
-          <div className="flex h-full flex-col items-center justify-center text-muted-foreground">
+          <>
+          {listCollapsed && (
+            <PageHeader>
+              <h1 className="text-body font-semibold">{t(($) => $.page.title)}</h1>
+            </PageHeader>
+          )}
+          <div className="flex min-h-0 flex-1 flex-col items-center justify-center text-muted-foreground">
             <Inbox className="mb-3 h-10 w-10 text-faint-foreground" />
             <p className="text-body">
               {visibleItems.length === 0
@@ -1040,6 +1057,7 @@ export function InboxPage() {
                 : t(($) => $.detail.select_prompt)}
             </p>
           </div>
+          </>
         )}
       </div>
       </ResizablePanel>

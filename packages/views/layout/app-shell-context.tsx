@@ -2,6 +2,7 @@
 
 import { createContext, use, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { spaceForPath, type AppSpaceId } from "@multica/core/paths";
+import { useSidebarSafe } from "@multica/ui/components/ui/sidebar";
 import { useNavigation } from "../navigation";
 
 /**
@@ -21,6 +22,15 @@ interface AppShellContextValue {
   space: AppSpaceId | null;
   /** The current space has a shell panel (collapsible with the sidebar toggle). */
   hasPanel: boolean;
+  /**
+   * Inbox, Chat and Settings keep their own list column, which the sidebar
+   * toggle collapses instead of the shell panel. Independent of the panel's
+   * open state so the md–xl auto-collapse never hides a list the page needs.
+   */
+  listCollapsed: boolean;
+  setListCollapsed: (collapsed: boolean) => void;
+  /** The sidebar toggle: the space panel, the list column, or the compact sheet. */
+  toggleNav: () => void;
   /** Space previewed over the content while the panel is collapsed. */
   peekSpace: AppSpaceId | null;
   requestPeek: (space: AppSpaceId) => void;
@@ -33,7 +43,10 @@ const AppShellContext = createContext<AppShellContextValue | null>(null);
 
 export function AppShellProvider({ children }: { children: React.ReactNode }) {
   const { pathname } = useNavigation();
+  const sidebar = useSidebarSafe();
   const space = spaceForPath(pathname);
+  const hasPanel = space !== null && PANEL_SPACES.has(space);
+  const [listCollapsed, setListCollapsed] = useState(false);
   const [peekSpace, setPeekSpace] = useState<AppSpaceId | null>(null);
   const openTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -80,17 +93,27 @@ export function AppShellProvider({ children }: { children: React.ReactNode }) {
   }, [pathname, closePeek]);
   useEffect(() => clearTimers, [clearTimers]);
 
+  const toggleSidebar = sidebar?.toggleSidebar;
+  const isCompact = sidebar?.isCompact ?? false;
+  const toggleNav = useCallback(() => {
+    if (isCompact || hasPanel || space === null) toggleSidebar?.();
+    else setListCollapsed((collapsed) => !collapsed);
+  }, [hasPanel, isCompact, space, toggleSidebar]);
+
   const value = useMemo<AppShellContextValue>(
     () => ({
       space,
-      hasPanel: space !== null && PANEL_SPACES.has(space),
+      hasPanel,
+      listCollapsed,
+      setListCollapsed,
+      toggleNav,
       peekSpace,
       requestPeek,
       holdPeek,
       releasePeek,
       closePeek,
     }),
-    [space, peekSpace, requestPeek, holdPeek, releasePeek, closePeek],
+    [space, hasPanel, listCollapsed, toggleNav, peekSpace, requestPeek, holdPeek, releasePeek, closePeek],
   );
 
   return <AppShellContext.Provider value={value}>{children}</AppShellContext.Provider>;
@@ -99,4 +122,14 @@ export function AppShellProvider({ children }: { children: React.ReactNode }) {
 /** Null outside the dashboard shell (standalone pages, isolated tests). */
 export function useAppShell(): AppShellContextValue | null {
   return use(AppShellContext);
+}
+
+/**
+ * Whether a list-and-detail page (Inbox, Chat, Settings) hides its list
+ * column. Below `md` those pages manage the list themselves.
+ */
+export function useListColumnCollapsed(): boolean {
+  const shell = useAppShell();
+  const sidebar = useSidebarSafe();
+  return Boolean(shell?.listCollapsed && !shell.hasPanel && !sidebar?.isCompact);
 }

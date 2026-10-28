@@ -417,7 +417,8 @@ function SidebarTrigger({
       className={cn(className)}
       onClick={(event) => {
         onClick?.(event)
-        toggleSidebar()
+        // A host that routes the toggle elsewhere prevents the default.
+        if (!event.defaultPrevented) toggleSidebar()
       }}
       {...props}
     >

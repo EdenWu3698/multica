@@ -19,13 +19,8 @@ const historyState = vi.hoisted(() => ({
   goToHistoryIndex: vi.fn(),
 }));
 
-const sidebarState = vi.hoisted(() => ({
-  state: "expanded" as "expanded" | "collapsed",
-  isCompact: false,
-}));
-
 const shellState = vi.hoisted(() => ({
-  current: { hasPanel: true } as { hasPanel: boolean } | null,
+  current: { toggleNav: () => {} } as { toggleNav: () => void } | null,
 }));
 
 vi.mock("@/hooks/use-tab-history", () => ({
@@ -42,7 +37,6 @@ vi.mock("@multica/views/layout", () => ({
 }));
 
 vi.mock("@multica/ui/components/ui/sidebar", () => ({
-  useSidebar: () => sidebarState,
   SidebarTrigger: (props: ComponentProps<"button">) => (
     <button type="button" aria-label="Toggle sidebar" {...props} />
   ),
@@ -76,9 +70,7 @@ beforeEach(() => {
   historyState.goBack.mockReset();
   historyState.goForward.mockReset();
   historyState.goToHistoryIndex.mockReset();
-  sidebarState.state = "expanded";
-  sidebarState.isCompact = false;
-  shellState.current = { hasPanel: true };
+  shellState.current = { toggleNav: vi.fn() };
   vi.useFakeTimers();
 });
 
@@ -113,25 +105,24 @@ describe("WindowToolbar history controls", () => {
   });
 
   it("keeps the controls clear of the traffic lights after toggling the panel", () => {
-    const { rerender } = render(<WindowToolbar />, { wrapper: I18nWrapper });
-    sidebarState.state = "collapsed";
-    rerender(<WindowToolbar />);
+    render(<WindowToolbar />, { wrapper: I18nWrapper });
+    fireEvent.click(screen.getByRole("button", { name: "Toggle sidebar" }));
 
     const toolbar = document.querySelector('[data-slot="window-toolbar"]');
     expect(toolbar).toHaveStyle({ paddingLeft: "88px", width: "200px" });
   });
 
-  // Inbox, Chat and Settings bring their own list column, so there is no
-  // shell panel for the toggle to collapse there.
-  it("disables the panel toggle in spaces without a shell panel", () => {
-    shellState.current = { hasPanel: false };
-    const { rerender } = render(<WindowToolbar />, { wrapper: I18nWrapper });
-    expect(screen.getByRole("button", { name: "Toggle sidebar" })).toBeDisabled();
+  // Inside the shell the toggle routes through toggleNav, which collapses the
+  // space panel or, in Inbox, Chat and Settings, the page's own list column.
+  it("routes the panel toggle through the shell", () => {
+    const toggleNav = vi.fn();
+    shellState.current = { toggleNav };
+    render(<WindowToolbar />, { wrapper: I18nWrapper });
 
-    // Below `md` the same toggle opens the nav sheet, which every space has.
-    sidebarState.isCompact = true;
-    rerender(<WindowToolbar />);
-    expect(screen.getByRole("button", { name: "Toggle sidebar" })).toBeEnabled();
+    const toggle = screen.getByRole("button", { name: "Toggle sidebar" });
+    expect(toggle).toBeEnabled();
+    fireEvent.click(toggle);
+    expect(toggleNav).toHaveBeenCalledOnce();
   });
 
   it("orders Back, Forward, then the sidebar toggle with no separate History button", () => {

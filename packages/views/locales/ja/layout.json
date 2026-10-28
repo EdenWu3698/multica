@@ -96,11 +96,13 @@
       "squads_and_members": "スクワッドとメンバー",
       "members_other": "メンバー {{count}} 人",
       "resources": "リソース",
-      "runtimes_offline_other": "{{count}} 件オフライン"
+      "runtimes_offline_other": "{{count}} 件オフライン",
+      "invite_member": "メンバーを招待"
     },
     "autopilots": {
       "all": "すべてのオートパイロット",
-      "list": "オートパイロット"
+      "list": "オートパイロット",
+      "templates": "テンプレートから"
     }
   },
   "account": {
