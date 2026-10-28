@@ -135,4 +135,28 @@ describe("useJumpToLatest", () => {
     flushFrame();
     expect(scroller.scrollTop).toBe(1500);
   });
+
+  it("stops following on a key pressed outside the scroller", () => {
+    const metrics = { scrollHeight: 2000, clientHeight: 500 };
+    render(<Harness metrics={metrics} />);
+    const scroller = screen.getByTestId("scroller");
+
+    fireEvent.click(screen.getByRole("button", { name: "latest" }));
+    // The button unmounts and focus falls back to <body>.
+    fireEvent.keyDown(document.body, { key: "PageUp" });
+    scroller.scrollTop = 600;
+    metrics.scrollHeight = 2600;
+    flushFrame();
+    flushFrame();
+    expect(scroller.scrollTop).toBe(600);
+  });
+
+  it("releases the document key listener when the follow ends", () => {
+    const remove = vi.spyOn(document, "removeEventListener");
+    render(<Harness metrics={{ scrollHeight: 2000, clientHeight: 500 }} />);
+
+    fireEvent.click(screen.getByRole("button", { name: "latest" }));
+    flushFrame(JUMP_FOLLOW_MS);
+    expect(remove).toHaveBeenCalledWith("keydown", expect.any(Function), true);
+  });
 });

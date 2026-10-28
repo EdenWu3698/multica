@@ -74,14 +74,21 @@ export function useJumpToLatest(scrollContainerEl: HTMLElement | null) {
       frame = requestAnimationFrame(tick);
     };
 
-    const userInputs = ["wheel", "touchstart", "pointerdown", "keydown"] as const;
+    // Pointer input lands on the scroller itself. Keys do not: clicking the
+    // button unmounts it, focus falls back to <body>, and PageUp/arrows then
+    // never pass through the scroller — so listen for keys on the document,
+    // in the capture phase, for the duration of the follow.
+    const userInputs = ["wheel", "touchstart", "pointerdown"] as const;
+    const doc = el.ownerDocument;
     const stop = () => {
       cancelled = true;
       cancelAnimationFrame(frame);
       for (const type of userInputs) el.removeEventListener(type, stop);
+      doc.removeEventListener("keydown", stop, true);
       if (cancelJumpRef.current === stop) cancelJumpRef.current = null;
     };
     for (const type of userInputs) el.addEventListener(type, stop, { passive: true });
+    doc.addEventListener("keydown", stop, { capture: true, passive: true });
     cancelJumpRef.current = stop;
 
     toBottom();
