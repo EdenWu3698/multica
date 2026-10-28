@@ -444,6 +444,11 @@ func (b *opencodeBackend) executeACP(ctx context.Context, execPath, prompt strin
 	// client's write lock), and the group is signalled at once, so an
 	// unresponsive runtime is gone within opencodeTerminateGrace instead of
 	// being waited on.
+	// promptSent flips once the whole prompt is in the pipe. Until then
+	// OpenCode has not received the turn, so there is nothing for
+	// session/cancel to stop.
+	var promptSent atomic.Bool
+
 	var stopOnce sync.Once
 	stop := func(force bool) {
 		stopOnce.Do(func() {
@@ -477,6 +482,27 @@ func (b *opencodeBackend) executeACP(ctx context.Context, execPath, prompt strin
 		// Setup paths return early; a cancelled or timed-out setup is torn
 		// down without the graceful wait.
 		defer func() { stop(runCtx.Err() != nil) }()
+
+		// Until the prompt is fully delivered there is no turn for
+		// session/cancel to stop, and every request so far is a synchronous
+		// write that checks its context only after the write returns. A
+		// runtime that stops reading (a large session/new MCP payload, a
+		// large prompt) would hold this goroutine in that write, so the
+		// deferred stop above would never run. The watcher tears the process
+		// down as soon as the run ends in that window; closing stdin is what
+		// releases the blocked write. Once the prompt is delivered, the
+		// cancel path below owns the shutdown.
+		watcherDone := make(chan struct{})
+		defer close(watcherDone)
+		go func() {
+			select {
+			case <-runCtx.Done():
+				if !promptSent.Load() {
+					stop(true)
+				}
+			case <-watcherDone:
+			}
+		}()
 
 		startTime := time.Now()
 		result := func(status, errText, sessionID string, rejected bool) {
@@ -563,10 +589,6 @@ func (b *opencodeBackend) executeACP(ctx context.Context, execPath, prompt strin
 		turnStart := time.Now()
 		type promptOutcome struct{ err error }
 		promptCh := make(chan promptOutcome, 1)
-		// promptSent flips once the whole prompt is in the pipe. Until then
-		// OpenCode has not received the turn, so there is nothing for
-		// session/cancel to stop.
-		var promptSent atomic.Bool
 		go func() {
 			_, err := c.requestAndNotifySent(context.Background(), "session/prompt", map[string]any{
 				"sessionId": sessionID,

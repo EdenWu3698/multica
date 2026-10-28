@@ -4,6 +4,7 @@ package agent
 
 import (
 	"context"
+	"encoding/json"
 	"log/slog"
 	"os"
 	"path/filepath"
@@ -30,6 +31,10 @@ while IFS= read -r line; do
   id=$(printf '%s' "$line" | sed -n 's/^{"id":\([0-9]*\).*/\1/p')
   case "$line" in
     *'"method":"initialize"'*)
+      if [ "$FAKE_MODE" = "stall-setup" ]; then
+        printf '{"jsonrpc":"2.0","id":%s,"result":{"protocolVersion":1,"agentCapabilities":{}}}\n' "$id"
+        exec sleep 60
+      fi
       printf '{"jsonrpc":"2.0","id":%s,"result":{"protocolVersion":1,"agentCapabilities":{"loadSession":true,"mcpCapabilities":{"http":true,"sse":false}}}}\n' "$id" ;;
     *'"method":"session/new"'*|*'"method":"session/load"'*)
       if [ "$FAKE_MODE" = "stall" ]; then
@@ -234,5 +239,31 @@ func TestOpencodeACPCancelIgnoredIsForced(t *testing.T) {
 		}
 	case <-time.After(opencodeACPCancelGrace + 6*time.Second):
 		t.Fatal("cancelled run whose runtime ignored session/cancel was not torn down")
+	}
+}
+
+// The same bound must hold before the prompt: a runtime that stops reading
+// after initialize leaves session/new blocked in its stdin write (a large MCP
+// payload fills the pipe), and the request checks its context only after the
+// write returns (second review of #9619).
+func TestOpencodeACPTimeoutTearsDownStalledSetupWrite(t *testing.T) {
+	t.Parallel()
+	backend, _ := newFakeOpencodeACP(t, "opencode v2.2.0", "stall-setup")
+	mcp, _ := json.Marshal(map[string]any{"mcpServers": map[string]any{"probe": map[string]any{
+		"command": "node", "args": []string{"probe.js"}, "env": map[string]string{"BIG": strings.Repeat("x", 256<<10)},
+	}}})
+	started := time.Now()
+	session, err := backend.Execute(context.Background(), "hello", ExecOptions{Cwd: t.TempDir(), McpConfig: mcp, Timeout: time.Second})
+	if err != nil {
+		t.Fatalf("execute: %v", err)
+	}
+	for range session.Messages {
+	}
+	res := <-session.Result
+	if elapsed := time.Since(started); elapsed > 4*time.Second {
+		t.Fatalf("teardown took %s; want it bounded by the timeout, not the runtime's own exit", elapsed)
+	}
+	if res.Status != "timeout" {
+		t.Fatalf("result = %+v", res)
 	}
 }
