@@ -9,6 +9,7 @@ import { AppShellProvider } from "./app-shell-context";
 import { CompactNavSheet } from "./compact-nav-sheet";
 import { DashboardGuard } from "./dashboard-guard";
 import { NavigationProgress } from "./navigation-progress";
+import { ShellRouteDataPrefetch } from "./route-data-prefetch";
 import { SpacePanel } from "./space-panel";
 import { WorkspacePresencePrefetch } from "./workspace-presence-prefetch";
 import { GlobalShortcuts } from "./global-shortcuts";
@@ -50,17 +51,19 @@ export function DashboardLayout({
     >
       <SidebarProvider className="h-svh bg-app-shell [--sidebar-wrapper-fill:var(--app-shell)]">
         <AppShellProvider>
-          <GlobalShortcuts />
-          <WorkspacePresencePrefetch />
-          <AppRail className="hidden md:flex" />
-          <CompactNavSheet />
-          <AppShellCard>
-            <NavigationProgress />
-            {children}
-            <ModalRegistry />
-            <SourceBackfillModal />
-            {extra}
-          </AppShellCard>
+          <ShellRouteDataPrefetch>
+            <GlobalShortcuts />
+            <WorkspacePresencePrefetch />
+            <AppRail className="hidden md:flex" />
+            <CompactNavSheet />
+            <AppShellCard>
+              <NavigationProgress />
+              {children}
+              <ModalRegistry />
+              <SourceBackfillModal />
+              {extra}
+            </AppShellCard>
+          </ShellRouteDataPrefetch>
         </AppShellProvider>
       </SidebarProvider>
     </DashboardGuard>

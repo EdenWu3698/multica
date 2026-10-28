@@ -17,6 +17,7 @@ import {
   CompactNavSheet,
   GlobalShortcuts,
   NavigationProgress,
+  ShellRouteDataPrefetch,
   SpacePanel,
 } from "@multica/views/layout";
 import { SearchCommand } from "@multica/views/search";
@@ -267,27 +268,29 @@ export function DesktopShell() {
             className="flex-1 bg-app-shell [--sidebar-wrapper-fill:var(--app-shell)]"
           >
             <AppShellProvider>
-              {slug && <GlobalShortcuts />}
-              {slug && <WindowToolbar />}
-              {slug && (
-                <AppRail topSlot={<RailTopSpacer />} className="hidden pt-0 md:flex" />
-              )}
-              {slug && <CompactNavSheet />}
-              {/* Right side: header + content card */}
-              <div className="flex flex-1 min-w-0 flex-col">
-                <MainTopBar railMounted={Boolean(slug)} />
-                <MainCanvas railMounted={Boolean(slug)} showWorkspaceLoading={!slug}>
-                  {/* Same indicator, same anchor as web: DashboardLayout puts
-                      it at the top of the content column, and this is
-                      desktop's equivalent relative/overflow-hidden box.
-                      Desktop used to have no navigation feedback at all — a
-                      click just froze until the destination committed
-                      (MUL-6404). */}
-                  <NavigationProgress />
-                  <TabContent />
-                  {slug && <FloatingChat />}
-                </MainCanvas>
-              </div>
+              <ShellRouteDataPrefetch>
+                {slug && <GlobalShortcuts />}
+                {slug && <WindowToolbar />}
+                {slug && (
+                  <AppRail topSlot={<RailTopSpacer />} className="hidden pt-0 md:flex" />
+                )}
+                {slug && <CompactNavSheet />}
+                {/* Right side: header + content card */}
+                <div className="flex flex-1 min-w-0 flex-col">
+                  <MainTopBar railMounted={Boolean(slug)} />
+                  <MainCanvas railMounted={Boolean(slug)} showWorkspaceLoading={!slug}>
+                    {/* Same indicator, same anchor as web: DashboardLayout puts
+                        it at the top of the content column, and this is
+                        desktop's equivalent relative/overflow-hidden box.
+                        Desktop used to have no navigation feedback at all — a
+                        click just froze until the destination committed
+                        (MUL-6404). */}
+                    <NavigationProgress />
+                    <TabContent />
+                    {slug && <FloatingChat />}
+                  </MainCanvas>
+                </div>
+              </ShellRouteDataPrefetch>
             </AppShellProvider>
           </SidebarProvider>
         </div>
