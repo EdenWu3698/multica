@@ -2,9 +2,9 @@ import type { IconNode } from "./create-icon";
 
 // Multica glyphs on the 24px grid. Corners are continuous-curvature
 // squircles and stroke ends are soft; keep new drawings to the same build.
-// `icon-body` marks the main silhouette and `icon-cut` / `icon-cut-fill` the
-// stroked / filled details inside it, so a solid state can fill the body and
-// knock the details out.
+// `icon-body` marks the main silhouette, which the active sidebar item tints
+// with a light fill; `icon-cut` / `icon-cut-fill` mark the stroked / filled
+// details inside it. Every glyph used as a nav icon needs an `icon-body`.
 
 export const AlertCircle: IconNode = [["circle",{"cx":"12","cy":"12","r":"9.25","className":"icon-body"}],["path",{"d":"M12 7.75v4.75"}],["circle",{"fill":"currentColor","stroke":"none","cx":"12","cy":"16.25","r":"1.15"}]];
 export const AlertTriangle: IconNode = [["path",{"d":"M10.27 6.04 C11.14 4.52 11.49 3.89 12 3.89 C12.51 3.89 12.86 4.52 13.73 6.04 L19.77 16.71 C20.64 18.23 20.99 18.86 20.74 19.31 C20.47 19.75 19.75 19.75 18 19.75 L6 19.75 C4.25 19.75 3.53 19.75 3.26 19.31 C3.01 18.86 3.36 18.23 4.23 16.71 Z","className":"icon-body"}],["path",{"d":"M12 9.5v4"}],["circle",{"fill":"currentColor","stroke":"none","cx":"12","cy":"16.6","r":"1.15"}]];
