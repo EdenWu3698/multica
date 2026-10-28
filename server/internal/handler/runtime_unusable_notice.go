@@ -2,6 +2,7 @@ package handler
 
 import (
 	"context"
+	"log/slog"
 
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/service"
@@ -22,5 +23,5 @@ import (
 // whether or not this note lands, so a failure here is logged, never returned.
 func (h *Handler) noteRuntimeUnusable(ctx context.Context, issue db.Issue, agent db.Agent, verdict service.AgentVerdict) {
 	content := service.RuntimeUnusableNotice(agent.Name, verdict)
-	h.noteTriggerFailure(ctx, issue, content, pgtype.UUID{})
+	h.noteTriggerFailure(ctx, issue, content, pgtype.UUID{}, slog.String("agent_id", uuidToString(agent.ID)))
 }

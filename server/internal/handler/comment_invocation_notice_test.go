@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/multica-ai/multica/server/internal/events"
@@ -117,8 +118,12 @@ func TestCommentInvocationDeniedNoticeForAgentEditsKeepsHistory(t *testing.T) {
 	}
 	var firstNoticeID, firstNotice string
 	dbfx.QueryRow(t, `SELECT id, content FROM comment WHERE parent_id = $1 AND author_type = 'system'`, posted.ID).Scan(&firstNoticeID, &firstNotice)
-	if !strings.Contains(firstNotice, fmt.Sprintf("revision %d", posted.Revision)) {
-		t.Fatalf("notice omitted the original submission revision: %s", firstNotice)
+	submittedAt, err := time.Parse(time.RFC3339Nano, posted.UpdatedAt)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(firstNotice, submittedAt.UTC().Format("Jan 2, 2006 at 15:04:05 MST")) || strings.Contains(firstNotice, "revision") {
+		t.Fatalf("notice should identify the submission time without internal version details: %s", firstNotice)
 	}
 	edit := func(text string) CommentResponse {
 		var updated CommentResponse
@@ -133,7 +138,11 @@ func TestCommentInvocationDeniedNoticeForAgentEditsKeepsHistory(t *testing.T) {
 	if len(notices) != 3 || notices[1].ID != firstNoticeID || notices[1].Content != firstNotice {
 		t.Fatalf("edits changed the old receipt or created an extra receipt: %+v", notices)
 	}
-	if !strings.Contains(notices[2].Content, fmt.Sprintf("revision %d", updated.Revision)) || notices[2].Content == firstNotice {
+	editedAt, err := time.Parse(time.RFC3339Nano, updated.UpdatedAt)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if notices[2].ID == firstNoticeID || !strings.Contains(notices[2].Content, editedAt.UTC().Format("Jan 2, 2006 at 15:04:05 MST")) || strings.Contains(notices[2].Content, "revision") {
 		t.Fatalf("edited-back submission did not get its own historical receipt: %+v", notices[2])
 	}
 	var tasks int

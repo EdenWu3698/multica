@@ -35,7 +35,7 @@ func (h *Handler) noteCommentInvocationDenied(ctx context.Context, issue db.Issu
 		}
 	}
 	var content strings.Builder
-	fmt.Fprintf(&content, "These mentions in the parent comment did not start when it was submitted at %s (revision %d):\n", timestampToString(comment.UpdatedAt), comment.Revision)
+	fmt.Fprintf(&content, "These mentions did not start when the parent comment was submitted on %s:\n", comment.UpdatedAt.Time.UTC().Format("Jan 2, 2006 at 15:04:05 MST"))
 	for _, outcome := range denied {
 		label := labels[outcome.TargetType+":"+outcome.TargetID]
 		if label == "" {
@@ -48,7 +48,7 @@ func (h *Handler) noteCommentInvocationDenied(ctx context.Context, issue db.Issu
 
 // noteTriggerFailure extends the existing runtime refusal comments. Notices
 // are best-effort and bypass the comment-trigger pipeline to avoid new runs.
-func (h *Handler) noteTriggerFailure(ctx context.Context, issue db.Issue, content string, parentID pgtype.UUID) {
+func (h *Handler) noteTriggerFailure(ctx context.Context, issue db.Issue, content string, parentID pgtype.UUID, logAttrs ...slog.Attr) {
 	params := db.CreateCommentParams{
 		ID: dbid.NewV7(), IssueID: issue.ID, WorkspaceID: issue.WorkspaceID,
 		AuthorType: "system", AuthorID: pgtype.UUID{Valid: true},
@@ -57,7 +57,8 @@ func (h *Handler) noteTriggerFailure(ctx context.Context, issue db.Issue, conten
 	created, err := h.createTriggerFailureComment(ctx, params)
 	if err != nil {
 		if !errors.Is(err, pgx.ErrNoRows) {
-			slog.Warn("trigger failure notice: create system comment failed", "error", err, "issue_id", uuidToString(issue.ID))
+			logAttrs = append(logAttrs, slog.Any("error", err), slog.String("issue_id", uuidToString(issue.ID)))
+			slog.LogAttrs(ctx, slog.LevelWarn, "trigger failure notice: create system comment failed", logAttrs...)
 		}
 		return
 	}
