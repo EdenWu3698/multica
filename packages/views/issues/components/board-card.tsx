@@ -210,7 +210,7 @@ export const BoardCardContent = memo(function BoardCardContent({
       </div>
 
       {/* Row 2: Title */}
-      <p className="mt-1 text-body font-medium leading-snug line-clamp-2">
+      <p className="mt-1 text-body font-medium leading-snug cjk:leading-normal line-clamp-2">
         {issue.title}
       </p>
 

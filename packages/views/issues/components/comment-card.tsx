@@ -712,7 +712,7 @@ function CommentRow({
         <Tooltip>
           <TooltipTrigger
             render={
-              <span className="text-caption text-muted-foreground cursor-default">
+              <span className="text-label text-muted-foreground cursor-default">
                 {timeAgo(entry.created_at)}
               </span>
             }
@@ -1230,7 +1230,7 @@ function CommentCardImpl({
                   <Tooltip>
                     <TooltipTrigger
                       render={
-                        <span className="shrink-0 text-caption text-muted-foreground cursor-default">
+                        <span className="shrink-0 text-label text-muted-foreground cursor-default">
                           {timeAgo(entry.created_at)}
                         </span>
                       }
@@ -1249,12 +1249,12 @@ function CommentCardImpl({
               )}
 
               {!open && contentPreview && (
-                <span className="min-w-0 flex-1 truncate text-caption text-muted-foreground">
+                <span className="min-w-0 flex-1 truncate text-label text-muted-foreground">
                   {contentPreview}
                 </span>
               )}
               {!open && replyCount > 0 && (
-                <span className="shrink-0 text-caption text-muted-foreground">
+                <span className="shrink-0 text-label text-muted-foreground">
                   {t(($) => $.comment.reply_count, { count: replyCount })}
                 </span>
               )}
