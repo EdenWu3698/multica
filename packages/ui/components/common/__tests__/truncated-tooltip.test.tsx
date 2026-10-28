@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { isContentTruncated, TruncatedTooltip } from "../truncated-tooltip";
 import { TooltipProvider } from "../../ui/tooltip";
 
@@ -13,13 +13,17 @@ function renderWithTooltips(ui: ReactNode) {
   return render(<TooltipProvider delay={0}>{ui}</TooltipProvider>);
 }
 
+// Hover and let the open delay elapse.
 async function hover(element: HTMLElement) {
-  await act(async () => {
+  vi.useFakeTimers();
+  try {
     fireEvent.pointerEnter(element, { pointerType: "mouse" });
-    fireEvent.mouseEnter(element);
-    fireEvent.pointerMove(element, { pointerType: "mouse" });
-    fireEvent.mouseMove(element);
-  });
+    await act(async () => {
+      vi.advanceTimersByTime(250);
+    });
+  } finally {
+    vi.useRealTimers();
+  }
 }
 
 // jsdom has no layout, so give an element the box sizes a browser would.
@@ -65,6 +69,12 @@ describe("TruncatedTooltip", () => {
 
     await hover(screen.getByRole("button"));
     expect(tooltipPopup()).toBeNull();
+  });
+
+  it("does not mount tooltip machinery before the first hover", () => {
+    renderWithTooltips(<Row label="A very long project name" />);
+    expect(screen.getByRole("button")).not.toHaveAttribute("data-popup-open");
+    expect(document.querySelector("[data-slot='tooltip-content']")).toBeNull();
   });
 
   it("renders the child alone without content", () => {

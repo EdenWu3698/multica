@@ -35,12 +35,16 @@ export function DeferredTooltip({
   trigger,
   content,
   side,
+  shouldOpen,
 }: {
   /** The visible trigger element (e.g. an icon button). Cloned with hover
    *  handlers and an anchor ref; its own props are preserved. */
   trigger: ReactElement<Record<string, unknown>>;
   content: ReactNode;
   side?: "top" | "bottom" | "left" | "right";
+  /** Checked against the trigger element when the open delay elapses; the
+   *  tooltip stays closed when it returns false. */
+  shouldOpen?: (el: HTMLElement) => boolean;
 }) {
   const anchorRef = useRef<HTMLElement | null>(null);
   const [warm, setWarm] = useState(false);
@@ -75,6 +79,7 @@ export function DeferredTooltip({
           (el?.getAttribute("aria-expanded") === "true" &&
             (el.getAttribute("aria-haspopup") ?? "false") !== "false");
         if (popupOpen) return;
+        if (shouldOpen && (!el || !shouldOpen(el))) return;
         setOpen(true);
       }, TOOLTIP_OPEN_DELAY);
     },
