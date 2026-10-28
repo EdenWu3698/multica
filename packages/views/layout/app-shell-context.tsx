@@ -32,11 +32,16 @@ interface AppShellContextValue {
   /** The sidebar toggle: the space panel and list columns together, or the compact sheet. */
   toggleNav: () => void;
   /**
+   * The current space's nav (its panel or list column) is off screen, so the
+   * rail previews spaces on hover. Always false in the compact layout.
+   */
+  navCollapsed: boolean;
+  /**
    * Where a rail item leads: the last page visited in that space of this
    * workspace, or `home` for the current space and spaces not yet visited.
    */
   spaceHref: (space: AppSpaceId, home: string) => string;
-  /** Space previewed over the content while the panel is collapsed. */
+  /** Space previewed over the content while the nav is collapsed. */
   peekSpace: AppSpaceId | null;
   requestPeek: (space: AppSpaceId) => void;
   holdPeek: () => void;
@@ -97,10 +102,10 @@ export function AppShellProvider({ children }: { children: React.ReactNode }) {
   }, [clearTimers]);
 
   // Following a link out of the preview lands on its page; the preview has
-  // done its job.
+  // done its job. Inbox and Chat select rows through the query string alone.
   useEffect(() => {
     closePeek();
-  }, [pathname, closePeek]);
+  }, [pathname, search, closePeek]);
   useEffect(() => clearTimers, [clearTimers]);
 
   useEffect(() => {
@@ -132,6 +137,7 @@ export function AppShellProvider({ children }: { children: React.ReactNode }) {
     setSidebarOpen(!collapse);
     setListCollapsed(collapse);
   }, [isCompact, listCollapsed, setSidebarOpen, sidebarOpen, toggleSidebar, usesListColumn]);
+  const navCollapsed = !isCompact && (usesListColumn ? listCollapsed : !sidebarOpen);
 
   const value = useMemo<AppShellContextValue>(
     () => ({
@@ -140,6 +146,7 @@ export function AppShellProvider({ children }: { children: React.ReactNode }) {
       listCollapsed,
       setListCollapsed,
       toggleNav,
+      navCollapsed,
       spaceHref,
       peekSpace,
       requestPeek,
@@ -152,6 +159,7 @@ export function AppShellProvider({ children }: { children: React.ReactNode }) {
       hasPanel,
       listCollapsed,
       toggleNav,
+      navCollapsed,
       spaceHref,
       peekSpace,
       requestPeek,

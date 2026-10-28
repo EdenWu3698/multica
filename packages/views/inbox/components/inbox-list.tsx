@@ -59,6 +59,7 @@ export function InboxList({
   onOpenArchived,
   emptyLabel,
   emptyAction,
+  scrollRestoration = true,
 }: {
   items: InboxItem[];
   view: InboxView;
@@ -71,6 +72,11 @@ export function InboxList({
   onOpenArchived: () => void;
   emptyLabel?: string;
   emptyAction?: ReactNode;
+  /**
+   * Off for a preview rendered over another route, which must neither read
+   * nor be captured as that route's `list` scroll offset.
+   */
+  scrollRestoration?: boolean;
 }) {
   const { t } = useT("inbox");
   // Virtuoso's `customScrollParent` wants the actual HTMLElement, not a ref.
@@ -81,14 +87,15 @@ export function InboxList({
   // ref-attach (the seed's estimate spacer gives the container a truthful
   // height on the first commit, so the assignment sticks pre-paint) and feed
   // the same offset into the Virtuoso as its initial position.
-  const restoredScrollTop = useRestoredScrollOffset("list");
+  const savedScrollTop = useRestoredScrollOffset("list");
   const restoreScrollRef = useRestoredScrollRef("list");
+  const restoredScrollTop = scrollRestoration ? savedScrollTop : undefined;
   const attachScrollEl = useCallback(
     (el: HTMLDivElement | null) => {
       setScrollEl(el);
-      restoreScrollRef(el);
+      if (scrollRestoration) restoreScrollRef(el);
     },
-    [restoreScrollRef],
+    [restoreScrollRef, scrollRestoration],
   );
   const virtuosoRef = useRef<VirtuosoHandle>(null);
   const isArchivedView = view === "archived";
@@ -236,7 +243,7 @@ export function InboxList({
   return (
     <div
       ref={attachScrollEl}
-      data-tab-scroll-root="list"
+      data-tab-scroll-root={scrollRestoration ? "list" : undefined}
       // Programmatically focusable only: the rows already carry their own tab
       // stops, so a tabbable container would just add a redundant one.
       tabIndex={-1}

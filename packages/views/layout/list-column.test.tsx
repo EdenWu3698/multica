@@ -1,4 +1,4 @@
-import { fireEvent } from "@testing-library/react";
+import { act, fireEvent } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { SidebarProvider } from "@multica/ui/components/ui/sidebar";
 import { renderWithI18n } from "../test/i18n";
@@ -46,5 +46,31 @@ describe("ListColumn", () => {
     expect(column).toHaveAttribute("inert");
     expect(column).toHaveClass("w-0", "transition-[width]");
     expect(column).toHaveTextContent("list");
+  });
+
+  it("floats over the page while its rail item is hovered, then tucks back", () => {
+    vi.useFakeTimers();
+    try {
+      const { container } = renderWithI18n(
+        <SidebarProvider>
+          <AppShellProvider>
+            <Reader />
+            <ListColumn collapsed>list</ListColumn>
+          </AppShellProvider>
+        </SidebarProvider>,
+      );
+      const column = container.querySelector("[data-slot='list-column']");
+      act(() => shell!.requestPeek("inbox"));
+      act(() => vi.advanceTimersByTime(200));
+      expect(column).not.toHaveAttribute("inert");
+      expect(column).toHaveClass("w-0");
+      expect(container.querySelector("[data-slot='list-column-peek']")).toHaveTextContent("list");
+
+      act(() => shell!.closePeek());
+      expect(column).toHaveAttribute("inert");
+      expect(container.querySelector("[data-slot='list-column-peek']")).toBeNull();
+    } finally {
+      vi.useRealTimers();
+    }
   });
 });

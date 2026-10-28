@@ -11,12 +11,12 @@ import {
   RAIL_SPACES,
   useCurrentWorkspace,
   useWorkspacePaths,
+  type AppSpaceId,
   type RailSpaceId,
 } from "@multica/core/paths";
 import { useShortcut } from "@multica/core/shortcuts";
 import { TooltipHint } from "@multica/ui/components/common/tooltip-hint";
 import { CappedNumberFlow } from "@multica/ui/components/ui/number-flow";
-import { useSidebar } from "@multica/ui/components/ui/sidebar";
 import { cn } from "@multica/ui/lib/utils";
 import { ShortcutKeycaps } from "../common/shortcut-keycaps";
 import { useAppForeground } from "../common/use-app-foreground";
@@ -24,7 +24,7 @@ import { useT } from "../i18n";
 import { AppLink, useNavigation } from "../navigation";
 import { useSearchStore } from "../search/search-store";
 import { AccountMenu } from "./account-menu";
-import { PANEL_SPACES, useAppShell } from "./app-shell-context";
+import { useAppShell } from "./app-shell-context";
 import { HelpLauncher } from "./help-launcher";
 import { isPathWithin } from "./panel-nav";
 import { useFailingAutopilots } from "./panels/autopilots-panel";
@@ -108,6 +108,21 @@ function RailBadgeMark({ badge }: { badge: RailBadge }) {
   );
 }
 
+/** Hover previews of a collapsed nav. Mouse only: a touch tap navigates. */
+function usePeekHandlers(space: AppSpaceId, peekable: boolean) {
+  const shell = useAppShell();
+  return {
+    onPointerEnter: (e: React.PointerEvent) => {
+      if (!shell || e.pointerType !== "mouse") return;
+      if (peekable && shell.navCollapsed) shell.requestPeek(space);
+      else if (shell.peekSpace) shell.releasePeek();
+    },
+    onPointerLeave: (e: React.PointerEvent) => {
+      if (shell && e.pointerType === "mouse") shell.releasePeek();
+    },
+  };
+}
+
 function RailSpaceLink({
   space,
   href,
@@ -125,9 +140,7 @@ function RailSpaceLink({
   active: boolean;
   badge?: RailBadge;
 }) {
-  const shell = useAppShell();
-  const { state } = useSidebar();
-  const peekable = state === "collapsed" && PANEL_SPACES.has(space);
+  const peekHandlers = usePeekHandlers(space, true);
   return (
     <li>
       <TooltipHint label={label === fullLabel ? null : fullLabel} side="right">
@@ -136,14 +149,7 @@ function RailSpaceLink({
           data-space={space}
           newTabTitle={fullLabel}
           aria-current={active ? "page" : undefined}
-          onPointerEnter={(e) => {
-            if (!shell || e.pointerType !== "mouse") return;
-            if (peekable) shell.requestPeek(space);
-            else if (shell.peekSpace) shell.releasePeek();
-          }}
-          onPointerLeave={(e) => {
-            if (shell && e.pointerType === "mouse") shell.releasePeek();
-          }}
+          {...peekHandlers}
           className="group relative flex h-[52px] w-[52px] flex-col items-center justify-center gap-1 rounded-[10px] text-muted-foreground transition-colors outline-none hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground focus-visible:outline-2 focus-visible:outline-ring aria-[current=page]:bg-sidebar-accent aria-[current=page]:font-medium aria-[current=page]:text-sidebar-accent-foreground"
         >
           <Icon className="size-5" />
@@ -187,6 +193,7 @@ export function AppRail({ topSlot, className }: { topSlot?: React.ReactNode; cla
   const shell = useAppShell();
   const badges = useRailBadges();
   const space = shell?.space ?? null;
+  const settingsPeek = usePeekHandlers("settings", space === "settings");
 
   const items: Record<RailSpaceId, { href: string; icon: LucideIcon; label: string; fullLabel: string }> = {
     inbox: {
@@ -254,6 +261,9 @@ export function AppRail({ topSlot, className }: { topSlot?: React.ReactNode; cla
             href={shell?.spaceHref("settings", p.settings()) ?? p.settings()}
             aria-label={t(($) => $.nav.settings)}
             aria-current={space === "settings" ? "page" : undefined}
+            // Settings has no standalone preview; it only floats its own
+            // list column while open.
+            {...settingsPeek}
             className={RAIL_ICON_BUTTON_CLASS}
           >
             <Settings />

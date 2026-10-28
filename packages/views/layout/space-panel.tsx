@@ -7,6 +7,8 @@ import { useSidebar } from "@multica/ui/components/ui/sidebar";
 import { useAppShell } from "./app-shell-context";
 import { PanelResizeHandle } from "./panel-resize-handle";
 import { AutopilotsPanel } from "./panels/autopilots-panel";
+import { ChatPeek, InboxPeek } from "./panels/list-space-peeks";
+import { NAV_PEEK_CLASS } from "./rail-styles";
 import { TeamPanel } from "./panels/team-panel";
 import { WorkPanel } from "./panels/work-panel";
 
@@ -14,6 +16,14 @@ const PANELS: Partial<Record<AppSpaceId, () => React.ReactNode>> = {
   work: WorkPanel,
   team: TeamPanel,
   autopilots: AutopilotsPanel,
+};
+
+// Inbox and Chat keep their lists in their pages, so from another space they
+// preview through a standalone copy of the list.
+const PEEKS: Partial<Record<AppSpaceId, () => React.ReactNode>> = {
+  ...PANELS,
+  inbox: InboxPeek,
+  chat: ChatPeek,
 };
 
 /** The current space's panel content, or null for spaces without one. */
@@ -35,8 +45,10 @@ export function SpacePanel() {
   const panelRef = useRef<HTMLElement>(null);
   if (!shell || isCompact) return null;
 
-  const { space, hasPanel, peekSpace } = shell;
-  const peeking = !open && peekSpace !== null;
+  const { space, hasPanel, peekSpace, navCollapsed } = shell;
+  // The current space's own list column floats itself (`ListColumn`).
+  const Peek =
+    navCollapsed && peekSpace && (hasPanel || peekSpace !== space) ? PEEKS[peekSpace] : undefined;
 
   return (
     <>
@@ -59,14 +71,14 @@ export function SpacePanel() {
           {open && <PanelResizeHandle panelRef={panelRef} onToggle={shell.toggleNav} />}
         </aside>
       )}
-      {peeking && PANELS[peekSpace] && (
+      {Peek && (
         <aside
           data-slot="space-panel-peek"
           onPointerEnter={shell.holdPeek}
           onPointerLeave={shell.releasePeek}
-          className="absolute inset-y-0 left-0 z-30 hidden w-(--sidebar-width) flex-col overflow-hidden rounded-xl bg-page-canvas shadow-[var(--floating-shadow)] ring-1 ring-surface-border md:flex"
+          className={cn(NAV_PEEK_CLASS, "max-md:hidden")}
         >
-          <SpacePanelContent space={peekSpace} />
+          <Peek />
         </aside>
       )}
     </>

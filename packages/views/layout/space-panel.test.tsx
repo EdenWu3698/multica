@@ -15,6 +15,10 @@ vi.mock("./panels/team-panel", () => ({ TeamPanel: () => <div data-testid="team-
 vi.mock("./panels/autopilots-panel", () => ({
   AutopilotsPanel: () => <div data-testid="autopilots-panel" />,
 }));
+vi.mock("./panels/list-space-peeks", () => ({
+  InboxPeek: () => <div data-testid="inbox-peek" />,
+  ChatPeek: () => <div data-testid="chat-peek" />,
+}));
 
 let shell: ReturnType<typeof useAppShell> = null;
 let sidebar: ReturnType<typeof useSidebar> | null = null;
@@ -98,5 +102,30 @@ describe("SpacePanel", () => {
     } finally {
       vi.useRealTimers();
     }
+  });
+
+  it("previews Inbox and Chat from another space, not over their own page", () => {
+    vi.useFakeTimers();
+    try {
+      renderPanel();
+      act(() => shell!.toggleNav());
+      act(() => shell!.requestPeek("inbox"));
+      act(() => vi.advanceTimersByTime(200));
+      expect(screen.getByTestId("inbox-peek")).toBeInTheDocument();
+      act(() => shell!.requestPeek("chat"));
+      expect(screen.getByTestId("chat-peek")).toBeInTheDocument();
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  // There the page's own list column floats instead (ListColumn).
+  it("leaves the current list space's preview to its list column", () => {
+    navigation.pathname = "/acme/inbox";
+    renderPanel();
+    act(() => shell!.toggleNav());
+    act(() => shell!.requestPeek("inbox"));
+    act(() => shell!.requestPeek("inbox"));
+    expect(peek()).toBeNull();
   });
 });

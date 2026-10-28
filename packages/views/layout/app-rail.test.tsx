@@ -225,7 +225,7 @@ describe("AppRail panel peek", () => {
     fireEvent.pointerEnter(link(href)!, { pointerType: "mouse" });
   }
 
-  it("asks the shell to preview a panel space only while the panel is collapsed", () => {
+  it("asks the shell to preview any space only while the nav is collapsed", () => {
     vi.useFakeTimers();
     let peek: string | null = null;
     renderRail(<PeekReader onPeek={(next) => (peek = next)} />);
@@ -243,12 +243,9 @@ describe("AppRail panel peek", () => {
     });
     expect(peek).toBe("team");
 
-    // Inbox renders its own list column, so it has nothing to preview.
+    // Inbox and Chat keep their lists in their pages but still preview.
     hover("/acme/inbox");
-    act(() => {
-      vi.advanceTimersByTime(500);
-    });
-    expect(peek).toBeNull();
+    expect(peek).toBe("inbox");
   });
 });
 
