@@ -88,7 +88,8 @@ import {
 } from "@multica/ui/components/ui/dropdown-menu";
 import { useIsCompact } from "@multica/ui/hooks/use-mobile";
 import { cn } from "@multica/ui/lib/utils";
-import { PAGE_GUTTER, PageHeader } from "../../layout/page-header";
+import { CollapsedNavTrigger, PAGE_GUTTER, PageHeader } from "../../layout/page-header";
+import { PanelHeader } from "../../layout/panel-nav";
 import { useListColumnCollapsed } from "../../layout/app-shell-context";
 import { ListColumn } from "../../layout/list-column";
 import { useTimeAgo } from "./inbox-list-item";
@@ -576,10 +577,12 @@ export function InboxPage() {
   // -- Shared sub-components --------------------------------------------------
 
   const listHeader = (
-    <PageHeader>
-      <div className="flex flex-1 items-center gap-2">
-        <h1 className="text-body font-semibold">{t(($) => $.page.title)}</h1>
-        {unreadCount > 0 && (
+    <PanelHeader
+      as="h1"
+      title={t(($) => $.page.title)}
+      leading={<CollapsedNavTrigger />}
+      meta={
+        unreadCount > 0 && (
           <NumberFlow
             value={unreadCount}
             animated={false}
@@ -587,8 +590,9 @@ export function InboxPage() {
             aria-label={String(unreadCount)}
             className="text-caption text-muted-foreground"
           />
-        )}
-      </div>
+        )
+      }
+    >
       <InboxFilterMenu
         wsId={wsId}
         items={viewItems}
@@ -633,11 +637,11 @@ export function InboxPage() {
         </DropdownMenuContent>
       </DropdownMenu>
       )}
-    </PageHeader>
+    </PanelHeader>
   );
 
   // Back out of the archive. Sits inside the list panel rather than replacing
-  // the PageHeader: the user is still in the Inbox, so the page title stays put
+  // the list header: the user is still in the Inbox, so the page title stays put
   // and this reads as a sub-view — the same shape chat's archived view uses.
   const archivedBackRow = (
     <button
@@ -917,7 +921,7 @@ export function InboxPage() {
     if (viewLoading) {
       return (
         <div className="flex flex-1 flex-col min-h-0">
-          <div className={cn("flex h-12 shrink-0 items-center border-b", PAGE_GUTTER)}>
+          <div className="flex h-12 shrink-0 items-center pl-5 pr-2">
             <Skeleton className="h-5 w-16" />
           </div>
           <div className="flex-1 min-h-0 overflow-y-auto space-y-1 p-2">
@@ -972,7 +976,7 @@ export function InboxPage() {
     return (
       <div className="flex min-h-0 flex-1">
         <ListColumn collapsed={listCollapsed}>
-          <div className={cn("flex h-12 shrink-0 items-center border-b", PAGE_GUTTER)}>
+          <div className="flex h-12 shrink-0 items-center pl-5 pr-2">
             <Skeleton className="h-5 w-16" />
           </div>
           <div className="flex-1 min-h-0 overflow-y-auto space-y-1 p-2">

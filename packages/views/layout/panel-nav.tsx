@@ -16,17 +16,34 @@ export function isPathWithin(pathname: string, href: string): boolean {
   return pathname === href || pathname.startsWith(href + "/");
 }
 
+/**
+ * The title band of every left column — the space panels and the list columns
+ * of Inbox, Chat and Settings — so the space name reads the same in all of
+ * them. Pages that own the column (Inbox, Chat, Settings) render it as their h1.
+ */
 export function PanelHeader({
   title,
+  as: Heading = "h2",
+  leading,
+  meta,
   children,
 }: {
   title: string;
+  as?: "h1" | "h2";
+  /** Before the title: the nav trigger on pages that also render below `md`. */
+  leading?: React.ReactNode;
+  /** Beside the title, e.g. a count. */
+  meta?: React.ReactNode;
   /** Trailing actions (icon buttons). */
   children?: React.ReactNode;
 }) {
   return (
     <div className="flex h-12 shrink-0 items-center gap-1 pl-5 pr-2">
-      <h2 className="min-w-0 flex-1 truncate text-title-sm font-semibold">{title}</h2>
+      {leading}
+      <div className="flex min-w-0 flex-1 items-center gap-2">
+        <Heading className="truncate text-title-sm font-semibold">{title}</Heading>
+        {meta}
+      </div>
       {children}
     </div>
   );

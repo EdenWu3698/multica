@@ -63,6 +63,7 @@ import { HighlightText } from "../../search/highlight-text";
 import { useSettingsSearchIndex } from "./use-settings-search-index";
 import { WakeupsTab } from "./wakeups-tab";
 import { CollapsedNavTrigger } from "../../layout/page-header";
+import { PanelHeader } from "../../layout/panel-nav";
 import { useListColumnCollapsed } from "../../layout/app-shell-context";
 import { ListColumn } from "../../layout/list-column";
 import { useT } from "../../i18n";
@@ -433,12 +434,7 @@ export function SettingsPage({ extraDeviceTabs = [] }: SettingsPageProps = {}) {
         className="max-md:h-auto max-md:w-full"
         innerClassName="border-surface-border max-md:h-auto max-md:w-full max-md:border-r-0 max-md:border-b"
       >
-        <div className="flex h-16 shrink-0 items-center gap-1 px-4 md:px-5">
-          <CollapsedNavTrigger />
-          <h1 className="text-title font-semibold tracking-tight">
-            {t(($) => $.page.title)}
-          </h1>
-        </div>
+        <PanelHeader as="h1" title={t(($) => $.page.title)} leading={<CollapsedNavTrigger />} />
         <div className="px-4 pb-4 md:hidden">
           <label className="sr-only" htmlFor="settings-navigation">
             {t(($) => $.page.navigate)}

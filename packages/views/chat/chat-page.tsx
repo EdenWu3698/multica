@@ -15,6 +15,7 @@ import { useQuickActionsFailureToast } from "./components/use-quick-actions-fail
 import { useQuery } from "@tanstack/react-query";
 import type { Agent, ChatSession } from "@multica/core/types";
 import { CollapsedNavTrigger, PageHeader } from "../layout/page-header";
+import { PanelHeader } from "../layout/panel-nav";
 import { useListColumnCollapsed } from "../layout/app-shell-context";
 import { ListColumn } from "../layout/list-column";
 import { useNavigation } from "../navigation";
@@ -223,10 +224,9 @@ export function ChatPage() {
   );
 
   const listHeader = (
-    <PageHeader>
-      <h1 className="flex-1 text-body font-semibold">{t(($) => $.page.title)}</h1>
+    <PanelHeader as="h1" title={t(($) => $.page.title)} leading={<CollapsedNavTrigger />}>
       {newChatButton}
-    </PageHeader>
+    </PanelHeader>
   );
 
   const listBody = (
