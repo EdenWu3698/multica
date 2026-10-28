@@ -10,10 +10,12 @@ import { useCallback, useEffect, useRef, useState } from "react";
  * `jump` drives scrollTop to the bottom directly instead of asking Virtuoso
  * for the last index: with `customScrollParent`, writing scrollTop is what
  * makes Virtuoso materialize the tail rows, and those rows then grow as their
- * real heights (markdown, code, images) land. The rAF loop chases the moving
- * bottom until it holds for two frames, the same stabilization the scroll
- * restore and deep-link landing use.
+ * real heights (markdown, code, images) land. The rAF loop keeps re-pinning
+ * the bottom for `JUMP_FOLLOW_MS`, or until the reader scrolls themselves.
  */
+/** How long a jump keeps re-pinning the bottom while late content lands. */
+export const JUMP_FOLLOW_MS = 2000;
+
 export function useJumpToLatest(scrollContainerEl: HTMLElement | null) {
   const [visible, setVisible] = useState(false);
   const cancelJumpRef = useRef<(() => void) | null>(null);
@@ -52,42 +54,38 @@ export function useJumpToLatest(scrollContainerEl: HTMLElement | null) {
     if (!el) return;
     cancelJumpRef.current?.();
 
-    let cancelled = false;
-    let attempts = 0;
-    let stableFrames = 0;
+    // Follow the bottom for a fixed window rather than until it looks stable:
+    // a tail image or code block can resolve after the list has already held
+    // still for several frames, and quitting early lands the reader short of
+    // the newest entry (MUL-8324 review). The reader taking over ends it.
+    const deadline = performance.now() + JUMP_FOLLOW_MS;
     let frame = 0;
+    let cancelled = false;
     const toBottom = () => {
       el.scrollTop = el.scrollHeight - el.clientHeight;
     };
     const tick = () => {
-      if (cancelled || !el.isConnected) return;
-      attempts += 1;
-      if (distanceFromBottom(el) <= 1) {
-        stableFrames += 1;
-      } else {
-        stableFrames = 0;
-        toBottom();
-      }
-      if (stableFrames >= 2 || attempts >= 30) {
-        cancelJumpRef.current?.();
+      if (cancelled) return;
+      if (!el.isConnected || performance.now() >= deadline) {
+        stop();
         return;
       }
+      if (distanceFromBottom(el) > 1) toBottom();
       frame = requestAnimationFrame(tick);
     };
 
-    // The reader taking the wheel mid-chase wins over the loop.
-    const stop = () => cancelJumpRef.current?.();
-    const userInputs = ["wheel", "touchstart", "keydown"] as const;
-    for (const type of userInputs) el.addEventListener(type, stop, { passive: true });
-
-    toBottom();
-    frame = requestAnimationFrame(tick);
-    cancelJumpRef.current = () => {
+    const userInputs = ["wheel", "touchstart", "pointerdown", "keydown"] as const;
+    const stop = () => {
       cancelled = true;
       cancelAnimationFrame(frame);
       for (const type of userInputs) el.removeEventListener(type, stop);
-      cancelJumpRef.current = null;
+      if (cancelJumpRef.current === stop) cancelJumpRef.current = null;
     };
+    for (const type of userInputs) el.addEventListener(type, stop, { passive: true });
+    cancelJumpRef.current = stop;
+
+    toBottom();
+    frame = requestAnimationFrame(tick);
   }, [scrollContainerEl]);
 
   return { visible, jump };

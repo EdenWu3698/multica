@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { act, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { useJumpToLatest } from "./use-jump-to-latest";
+import { JUMP_FOLLOW_MS, useJumpToLatest } from "./use-jump-to-latest";
 
 let rafCallbacks: FrameRequestCallback[] = [];
+let now = 0;
 
-function flushFrame() {
+function flushFrame(advanceMs = 16) {
+  now += advanceMs;
   act(() => {
     const callbacks = rafCallbacks;
     rafCallbacks = [];
@@ -49,6 +51,8 @@ function Harness({ metrics }: { metrics: { scrollHeight: number; clientHeight: n
 
 beforeEach(() => {
   rafCallbacks = [];
+  now = 0;
+  vi.spyOn(performance, "now").mockImplementation(() => now);
   vi.stubGlobal("requestAnimationFrame", (cb: FrameRequestCallback) => {
     rafCallbacks.push(cb);
     return rafCallbacks.length;
@@ -58,6 +62,7 @@ beforeEach(() => {
 
 afterEach(() => {
   vi.unstubAllGlobals();
+  vi.restoreAllMocks();
 });
 
 describe("useJumpToLatest", () => {
@@ -102,5 +107,32 @@ describe("useJumpToLatest", () => {
     flushFrame();
     flushFrame();
     expect(scroller.scrollTop).toBe(300);
+  });
+
+  it("keeps following when content grows after the bottom held still", () => {
+    const metrics = { scrollHeight: 2000, clientHeight: 500 };
+    render(<Harness metrics={metrics} />);
+    const scroller = screen.getByTestId("scroller");
+
+    fireEvent.click(screen.getByRole("button", { name: "latest" }));
+    // Bottom holds for several frames, then a late tail image lands.
+    for (let i = 0; i < 5; i++) flushFrame();
+    expect(scroller.scrollTop).toBe(1500);
+    metrics.scrollHeight = 3800;
+    flushFrame(250);
+    expect(scroller.scrollTop).toBe(3300);
+  });
+
+  it("stops following once the follow window ends", () => {
+    const metrics = { scrollHeight: 2000, clientHeight: 500 };
+    render(<Harness metrics={metrics} />);
+    const scroller = screen.getByTestId("scroller");
+
+    fireEvent.click(screen.getByRole("button", { name: "latest" }));
+    flushFrame(JUMP_FOLLOW_MS);
+    metrics.scrollHeight = 2600;
+    flushFrame();
+    flushFrame();
+    expect(scroller.scrollTop).toBe(1500);
   });
 });
