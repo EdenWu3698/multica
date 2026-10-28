@@ -64,6 +64,7 @@ import { useSettingsSearchIndex } from "./use-settings-search-index";
 import { WakeupsTab } from "./wakeups-tab";
 import { CollapsedNavTrigger } from "../../layout/page-header";
 import { useListColumnCollapsed } from "../../layout/app-shell-context";
+import { ListColumn } from "../../layout/list-column";
 import { useT } from "../../i18n";
 
 export interface ExtraSettingsTab {
@@ -426,9 +427,10 @@ export function SettingsPage({ extraDeviceTabs = [] }: SettingsPageProps = {}) {
 
   return (
     <div className="flex min-h-0 flex-1 flex-col overflow-hidden bg-background md:flex-row">
-      <aside
+      <ListColumn
         className={cn(
-          "shrink-0 border-b border-surface-border md:flex md:w-60 md:flex-col md:border-b-0 md:border-r",
+          // Below md the navigation stacks above the content as a select.
+          "block h-auto w-full border-r-0 border-b border-surface-border md:flex md:h-full md:w-(--sidebar-width) md:border-b-0 md:border-r",
           listCollapsed && "md:hidden",
         )}
       >
@@ -564,7 +566,7 @@ export function SettingsPage({ extraDeviceTabs = [] }: SettingsPageProps = {}) {
             </div>
           )}
         </nav>
-      </aside>
+      </ListColumn>
       <div
         ref={contentRef}
         key={`${active.value}:${location.integration ?? ""}`}

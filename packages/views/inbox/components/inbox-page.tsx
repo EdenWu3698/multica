@@ -8,7 +8,6 @@ import {
   useMemo,
   useRef,
 } from "react";
-import { useDefaultLayout } from "react-resizable-panels";
 import { useInfiniteQuery, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useWorkspaceId } from "@multica/core/hooks";
 import { ApiError, errorCode } from "@multica/core/api";
@@ -78,11 +77,6 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@multica/ui/components/ui/tooltip";
-import {
-  ResizablePanelGroup,
-  ResizablePanel,
-  ResizableHandle,
-} from "@multica/ui/components/ui/resizable";
 import { Skeleton } from "@multica/ui/components/ui/skeleton";
 import { NumberFlow } from "@multica/ui/components/ui/number-flow";
 import {
@@ -96,6 +90,7 @@ import { useIsCompact } from "@multica/ui/hooks/use-mobile";
 import { cn } from "@multica/ui/lib/utils";
 import { PAGE_GUTTER, PageHeader } from "../../layout/page-header";
 import { useListColumnCollapsed } from "../../layout/app-shell-context";
+import { ListColumn } from "../../layout/list-column";
 import { useTimeAgo } from "./inbox-list-item";
 import { InboxList } from "./inbox-list";
 import { InboxFilterMenu } from "./inbox-filter-menu";
@@ -112,9 +107,6 @@ import { AutopilotQuotaNotice } from "./autopilot-quota-notice";
 import { useT } from "../../i18n";
 import { useIssueLimitUpgradePrompt } from "../../modals/use-issue-limit-upgrade-prompt";
 
-const INBOX_LIST_DEFAULT_SIZE = 260;
-const INBOX_LIST_MIN_SIZE = 240;
-const INBOX_LIST_MAX_SIZE = 400;
 
 export function InboxPage() {
   const queryClient = useQueryClient();
@@ -325,10 +317,6 @@ export function InboxPage() {
     wsPaths,
     setSelectedKey,
   ]);
-
-  const { defaultLayout, onLayoutChanged } = useDefaultLayout({
-    id: "multica_inbox_layout",
-  });
 
   const isCompact = useIsCompact();
   const listCollapsed = useListColumnCollapsed();
@@ -978,21 +966,13 @@ export function InboxPage() {
     return <div className="flex flex-1 flex-col min-h-0">{listPanel}</div>;
   }
 
-  // -- Desktop layout: resizable two-panel -----------------------------------
+  // -- Desktop layout: list column + detail ----------------------------------
 
   if (viewLoading) {
     return (
-      <ResizablePanelGroup orientation="horizontal" className="flex-1 min-h-0" defaultLayout={defaultLayout} onLayoutChanged={onLayoutChanged}>
+      <div className="flex min-h-0 flex-1">
         {!listCollapsed && (
-        <>
-        <ResizablePanel
-          id="list"
-          defaultSize={INBOX_LIST_DEFAULT_SIZE}
-          minSize={INBOX_LIST_MIN_SIZE}
-          maxSize={INBOX_LIST_MAX_SIZE}
-          groupResizeBehavior="preserve-pixel-size"
-        >
-          <div className="flex flex-col border-r h-full">
+          <ListColumn>
             <div className={cn("flex h-12 shrink-0 items-center border-b", PAGE_GUTTER)}>
               <Skeleton className="h-5 w-16" />
             </div>
@@ -1007,41 +987,20 @@ export function InboxPage() {
                 </div>
               ))}
             </div>
-          </div>
-        </ResizablePanel>
-        <ResizableHandle />
-        </>
+          </ListColumn>
         )}
-        <ResizablePanel id="detail" minSize="40%">
-          <div className="p-6">
-            <Skeleton className="h-6 w-48" />
-            <Skeleton className="mt-4 h-4 w-32" />
-          </div>
-        </ResizablePanel>
-      </ResizablePanelGroup>
+        <div className="min-w-0 flex-1 p-6">
+          <Skeleton className="h-6 w-48" />
+          <Skeleton className="mt-4 h-4 w-32" />
+        </div>
+      </div>
     );
   }
 
   return (
-    <ResizablePanelGroup orientation="horizontal" className="flex-1 min-h-0" defaultLayout={defaultLayout} onLayoutChanged={onLayoutChanged}>
-      {!listCollapsed && (
-      <>
-      <ResizablePanel
-        id="list"
-        defaultSize={INBOX_LIST_DEFAULT_SIZE}
-        minSize={INBOX_LIST_MIN_SIZE}
-        maxSize={INBOX_LIST_MAX_SIZE}
-        groupResizeBehavior="preserve-pixel-size"
-      >
-      <div className="flex flex-col border-r h-full">
-        {listPanel}
-      </div>
-      </ResizablePanel>
-      <ResizableHandle />
-      </>
-      )}
-      <ResizablePanel id="detail" minSize="40%">
-      <div className="flex flex-col min-h-0 h-full">
+    <div className="flex min-h-0 flex-1">
+      {!listCollapsed && <ListColumn>{listPanel}</ListColumn>}
+      <div className="flex h-full min-h-0 min-w-0 flex-1 flex-col">
         {detailContent ?? (
           <>
           {listCollapsed && (
@@ -1060,7 +1019,6 @@ export function InboxPage() {
           </>
         )}
       </div>
-      </ResizablePanel>
-    </ResizablePanelGroup>
+    </div>
   );
 }

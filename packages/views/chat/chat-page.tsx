@@ -1,15 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useDefaultLayout } from "react-resizable-panels";
 import { ArrowLeft, MessageSquare } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@multica/ui/components/ui/button";
-import {
-  ResizablePanelGroup,
-  ResizablePanel,
-  ResizableHandle,
-} from "@multica/ui/components/ui/resizable";
 import { useIsCompact } from "@multica/ui/hooks/use-mobile";
 import { useRequiredWorkspaceSlug, useWorkspacePaths } from "@multica/core/paths";
 import { getCurrentSlug } from "@multica/core/platform";
@@ -22,6 +16,7 @@ import { useQuery } from "@tanstack/react-query";
 import type { Agent, ChatSession } from "@multica/core/types";
 import { CollapsedNavTrigger, PageHeader } from "../layout/page-header";
 import { useListColumnCollapsed } from "../layout/app-shell-context";
+import { ListColumn } from "../layout/list-column";
 import { useNavigation } from "../navigation";
 import { useT } from "../i18n";
 import { ChatMessageList, ChatMessageSkeleton } from "./components/chat-message-list";
@@ -129,9 +124,6 @@ export function ChatPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps -- reconcile store/route changes, not URL updates
   }, [isCurrentChatRoute, workspaceSlug, c.activeSessionId]);
 
-  const { defaultLayout, onLayoutChanged } = useDefaultLayout({
-    id: "multica_chat_layout",
-  });
   const listCollapsed = useListColumnCollapsed();
 
   // `?agent=` intent bookkeeping. The ref holds the param value already
@@ -393,48 +385,30 @@ export function ChatPage() {
     );
   }
 
-  // -- Desktop: resizable two-panel. The conversation pane appears only once
+  // -- Desktop: list column + conversation. The conversation pane appears only once
   // there is a chat target — an open thread or a new chat whose agent was just
   // picked via ⊕. With nothing selected there is no agent, so we show a neutral
   // prompt instead of an orphaned compose box. -------------------------------
   const hasTarget = !!c.activeSessionId || composingNew;
   return (
-    <ResizablePanelGroup
-      orientation="horizontal"
-      className="flex-1 min-h-0"
-      defaultLayout={defaultLayout}
-      onLayoutChanged={onLayoutChanged}
-    >
+    <div className="flex min-h-0 flex-1">
       {!listCollapsed && (
-      <>
-      <ResizablePanel
-        id="list"
-        defaultSize={260}
-        minSize={240}
-        maxSize={480}
-        groupResizeBehavior="preserve-pixel-size"
-      >
-        <div className="flex flex-col border-r h-full">
+        <ListColumn>
           {listHeader}
           <div className="flex-1 min-h-0 overflow-y-auto">{listBody}</div>
-        </div>
-      </ResizablePanel>
-      <ResizableHandle />
-      </>
+        </ListColumn>
       )}
-      <ResizablePanel id="detail" minSize="40%">
-        <div className="flex flex-col min-h-0 h-full">
-          {listCollapsed && !c.currentSession && <PageHeader>{newChatButton}</PageHeader>}
-          {hasTarget ? (
-            conversation
-          ) : (
-            <div className="flex min-h-0 flex-1 flex-col items-center justify-center gap-3 text-muted-foreground">
-              <MessageSquare className="h-10 w-10 text-faint-foreground" />
-              <p className="text-body">{t(($) => $.page.select_prompt)}</p>
-            </div>
-          )}
-        </div>
-      </ResizablePanel>
-    </ResizablePanelGroup>
+      <div className="flex h-full min-h-0 min-w-0 flex-1 flex-col">
+        {listCollapsed && !c.currentSession && <PageHeader>{newChatButton}</PageHeader>}
+        {hasTarget ? (
+          conversation
+        ) : (
+          <div className="flex min-h-0 flex-1 flex-col items-center justify-center gap-3 text-muted-foreground">
+            <MessageSquare className="h-10 w-10 text-faint-foreground" />
+            <p className="text-body">{t(($) => $.page.select_prompt)}</p>
+          </div>
+        )}
+      </div>
+    </div>
   );
 }

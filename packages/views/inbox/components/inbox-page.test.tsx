@@ -10,9 +10,6 @@ vi.mock("sonner", () => ({
   toast: { success: vi.fn(), error: vi.fn() },
 }));
 
-vi.mock("react-resizable-panels", () => ({
-  useDefaultLayout: () => ({ defaultLayout: undefined, onLayoutChanged: vi.fn() }),
-}));
 
 // The page runs two queries — the active list and the archived one. They are
 // told apart by the queryKey their options carry, so each test can stock the
@@ -156,34 +153,6 @@ const layout = { width: PHONE };
 vi.mock("@multica/ui/hooks/use-mobile", () => ({
   useIsMobile: () => layout.width < 768,
   useIsCompact: () => layout.width < 768,
-}));
-vi.mock("@multica/ui/components/ui/resizable", () => ({
-  ResizablePanelGroup: ({ children }: { children: React.ReactNode }) => (
-    <div>{children}</div>
-  ),
-  ResizablePanel: ({
-    children,
-    id,
-    defaultSize,
-    minSize,
-    maxSize,
-  }: {
-    children: React.ReactNode;
-    id: string;
-    defaultSize?: number;
-    minSize?: number | string;
-    maxSize?: number | string;
-  }) => (
-    <div
-      data-testid={`panel-${id}`}
-      data-default-size={defaultSize}
-      data-min-size={minSize}
-      data-max-size={maxSize}
-    >
-      {children}
-    </div>
-  ),
-  ResizableHandle: () => null,
 }));
 vi.mock("./inbox-list", () => ({
   InboxList: ({
@@ -353,16 +322,17 @@ describe("InboxPage", () => {
     expect(screen.queryByTestId("row")).toBeNull();
   });
 
-  it("keeps the list subordinate to the detail pane on desktop", () => {
+  // The list takes the space panel's width, so its divider lines up with the
+  // panel's when switching spaces.
+  it("sizes the desktop list with the shared panel width", () => {
     reset();
     layout.width = DESKTOP;
 
-    render(<InboxPage />);
+    const { container } = render(<InboxPage />);
 
-    const listPanel = screen.getByTestId("panel-list");
-    expect(listPanel).toHaveAttribute("data-default-size", "260");
-    expect(listPanel).toHaveAttribute("data-min-size", "240");
-    expect(listPanel).toHaveAttribute("data-max-size", "400");
+    expect(container.querySelector("[data-slot='list-column']")).toHaveClass(
+      "w-(--sidebar-width)",
+    );
   });
 
   it("keeps the title unread count static", () => {
