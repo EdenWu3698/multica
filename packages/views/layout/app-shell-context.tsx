@@ -23,13 +23,13 @@ interface AppShellContextValue {
   /** The current space has a shell panel (collapsible with the sidebar toggle). */
   hasPanel: boolean;
   /**
-   * Inbox, Chat and Settings keep their own list column, which the sidebar
-   * toggle collapses instead of the shell panel. Independent of the panel's
-   * open state so the md–xl auto-collapse never hides a list the page needs.
+   * Inbox, Chat and Settings keep their own list column, which collapses with
+   * the space panel. Tracked apart from the panel's open state so the md–xl
+   * auto-collapse never hides a list the page needs.
    */
   listCollapsed: boolean;
   setListCollapsed: (collapsed: boolean) => void;
-  /** The sidebar toggle: the space panel, the list column, or the compact sheet. */
+  /** The sidebar toggle: the space panel and list columns together, or the compact sheet. */
   toggleNav: () => void;
   /**
    * Where a rail item leads: the last page visited in that space of this
@@ -117,11 +117,21 @@ export function AppShellProvider({ children }: { children: React.ReactNode }) {
   );
 
   const toggleSidebar = sidebar?.toggleSidebar;
+  const setSidebarOpen = sidebar?.setOpen;
+  const sidebarOpen = sidebar?.open ?? true;
   const isCompact = sidebar?.isCompact ?? false;
+  const usesListColumn = space !== null && !hasPanel;
+  // One toggle for the whole nav: whatever the current space shows decides
+  // the direction, and the panel and every list column follow it together.
   const toggleNav = useCallback(() => {
-    if (isCompact || hasPanel || space === null) toggleSidebar?.();
-    else setListCollapsed((collapsed) => !collapsed);
-  }, [hasPanel, isCompact, space, toggleSidebar]);
+    if (isCompact || !setSidebarOpen) {
+      toggleSidebar?.();
+      return;
+    }
+    const collapse = usesListColumn ? !listCollapsed : sidebarOpen;
+    setSidebarOpen(!collapse);
+    setListCollapsed(collapse);
+  }, [isCompact, listCollapsed, setSidebarOpen, sidebarOpen, toggleSidebar, usesListColumn]);
 
   const value = useMemo<AppShellContextValue>(
     () => ({

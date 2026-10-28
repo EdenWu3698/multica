@@ -1,4 +1,4 @@
-import { act, cleanup, render } from "@testing-library/react";
+import { act, render } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { SidebarProvider, useSidebar } from "@multica/ui/components/ui/sidebar";
 import {
@@ -24,9 +24,12 @@ function Reader() {
 
 let sidebarState: string | null = null;
 let listColumnCollapsed = false;
+let setSidebarOpen: ((open: boolean) => void) | null = null;
 function NavReader() {
   shell = useAppShell();
-  sidebarState = useSidebar().state;
+  const sidebar = useSidebar();
+  sidebarState = sidebar.state;
+  setSidebarOpen = sidebar.setOpen;
   listColumnCollapsed = useListColumnCollapsed();
   return null;
 }
@@ -127,20 +130,39 @@ describe("AppShellProvider", () => {
     expect(shell!.peekSpace).toBeNull();
   });
 
-  it("toggles the panel in panel spaces and the list column elsewhere", () => {
-    renderNavShell();
+  it("collapses the panel and the list columns as one sidebar across spaces", () => {
+    const { rerender } = renderNavShell();
+    const visit = (pathname: string) => {
+      navigation.pathname = pathname;
+      rerender(
+        <SidebarProvider>
+          <AppShellProvider>
+            <NavReader />
+          </AppShellProvider>
+        </SidebarProvider>,
+      );
+    };
+
     act(() => shell!.toggleNav());
     expect(sidebarState).toBe("collapsed");
-    expect(listColumnCollapsed).toBe(false);
-    act(() => shell!.toggleNav());
-    expect(sidebarState).toBe("expanded");
-    cleanup();
+    visit("/acme/inbox");
+    expect(listColumnCollapsed).toBe(true);
 
+    act(() => shell!.toggleNav());
+    expect(listColumnCollapsed).toBe(false);
+    visit("/acme/issues");
+    expect(sidebarState).toBe("expanded");
+  });
+
+  it("collapses a list column the md–xl auto-collapse left open", () => {
     navigation.pathname = "/acme/inbox";
     renderNavShell();
+    act(() => setSidebarOpen!(false));
+    expect(listColumnCollapsed).toBe(false);
+
     act(() => shell!.toggleNav());
-    expect(sidebarState).toBe("expanded");
     expect(listColumnCollapsed).toBe(true);
+    expect(sidebarState).toBe("collapsed");
   });
 
   it("sends each rail space back to the last page visited in it", () => {

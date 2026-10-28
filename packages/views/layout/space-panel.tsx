@@ -31,7 +31,7 @@ export function SpacePanelContent({ space }: { space: AppSpaceId | null }) {
  */
 export function SpacePanel() {
   const shell = useAppShell();
-  const { open, isCompact, toggleSidebar } = useSidebar();
+  const { open, isCompact } = useSidebar();
   const panelRef = useRef<HTMLElement>(null);
   if (!shell || isCompact) return null;
 
@@ -56,7 +56,7 @@ export function SpacePanel() {
           <div className="flex h-full w-(--sidebar-width) flex-col overflow-hidden border-r">
             <SpacePanelContent space={space} />
           </div>
-          {open && <PanelResizeHandle panelRef={panelRef} onToggle={toggleSidebar} />}
+          {open && <PanelResizeHandle panelRef={panelRef} onToggle={shell.toggleNav} />}
         </aside>
       )}
       {peeking && PANELS[peekSpace] && (
