@@ -32,6 +32,10 @@ while IFS= read -r line; do
     *'"method":"initialize"'*)
       printf '{"jsonrpc":"2.0","id":%s,"result":{"protocolVersion":1,"agentCapabilities":{"loadSession":true,"mcpCapabilities":{"http":true,"sse":false}}}}\n' "$id" ;;
     *'"method":"session/new"'*|*'"method":"session/load"'*)
+      if [ "$FAKE_MODE" = "stall" ]; then
+        printf '{"jsonrpc":"2.0","id":%s,"result":{"sessionId":"ses_fake"}}\n' "$id"
+        exec sleep 60
+      fi
       printf '{"jsonrpc":"2.0","id":%s,"result":{"sessionId":"ses_fake","configOptions":[{"id":"model","category":"model","type":"select","currentValue":"opencode/default","options":[{"value":"opencode/default"},{"value":"opencode/picked"}]}]}}\n' "$id" ;;
     *'"method":"session/set_config_option"'*'"configId":"model"'*)
       printf '{"jsonrpc":"2.0","id":%s,"result":{"configOptions":[{"id":"model","category":"model","currentValue":"opencode/picked","options":[{"value":"opencode/picked"}]},{"id":"effort","category":"thought_level","currentValue":"default","options":[{"value":"high"},{"value":"default"}]}]}}\n' "$id" ;;
@@ -43,6 +47,7 @@ while IFS= read -r line; do
       printf '%s\n' '{"jsonrpc":"2.0","method":"session/update","params":{"sessionId":"ses_fake","update":{"sessionUpdate":"tool_call_update","toolCallId":"call-1","status":"in_progress","kind":"execute","title":"sleep 1","rawInput":{"command":"sleep 1","cwd":"/w"}}}}'
       printf '%s\n' '{"jsonrpc":"2.0","method":"session/update","params":{"sessionId":"ses_fake","update":{"sessionUpdate":"tool_call_update","toolCallId":"call-1","status":"in_progress","kind":"execute","title":"sleep 1","rawInput":{"command":"sleep 1","cwd":"/w"}}}}'
       if [ "$FAKE_MODE" = "cancel" ]; then continue; fi
+      if [ "$FAKE_MODE" = "ignore-cancel" ]; then exec sleep 60; fi
       printf '%s\n' '{"jsonrpc":"2.0","method":"session/update","params":{"sessionId":"ses_fake","update":{"sessionUpdate":"agent_message_chunk","content":{"type":"text","text":"CHILD-TEXT"},"_meta":{"opencode/child-session":{"id":"ses_child","parentID":"ses_fake"}}}}}'
       printf '%s\n' '{"jsonrpc":"2.0","method":"session/update","params":{"sessionId":"ses_fake","update":{"sessionUpdate":"tool_call_update","toolCallId":"call-1","status":"completed","content":[{"type":"content","content":{"type":"text","text":"slept"}}],"rawOutput":{"metadata":{"exit":0}}}}}'
       printf '%s\n' '{"jsonrpc":"2.0","method":"session/update","params":{"sessionId":"ses_fake","update":{"sessionUpdate":"agent_message_chunk","content":{"type":"text","text":"parent answer"}}}}'
@@ -177,5 +182,57 @@ func TestOpencodeACPCancelSendsSessionCancel(t *testing.T) {
 	raw, _ := os.ReadFile(logPath)
 	if !strings.Contains(string(raw), `"method":"session/cancel"`) {
 		t.Fatalf("session/cancel was not sent:\n%s", raw)
+	}
+}
+
+// A runtime that stops reading stdin mid-prompt must not outlive the run's
+// timeout: the blocked prompt write holds the client's write lock, so the
+// teardown cannot wait on a session/cancel write (review of #9619).
+func TestOpencodeACPTimeoutTearsDownStalledPromptWrite(t *testing.T) {
+	t.Parallel()
+	backend, _ := newFakeOpencodeACP(t, "1.19.4", "stall")
+	started := time.Now()
+	session, err := backend.Execute(context.Background(), strings.Repeat("x", 1<<20), ExecOptions{Cwd: t.TempDir(), Timeout: time.Second})
+	if err != nil {
+		t.Fatalf("execute: %v", err)
+	}
+	for range session.Messages {
+	}
+	res := <-session.Result
+	if elapsed := time.Since(started); elapsed > 4*time.Second {
+		t.Fatalf("teardown took %s; want it bounded by the timeout, not the runtime's own exit", elapsed)
+	}
+	if res.Status != "timeout" {
+		t.Fatalf("result = %+v", res)
+	}
+}
+
+// A runtime that received the prompt but ignores session/cancel is forced
+// down after opencodeACPCancelGrace.
+func TestOpencodeACPCancelIgnoredIsForced(t *testing.T) {
+	t.Parallel()
+	backend, _ := newFakeOpencodeACP(t, "opencode v2.2.0", "ignore-cancel")
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	session, err := backend.Execute(ctx, "do it", ExecOptions{Cwd: t.TempDir(), Timeout: 30 * time.Second})
+	if err != nil {
+		t.Fatalf("execute: %v", err)
+	}
+	var cancelledAt time.Time
+	go func() {
+		for m := range session.Messages {
+			if m.Type == MessageToolUse && cancelledAt.IsZero() {
+				cancelledAt = time.Now()
+				cancel()
+			}
+		}
+	}()
+	select {
+	case res := <-session.Result:
+		if res.Status != "aborted" {
+			t.Fatalf("result = %+v", res)
+		}
+	case <-time.After(opencodeACPCancelGrace + 6*time.Second):
+		t.Fatal("cancelled run whose runtime ignored session/cancel was not torn down")
 	}
 }

@@ -437,13 +437,25 @@ func (b *opencodeBackend) executeACP(ctx context.Context, execPath, prompt strin
 		c.closeAllPending(errors.New("opencode process exited"))
 	}()
 
+	// stop tears the process down exactly once. A graceful stop closes stdin
+	// and lets OpenCode exit on EOF before signalling. A forced stop is for a
+	// run that was cancelled or timed out without OpenCode answering: closing
+	// stdin first releases a prompt write blocked on a full pipe (it holds the
+	// client's write lock), and the group is signalled at once, so an
+	// unresponsive runtime is gone within opencodeTerminateGrace instead of
+	// being waited on.
 	var stopOnce sync.Once
-	stop := func() {
+	stop := func(force bool) {
 		stopOnce.Do(func() {
 			_ = stdin.Close()
-			select {
-			case <-readerDone:
-			case <-time.After(opencodeACPExitGrace):
+			if !force {
+				select {
+				case <-readerDone:
+				case <-time.After(opencodeACPExitGrace):
+					force = true
+				}
+			}
+			if force {
 				signalProcessGroup(cmd, syscall.SIGTERM)
 				select {
 				case <-readerDone:
@@ -462,7 +474,9 @@ func (b *opencodeBackend) executeACP(ctx context.Context, execPath, prompt strin
 		defer close(msgCh)
 		defer close(resCh)
 		defer cancel()
-		defer stop()
+		// Setup paths return early; a cancelled or timed-out setup is torn
+		// down without the graceful wait.
+		defer func() { stop(runCtx.Err() != nil) }()
 
 		startTime := time.Now()
 		result := func(status, errText, sessionID string, rejected bool) {
@@ -549,11 +563,15 @@ func (b *opencodeBackend) executeACP(ctx context.Context, execPath, prompt strin
 		turnStart := time.Now()
 		type promptOutcome struct{ err error }
 		promptCh := make(chan promptOutcome, 1)
+		// promptSent flips once the whole prompt is in the pipe. Until then
+		// OpenCode has not received the turn, so there is nothing for
+		// session/cancel to stop.
+		var promptSent atomic.Bool
 		go func() {
-			_, err := c.request(context.Background(), "session/prompt", map[string]any{
+			_, err := c.requestAndNotifySent(context.Background(), "session/prompt", map[string]any{
 				"sessionId": sessionID,
 				"prompt":    []map[string]any{{"type": "text", "text": prompt}},
-			})
+			}, func() { promptSent.Store(true) })
 			promptCh <- promptOutcome{err: err}
 		}()
 
@@ -565,11 +583,18 @@ func (b *opencodeBackend) executeACP(ctx context.Context, execPath, prompt strin
 		case out := <-promptCh:
 			promptErr, answered = out.err, true
 		case <-runCtx.Done():
-			// Ask OpenCode to stop the turn. It aborts the running tool and
-			// answers the prompt; the teardown below follows either way.
-			if err := opencodeACPNotify(c, "session/cancel", map[string]any{"sessionId": sessionID}); err != nil {
-				b.cfg.Logger.Warn("opencode: session/cancel could not be sent", "error", err)
+			if !promptSent.Load() {
+				b.cfg.Logger.Warn("opencode: run ended before the prompt was delivered; stopping the process")
+				break
 			}
+			// Ask OpenCode to stop the turn; it aborts the running tool and
+			// answers the prompt. The write runs on its own goroutine so a
+			// stalled pipe cannot hold the teardown, and the grace starts now.
+			go func() {
+				if err := opencodeACPNotify(c, "session/cancel", map[string]any{"sessionId": sessionID}); err != nil {
+					b.cfg.Logger.Warn("opencode: session/cancel could not be sent", "error", err)
+				}
+			}()
 			select {
 			case out := <-promptCh:
 				promptErr, answered = out.err, true
@@ -612,7 +637,9 @@ func (b *opencodeBackend) executeACP(ctx context.Context, execPath, prompt strin
 			waitForACPNotificationQuiescence(runCtx, activity, readerDone, acpNotificationQuietTime, opencodeACPDrainGrace)
 		}
 		streaming.Store(false)
-		stop()
+		// A turn OpenCode never answered is forced down; an answered one,
+		// including an acknowledged cancel, exits gracefully.
+		stop(!answered)
 		providerErr.Finalize()
 
 		outputMu.Lock()
