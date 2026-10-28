@@ -35,6 +35,7 @@ import {
   DesktopNavigationProvider,
   routeContentLinkPath,
 } from "@/platform/navigation";
+import { useRenderedRouteStore } from "@/stores/rendered-route-store";
 import { TabBar } from "./tab-bar";
 import { TabContent } from "./tab-content";
 import { WindowOverlay } from "./window-overlay";
@@ -237,6 +238,7 @@ export function DesktopShell() {
     currentSlug && workspaces.some((w) => w.slug === currentSlug)
       ? currentSlug
       : null;
+  const renderedPathname = useRenderedRouteStore((s) => s.pathname);
 
   return (
     <DesktopNavigationProvider>
@@ -267,7 +269,7 @@ export function DesktopShell() {
             hasExternalTrigger
             className="flex-1 bg-app-shell [--sidebar-wrapper-fill:var(--app-shell)]"
           >
-            <AppShellProvider>
+            <AppShellProvider renderedPathname={renderedPathname}>
               <ShellRouteDataPrefetch>
                 {slug && <GlobalShortcuts />}
                 {slug && <WindowToolbar />}

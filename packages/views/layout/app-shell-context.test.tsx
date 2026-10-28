@@ -188,4 +188,27 @@ describe("AppShellProvider", () => {
     visit("/beta/inbox");
     expect(shell!.spaceHref("work", "/beta/issues")).toBe("/beta/issues");
   });
+
+  it("lays out the page on screen while navigation runs ahead of it", () => {
+    const shellAt = (renderedPathname: string) => (
+      <AppShellProvider renderedPathname={renderedPathname}>
+        <Reader />
+      </AppShellProvider>
+    );
+    const { rerender } = render(shellAt("/acme/issues"));
+
+    // Leaving Work for Inbox: the issues page is still mounted, so it keeps
+    // its panel until the inbox page commits.
+    navigation.pathname = "/acme/inbox";
+    rerender(shellAt("/acme/issues"));
+    expect(shell!.space).toBe("work");
+    expect(shell!.hasPanel).toBe(true);
+    // Space memory follows the navigation, not the lagging page.
+    expect(shell!.spaceHref("inbox", "/acme/inbox")).toBe("/acme/inbox");
+
+    rerender(shellAt("/acme/inbox"));
+    expect(shell!.space).toBe("inbox");
+    expect(shell!.hasPanel).toBe(false);
+    expect(shell!.spaceHref("work", "/acme/issues")).toBe("/acme/issues");
+  });
 });

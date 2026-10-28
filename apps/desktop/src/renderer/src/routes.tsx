@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { createMemoryRouter, Outlet, useMatches } from "react-router-dom";
+import { useEffect, useLayoutEffect } from "react";
+import { createMemoryRouter, Outlet, useLocation, useMatches } from "react-router-dom";
 import type { RouteObject } from "react-router-dom";
 import { IssueDetailPage } from "./pages/issue-detail-page";
 import { ProjectDetailPage } from "./pages/project-detail-page";
@@ -37,6 +37,7 @@ import { DaemonSettingsTab } from "./components/daemon-settings-tab";
 import { UpdatesSettingsTab } from "./components/updates-settings-tab";
 import { WorkspaceRouteLayout } from "./components/workspace-route-layout";
 import { DesktopRouteErrorPage } from "./components/route-error-page";
+import { useRenderedRouteStore } from "./stores/rendered-route-store";
 
 /**
  * Wraps `SettingsPage` so the desktop-only extra tabs can pull their labels
@@ -85,11 +86,25 @@ function TitleSync() {
   return null;
 }
 
+/**
+ * Publishes the committed pathname. A layout effect, so the shell's update
+ * lands in the same frame as the page it describes.
+ */
+function RenderedPathnameSync() {
+  const { pathname } = useLocation();
+  const setPathname = useRenderedRouteStore((s) => s.setPathname);
+  useLayoutEffect(() => {
+    setPathname(pathname);
+  }, [pathname, setPathname]);
+  return null;
+}
+
 /** Wrapper that renders route children + TitleSync */
 function PageShell() {
   return (
     <>
       <TitleSync />
+      <RenderedPathnameSync />
       <Outlet />
     </>
   );

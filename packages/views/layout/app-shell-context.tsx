@@ -51,10 +51,23 @@ interface AppShellContextValue {
 
 const AppShellContext = createContext<AppShellContextValue | null>(null);
 
-export function AppShellProvider({ children }: { children: React.ReactNode }) {
+export function AppShellProvider({
+  renderedPathname,
+  children,
+}: {
+  /**
+   * The pathname of the page on screen, where it can trail the navigation's
+   * (desktop renders the next page in a transition). The panel and list
+   * columns follow it so they never frame the outgoing page in the incoming
+   * space's layout.
+   */
+  renderedPathname?: string | null;
+  children: React.ReactNode;
+}) {
   const { pathname, searchParams } = useNavigation();
   const sidebar = useSidebarSafe();
-  const space = spaceForPath(pathname);
+  const navSpace = spaceForPath(pathname);
+  const space = renderedPathname ? spaceForPath(renderedPathname) : navSpace;
   const workspaceSlug = pathname.split("/").filter(Boolean)[0] ?? "";
   const search = searchParams?.toString() ?? "";
   // Keyed by `${workspaceSlug}/${space}`. The fragment is left out so a
@@ -103,22 +116,23 @@ export function AppShellProvider({ children }: { children: React.ReactNode }) {
 
   // Following a link out of the preview lands on its page; the preview has
   // done its job. Inbox and Chat select rows through the query string alone.
+  const shownPathname = renderedPathname || pathname;
   useEffect(() => {
     closePeek();
-  }, [pathname, search, closePeek]);
+  }, [shownPathname, search, closePeek]);
   useEffect(() => clearTimers, [clearTimers]);
 
   useEffect(() => {
-    if (!space || !workspaceSlug) return;
-    const key = `${workspaceSlug}/${space}`;
+    if (!navSpace || !workspaceSlug) return;
+    const key = `${workspaceSlug}/${navSpace}`;
     const url = search ? `${pathname}?${search}` : pathname;
     setSpaceUrls((urls) => (urls[key] === url ? urls : { ...urls, [key]: url }));
-  }, [pathname, search, space, workspaceSlug]);
+  }, [pathname, search, navSpace, workspaceSlug]);
 
   const spaceHref = useCallback(
     (target: AppSpaceId, home: string) =>
-      target === space ? home : (spaceUrls[`${workspaceSlug}/${target}`] ?? home),
-    [space, spaceUrls, workspaceSlug],
+      target === navSpace ? home : (spaceUrls[`${workspaceSlug}/${target}`] ?? home),
+    [navSpace, spaceUrls, workspaceSlug],
   );
 
   const toggleSidebar = sidebar?.toggleSidebar;
