@@ -3,9 +3,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 /**
  * Drives the issue timeline's "Jump to latest" affordance (MUL-8324).
  *
- * `visible` turns on once the bottom of the scroll container — where the
- * newest timeline entry sits — is more than one viewport away, so the button
- * only shows when reaching the latest activity would take real scrolling.
+ * `visible` is on while the reader is in the first half of the page and the
+ * newest entry is more than one screen away; see `shouldShow`.
  *
  * `jump` drives scrollTop to the bottom directly instead of asking Virtuoso
  * for the last index: with `customScrollParent`, writing scrollTop is what
@@ -28,7 +27,7 @@ export function useJumpToLatest(scrollContainerEl: HTMLElement | null) {
     let frame = 0;
     const measure = () => {
       frame = 0;
-      setVisible(distanceFromBottom(scrollContainerEl) > scrollContainerEl.clientHeight);
+      setVisible(shouldShow(scrollContainerEl));
     };
     const schedule = () => {
       if (frame === 0) frame = requestAnimationFrame(measure);
@@ -97,6 +96,20 @@ export function useJumpToLatest(scrollContainerEl: HTMLElement | null) {
 
   return { visible, jump };
 }
+
+/**
+ * Show only while the reader is in the first half of the page: what is left
+ * below the viewport must be more than half of the page, and more than one
+ * screen. Past the midpoint the latest entry is close enough to scroll to by
+ * hand, and short pages never show the button at all.
+ */
+function shouldShow(el: HTMLElement) {
+  const remaining = distanceFromBottom(el);
+  return remaining > el.clientHeight && remaining > el.scrollHeight * SHOW_REMAINING_RATIO;
+}
+
+/** Share of the page that must still be below the viewport for the button to show. */
+const SHOW_REMAINING_RATIO = 0.5;
 
 function distanceFromBottom(el: HTMLElement) {
   return el.scrollHeight - el.scrollTop - el.clientHeight;
