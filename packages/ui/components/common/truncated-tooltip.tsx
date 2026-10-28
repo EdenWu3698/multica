@@ -37,7 +37,7 @@ export function isContentTruncated(el: HTMLElement | null): boolean {
  * cut off. Built on `DeferredTooltip` (shared tooltip styling and open delay):
  * nothing but the trigger mounts until the first hover, so it is cheap enough
  * for dense lists, table cells, and column headers. When the open delay
- * elapses it measures the trigger and its descendants and stays closed when
+ * elapses, or the trigger takes keyboard focus, it measures the trigger and its descendants and stays closed when
  * nothing overflows. Measuring at open time keeps it correct across resizes
  * and content changes without observers.
  *
@@ -64,6 +64,10 @@ function TruncatedTooltip({
       content={content}
       side={side}
       shouldOpen={isContentTruncated}
+      openOnFocus
+      // The full text is often one long token (hash, URL, path); let it wrap
+      // inside the max-width bubble instead of spilling out of it.
+      contentClassName="[overflow-wrap:anywhere]"
     />
   );
 }

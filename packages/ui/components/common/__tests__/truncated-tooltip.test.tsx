@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { isContentTruncated, TruncatedTooltip } from "../truncated-tooltip";
 import { TooltipProvider } from "../../ui/tooltip";
@@ -69,6 +69,54 @@ describe("TruncatedTooltip", () => {
 
     await hover(screen.getByRole("button"));
     expect(tooltipPopup()).toBeNull();
+  });
+
+  it("opens on keyboard focus when truncated and closes on blur", async () => {
+    renderWithTooltips(<Row label="A very long project name" />);
+    setBox(screen.getByTestId("label"), { scrollWidth: 240, clientWidth: 120 });
+    const button = screen.getByRole("button");
+
+    await act(async () => {
+      button.focus();
+    });
+    expect(tooltipPopup()).toHaveTextContent("A very long project name");
+
+    await act(async () => {
+      button.blur();
+    });
+    await waitFor(() => expect(tooltipPopup()).toBeNull());
+  });
+
+  it("stays closed on keyboard focus when the label fits", async () => {
+    renderWithTooltips(<Row label="Short" />);
+    setBox(screen.getByTestId("label"), { scrollWidth: 40, clientWidth: 120 });
+
+    await act(async () => {
+      screen.getByRole("button").focus();
+    });
+    expect(tooltipPopup()).toBeNull();
+  });
+
+  it("does not open from the focus a pointer press causes", async () => {
+    renderWithTooltips(<Row label="A very long project name" />);
+    setBox(screen.getByTestId("label"), { scrollWidth: 240, clientWidth: 120 });
+    const button = screen.getByRole("button");
+
+    await act(async () => {
+      fireEvent.pointerDown(button, { pointerType: "mouse" });
+      button.focus();
+    });
+    expect(tooltipPopup()).toBeNull();
+  });
+
+  it("lets a long unbroken value wrap inside the bubble", async () => {
+    const hash = "a1b2c3d4".repeat(8);
+    renderWithTooltips(<Row label={hash} />);
+    setBox(screen.getByTestId("label"), { scrollWidth: 480, clientWidth: 120 });
+
+    await hover(screen.getByRole("button"));
+    expect(tooltipPopup()).toHaveTextContent(hash);
+    expect(tooltipPopup()).toHaveClass("[overflow-wrap:anywhere]");
   });
 
   it("does not mount tooltip machinery before the first hover", () => {
