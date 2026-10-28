@@ -178,5 +178,10 @@
     "clear_filter": "絞り込みを解除",
     "no_matches": "一致する行がありません",
     "close": "閉じる"
+  },
+  "details": {
+    "expand": "展開",
+    "collapse": "折りたたむ",
+    "summary_placeholder": "サマリー"
   }
 }

@@ -178,5 +178,10 @@
     "clear_filter": "清除筛选",
     "no_matches": "没有匹配的行",
     "close": "关闭"
+  },
+  "details": {
+    "expand": "展开",
+    "collapse": "折叠",
+    "summary_placeholder": "折叠块标题"
   }
 }

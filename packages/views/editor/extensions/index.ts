@@ -60,6 +60,12 @@ import { FileCardExtension } from "./file-card";
 import { ImageView } from "./image-view";
 import { BlockMathExtension, InlineMathExtension } from "./math";
 import { HighlightExtension } from "./highlight";
+import { PatchedBlockquote } from "./blockquote";
+import {
+  DetailsContentExtension,
+  DetailsExtension,
+  DetailsSummaryExtension,
+} from "./details";
 import { codeLowlight } from "../syntax-highlight";
 
 const LinkExtension = Link.extend({ inclusive: false }).configure({
@@ -222,7 +228,10 @@ export function createEditorExtensions(
       // list item (see list-item.ts). PatchedListItem below restores the
       // standard split → lift fallback chain.
       listItem: false,
+      // Replaced by PatchedBlockquote, which keeps GitHub alert markers intact.
+      blockquote: false,
     }),
+    PatchedBlockquote,
     PatchedListItem,
     // Checkbox task lists: `- [ ]` / `- [x]`. TaskList + TaskItem ship their own
     // markdown tokenizer / renderMarkdown, an input rule (typing `[] ` / `[x] `),
@@ -263,6 +272,9 @@ export function createEditorExtensions(
     TableCell,
     BlockMathExtension,
     InlineMathExtension,
+    DetailsExtension,
+    DetailsSummaryExtension,
+    DetailsContentExtension,
     HighlightExtension,
     // 3-space indent so nested ordered lists survive CommonMark in ReadonlyContent.
     Markdown.configure({ indentation: { style: "space", size: 3 } }),

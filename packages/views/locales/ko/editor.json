@@ -178,5 +178,10 @@
     "clear_filter": "필터 지우기",
     "no_matches": "일치하는 행이 없습니다",
     "close": "닫기"
+  },
+  "details": {
+    "expand": "펼치기",
+    "collapse": "접기",
+    "summary_placeholder": "요약"
   }
 }

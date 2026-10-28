@@ -178,5 +178,10 @@
     "clear_filter": "清除篩選",
     "no_matches": "沒有匹配的行",
     "close": "關閉"
+  },
+  "details": {
+    "expand": "展開",
+    "collapse": "收合",
+    "summary_placeholder": "摺疊區塊標題"
   }
 }
