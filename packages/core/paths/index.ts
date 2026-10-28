@@ -17,6 +17,8 @@ export type {
   WorkspacePageKey,
   WorkspacePage,
 } from "./route-icons";
+export { RAIL_SPACES, spaceForPath } from "./spaces";
+export type { AppSpaceId, RailSpaceId } from "./spaces";
 export {
   parseTabSubject,
   tabSubjectKey,
