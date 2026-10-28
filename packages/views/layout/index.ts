@@ -1,4 +1,7 @@
-export { AppSidebar } from "./app-sidebar";
+export { AppRail } from "./app-rail";
+export { AppShellProvider, useAppShell } from "./app-shell-context";
+export { CompactNavSheet } from "./compact-nav-sheet";
+export { SpacePanel } from "./space-panel";
 export {
   CollectionPageHeader,
   CollectionPageHeaderAction,
@@ -11,7 +14,7 @@ export {
 } from "./tab-presentation";
 export type { TabPresentationResult } from "./tab-presentation";
 export { DashboardGuard } from "./dashboard-guard";
-export { DashboardLayout } from "./dashboard-layout";
+export { AppShellCard, DashboardLayout } from "./dashboard-layout";
 export { useDashboardGuard } from "./use-dashboard-guard";
 export { WorkspaceLoader } from "./workspace-loader";
 export { WorkspacePresencePrefetch } from "./workspace-presence-prefetch";

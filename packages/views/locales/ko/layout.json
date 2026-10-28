@@ -57,16 +57,62 @@
     "invitation_decline": "거절",
     "log_out": "로그아웃",
     "new_issue": "새 태스크",
-    "new_issue_shortcut": "C",
     "pinned_label": "고정됨",
-    "work_group": "업무",
-    "ai_team_group": "AI 팀",
     "show_more_pins": "{{count}}개 더 보기…",
-    "show_fewer_pins": "접기",
-    "unread_overflow": "99+",
-    "discord_card": {
-      "title": "Discord 참여하기",
-      "dismiss": "닫기"
+    "show_fewer_pins": "접기"
+  },
+  "spaces": {
+    "work": "태스크",
+    "team": "팀"
+  },
+  "rail": {
+    "label": "앱 탐색",
+    "sheet_description": "스페이스와 워크스페이스를 전환합니다.",
+    "inbox": "인박스",
+    "work": "태스크",
+    "team": "팀",
+    "chat": "채팅",
+    "autopilots": "자동화",
+    "more_workspaces": "워크스페이스 더 보기",
+    "invitation_tooltip": "{{workspace}} 초대",
+    "invitation_from": "{{name}} 님이 초대했습니다"
+  },
+  "panels": {
+    "work": {
+      "my_agents": "내 에이전트의 작업",
+      "all_issues": "전체 태스크",
+      "views": "뷰",
+      "new_project": "새 프로젝트",
+      "all_projects_other": "전체 프로젝트 {{count}}개"
+    },
+    "team": {
+      "new_agent": "새 에이전트",
+      "needs_attention": "확인 필요",
+      "stuck_other": "태스크 {{count}}개가 오프라인 런타임을 기다리는 중",
+      "working_now": "작업 중",
+      "running_tasks_other": "태스크 {{count}}개 실행 중",
+      "all_agents": "전체 에이전트",
+      "my_agents": "내 에이전트",
+      "squads_and_members": "스쿼드 및 멤버",
+      "members_other": "멤버 {{count}}명",
+      "resources": "리소스",
+      "runtimes_offline_other": "{{count}}개 오프라인"
+    },
+    "autopilots": {
+      "all": "전체 오토파일럿",
+      "list": "오토파일럿"
     }
+  },
+  "account": {
+    "trigger": "계정",
+    "profile": "프로필",
+    "theme": "테마",
+    "themes": {
+      "light": "라이트",
+      "dark": "다크",
+      "system": "시스템"
+    },
+    "language": "언어",
+    "shortcuts": "키보드 단축키"
   }
 }

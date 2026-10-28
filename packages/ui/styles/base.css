@@ -255,12 +255,22 @@ html[data-dnd-dragging="true"] * {
 
 [data-sidebar-resizing="true"] [data-slot="sidebar-gap"],
 [data-sidebar-resizing="true"] [data-slot="sidebar-container"],
-[data-sidebar-resizing="true"] [data-sidebar-resize-consumer] {
+[data-sidebar-resizing="true"] [data-sidebar-resize-consumer],
+[data-sidebar-resizing="true"] [data-slot="space-panel"] {
   transition: none !important;
 }
 
 [data-sidebar-resizing="true"] [data-sidebar="rail"]::after {
   background-color: var(--sidebar-border);
+}
+
+[data-sidebar-resizing="true"] [data-slot="space-panel-resize"]::after {
+  background-color: color-mix(in oklab, var(--ring) 60%, transparent);
+}
+
+html[data-sidebar-resizing="true"] {
+  cursor: ew-resize;
+  user-select: none;
 }
 
 /* Right detail sidebars use react-resizable-panels, which sizes panels by

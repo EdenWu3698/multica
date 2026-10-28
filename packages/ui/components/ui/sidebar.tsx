@@ -26,9 +26,9 @@ import {
 } from "@multica/ui/components/ui/tooltip"
 import { PanelLeftIcon } from "lucide-react"
 
-const SIDEBAR_WIDTH_DEFAULT = 256
+const SIDEBAR_WIDTH_DEFAULT = 240
 const SIDEBAR_WIDTH_MIN = 200
-const SIDEBAR_WIDTH_MAX = 360
+const SIDEBAR_WIDTH_MAX = 320
 const SIDEBAR_WIDTH_STORAGE_KEY = "sidebar_width"
 const SIDEBAR_WIDTH_MOBILE = "18rem"
 const SIDEBAR_WIDTH_ICON = "3rem"
@@ -1006,6 +1006,8 @@ export {
   SidebarRail,
   SidebarSeparator,
   SidebarTrigger,
+  clampSidebarWidth,
   useSidebar,
+  useSidebarResize,
   useSidebarSafe,
 }

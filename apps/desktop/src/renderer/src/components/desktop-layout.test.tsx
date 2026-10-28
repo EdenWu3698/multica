@@ -8,12 +8,12 @@ import { RESOURCES } from "@multica/views/locales";
 
 // The shell resolves the mocked `getCurrentSlug()` against the workspace list
 // before mounting workspace-scoped chrome, so the list has to contain it or
-// the sidebar under test never renders. Gating behaviour itself is covered by
+// the rail under test never renders. Gating behaviour itself is covered by
 // desktop-layout.workspace-gate.test.tsx.
 const WORKSPACES = [{ id: "ws-1", slug: "acme" }];
 
 // The shell is the only thing under test here, so everything it mounts around
-// the sidebar is stubbed out. What survives is the pair that has to agree:
+// the rail is stubbed out. What survives is the pair that has to agree:
 // `WindowToolbar`'s own trigger, and the `hasExternalTrigger` the provider
 // publishes to every page header inside the canvas.
 vi.mock("@/hooks/use-tab-history", () => ({
@@ -66,15 +66,20 @@ vi.mock("@multica/views/platform", () => ({
 }));
 
 vi.mock("@multica/views/layout", () => ({
-  AppSidebar: () => null,
+  AppRail: () => null,
+  AppShellProvider: ({ children }: { children: ReactNode }) => <>{children}</>,
+  CompactNavSheet: () => null,
   GlobalShortcuts: () => null,
   NavigationProgress: () => null,
+  SpacePanel: () => null,
+  useAppShell: () => ({ hasPanel: true }),
+  useTabPresentation: () => ({ visual: { kind: "icon", icon: "Inbox" }, title: "" }),
+  ResourceLeadingVisual: () => null,
 }));
 
 vi.mock("@multica/views/modals/registry", () => ({ ModalRegistry: () => null }));
 vi.mock("@multica/views/search", () => ({
   SearchCommand: () => null,
-  SearchTrigger: () => null,
 }));
 vi.mock("@multica/views/chat", () => ({ FloatingChat: () => null }));
 vi.mock("./tab-bar", () => ({ TabBar: () => null }));
@@ -150,18 +155,19 @@ describe("DesktopShell sidebar trigger", () => {
       "data-external-trigger",
       "true",
     );
+    // The toolbar floats over the 64px rail; the tabs start past the rest
+    // of it whether or not the panel inside the card is open.
     const mainTopBar = container.querySelector('[data-slot="main-top-bar"]');
-    expect(mainTopBar).toHaveAttribute("data-sidebar-resize-consumer");
-    expect(mainTopBar).toHaveClass("transition-[padding-left]");
-    expect(mainTopBar).toHaveStyle({
-      paddingLeft:
-        "max(0px, calc(200px - var(--sidebar-live-width, var(--sidebar-width))))",
-    });
+    expect(mainTopBar).toHaveStyle({ paddingLeft: "136px" });
 
     fireEvent.click(
       container.querySelector('[data-slot="sidebar-trigger"]')!,
     );
-    expect(mainTopBar).toHaveStyle({ paddingLeft: "200px" });
+    expect(getByTestId("page-content")).toHaveAttribute(
+      "data-sidebar-state",
+      "collapsed",
+    );
+    expect(mainTopBar).toHaveStyle({ paddingLeft: "136px" });
     expect(queryByRole("status", { name: /loading workspace/i })).toBeNull();
   });
 

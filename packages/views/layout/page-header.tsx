@@ -3,6 +3,7 @@
 import { cn } from "@multica/ui/lib/utils";
 import { SidebarTrigger, useSidebarSafe } from "@multica/ui/components/ui/sidebar";
 import { ActionShortcutKeycaps } from "../common/shortcut-keycaps";
+import { useAppShell } from "./app-shell-context";
 
 /**
  * The left edge every page shares: the header, the toolbar under it, and any
@@ -49,9 +50,9 @@ export const PAGE_TOOLBAR = cn(
 
 /**
  * The way back to the nav wherever it is not a permanent column: a sheet below
- * the compact breakpoint, auto-collapsed from there up to `xl`.
+ * the compact breakpoint and, in the app shell, a collapsed space panel.
  *
- * Every surface below `xl` needs one of these — unless the shell around it
+ * Every surface needs one of these — unless the shell around it
  * already keeps one on screen. `PageHeader` supplies it for free, so this is
  * exported for the pages that build their own chrome instead; without it a
  * touch user has no way to reopen the nav at all.
@@ -65,10 +66,19 @@ export const PAGE_TOOLBAR = cn(
  */
 export function CollapsedNavTrigger() {
   const sidebar = useSidebarSafe();
+  const shell = useAppShell();
   if (!sidebar || sidebar.hasExternalTrigger) return null;
+  // In the app shell the rail is always on screen from `md` up, so the
+  // trigger only has a job there while the space panel is collapsed. The
+  // `md:hidden` gate is CSS so the compact case is right before hydration.
+  const className = shell
+    ? shell.hasPanel && sidebar.state === "collapsed"
+      ? undefined
+      : "md:hidden"
+    : "xl:hidden";
   return (
     <SidebarTrigger
-      className="xl:hidden"
+      className={className}
       shortcut={<ActionShortcutKeycaps action="toggleSidebar" />}
     />
   );

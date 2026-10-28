@@ -24,6 +24,7 @@ import { isDesktopShell } from "../platform/local-directory";
 import { DISCORD_URL, DiscordIcon } from "./discord";
 import { useT } from "../i18n";
 import { docsLocalePrefix } from "../common/docs-locale";
+import { RAIL_ICON_BUTTON_CLASS } from "./rail-styles";
 
 const DOCS_URL = "https://multica.ai/docs";
 const CHANGELOG_URL = "https://multica.ai/changelog";
@@ -37,8 +38,8 @@ export function HelpLauncher() {
   const { t, i18n } = useT("layout");
   const serverVersion = useConfigStore((state) => state.serverVersion);
   // Web-only: offering "download the desktop app" inside the desktop app is
-  // nonsense, and this sidebar is shared — apps/desktop renders the same
-  // AppSidebar as the web dashboard, so the entry has to be gated here.
+  // nonsense, and this rail is shared — apps/desktop renders the same app
+  // shell as the web dashboard, so the entry has to be gated here.
   //
   // No `mounted` deferral (cf. browser-notification-setting.tsx): the desktop
   // renderer is a locally-bundled SPA with no SSR pass, and on web
@@ -48,17 +49,17 @@ export function HelpLauncher() {
   const desktop = isDesktopShell();
   return (
     <DropdownMenu>
-      <TooltipHint label={t(($) => $.help.trigger)}>
+      <TooltipHint label={t(($) => $.help.trigger)} side="right">
         <DropdownMenuTrigger
           aria-label={t(($) => $.help.trigger)}
-          className="inline-flex size-8 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors cursor-pointer hover:bg-accent hover:text-foreground data-popup-open:bg-accent data-popup-open:text-foreground"
+          className={RAIL_ICON_BUTTON_CLASS}
         >
-          <CircleHelp className="size-4" />
+          <CircleHelp />
         </DropdownMenuTrigger>
       </TooltipHint>
       <DropdownMenuContent
         align="end"
-        side="top"
+        side="right"
         sideOffset={8}
         className="min-w-40 max-w-56"
       >
@@ -128,7 +129,7 @@ export function HelpLauncher() {
                 a Menu.Group context and throws if it has no Group ancestor. It
                 must always be wrapped in a DropdownMenuGroup — without it the
                 Help menu crashes the whole app on open (no error boundary sits
-                above the sidebar). */}
+                above the rail). */}
             <DropdownMenuGroup>
               <DropdownMenuLabel className="font-normal break-words">
                 {t(($) => $.help.server_version, { version: serverVersion })}

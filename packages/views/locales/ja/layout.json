@@ -57,16 +57,62 @@
     "invitation_decline": "辞退",
     "log_out": "ログアウト",
     "new_issue": "新規タスク",
-    "new_issue_shortcut": "C",
     "pinned_label": "ピン留め済み",
-    "work_group": "仕事",
-    "ai_team_group": "AI チーム",
     "show_more_pins": "さらに {{count}} 件を表示…",
-    "show_fewer_pins": "表示を減らす",
-    "unread_overflow": "99+",
-    "discord_card": {
-      "title": "Discord に参加",
-      "dismiss": "閉じる"
+    "show_fewer_pins": "表示を減らす"
+  },
+  "spaces": {
+    "work": "タスク",
+    "team": "チーム"
+  },
+  "rail": {
+    "label": "アプリナビゲーション",
+    "sheet_description": "スペースとワークスペースを切り替えます。",
+    "inbox": "受信箱",
+    "work": "タスク",
+    "team": "チーム",
+    "chat": "チャット",
+    "autopilots": "自動化",
+    "more_workspaces": "その他のワークスペース",
+    "invitation_tooltip": "{{workspace}} への招待",
+    "invitation_from": "{{name}} さんから招待されています"
+  },
+  "panels": {
+    "work": {
+      "my_agents": "マイエージェントの作業",
+      "all_issues": "すべてのタスク",
+      "views": "ビュー",
+      "new_project": "新規プロジェクト",
+      "all_projects_other": "すべてのプロジェクト（{{count}}）"
+    },
+    "team": {
+      "new_agent": "新規エージェント",
+      "needs_attention": "要対応",
+      "stuck_other": "{{count}} 件のタスクがオフラインのランタイムを待機中",
+      "working_now": "作業中",
+      "running_tasks_other": "{{count}} 件のタスクを実行中",
+      "all_agents": "すべてのエージェント",
+      "my_agents": "マイエージェント",
+      "squads_and_members": "スクワッドとメンバー",
+      "members_other": "メンバー {{count}} 人",
+      "resources": "リソース",
+      "runtimes_offline_other": "{{count}} 件オフライン"
+    },
+    "autopilots": {
+      "all": "すべてのオートパイロット",
+      "list": "オートパイロット"
     }
+  },
+  "account": {
+    "trigger": "アカウント",
+    "profile": "プロフィール",
+    "theme": "テーマ",
+    "themes": {
+      "light": "ライト",
+      "dark": "ダーク",
+      "system": "システム"
+    },
+    "language": "言語",
+    "shortcuts": "キーボードショートカット"
   }
 }

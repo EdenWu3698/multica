@@ -69,8 +69,3 @@ html[lang|="ja"] {
 @source "../../../../../packages/core/**/*.{ts,tsx}";
 @source "../../../../../packages/views/**/*.{ts,tsx}";
 @source "./**/*.tsx";
-
-/* Desktop-specific: override sidebar container padding for traffic light layout */
-[data-slot="sidebar-container"] {
-  padding: 0 !important;
-}

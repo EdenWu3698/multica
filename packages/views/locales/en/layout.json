@@ -57,16 +57,67 @@
     "invitation_decline": "Decline",
     "log_out": "Log out",
     "new_issue": "New Issue",
-    "new_issue_shortcut": "C",
     "pinned_label": "Pinned",
-    "work_group": "Work",
-    "ai_team_group": "AI Team",
     "show_more_pins": "Show {{count}} more…",
-    "show_fewer_pins": "Show fewer",
-    "unread_overflow": "99+",
-    "discord_card": {
-      "title": "Join our Discord",
-      "dismiss": "Dismiss"
+    "show_fewer_pins": "Show fewer"
+  },
+  "spaces": {
+    "work": "Issues",
+    "team": "Team"
+  },
+  "rail": {
+    "label": "App navigation",
+    "sheet_description": "Switch spaces and workspaces.",
+    "inbox": "Inbox",
+    "work": "Issues",
+    "team": "Team",
+    "chat": "Chat",
+    "autopilots": "Auto",
+    "more_workspaces": "More workspaces",
+    "invitation_tooltip": "Invitation to {{workspace}}",
+    "invitation_from": "{{name}} invited you"
+  },
+  "panels": {
+    "work": {
+      "my_agents": "My agents' work",
+      "all_issues": "All issues",
+      "views": "Views",
+      "new_project": "New project",
+      "all_projects_one": "All {{count}} project",
+      "all_projects_other": "All {{count}} projects"
+    },
+    "team": {
+      "new_agent": "New agent",
+      "needs_attention": "Needs attention",
+      "stuck_one": "{{count}} task waiting on an offline runtime",
+      "stuck_other": "{{count}} tasks waiting on an offline runtime",
+      "working_now": "Working now",
+      "running_tasks_one": "{{count}} task running",
+      "running_tasks_other": "{{count}} tasks running",
+      "all_agents": "All agents",
+      "my_agents": "My agents",
+      "squads_and_members": "Squads & members",
+      "members_one": "{{count}} member",
+      "members_other": "{{count}} members",
+      "resources": "Resources",
+      "runtimes_offline_one": "{{count}} offline",
+      "runtimes_offline_other": "{{count}} offline"
+    },
+    "autopilots": {
+      "all": "All autopilots",
+      "list": "Autopilots"
     }
+  },
+  "account": {
+    "trigger": "Account",
+    "profile": "Profile",
+    "theme": "Theme",
+    "themes": {
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System"
+    },
+    "language": "Language",
+    "shortcuts": "Keyboard shortcuts"
   }
 }

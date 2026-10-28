@@ -24,6 +24,10 @@ const sidebarState = vi.hoisted(() => ({
   isCompact: false,
 }));
 
+const shellState = vi.hoisted(() => ({
+  current: { hasPanel: true } as { hasPanel: boolean } | null,
+}));
+
 vi.mock("@/hooks/use-tab-history", () => ({
   useTabHistory: () => historyState,
 }));
@@ -34,6 +38,7 @@ vi.mock("@multica/views/layout", () => ({
     title: fallbackTitle ?? `Title ${url}`,
   }),
   ResourceLeadingVisual: () => <span aria-hidden />,
+  useAppShell: () => shellState.current,
 }));
 
 vi.mock("@multica/ui/components/ui/sidebar", () => ({
@@ -73,6 +78,7 @@ beforeEach(() => {
   historyState.goToHistoryIndex.mockReset();
   sidebarState.state = "expanded";
   sidebarState.isCompact = false;
+  shellState.current = { hasPanel: true };
   vi.useFakeTimers();
 });
 
@@ -97,28 +103,35 @@ describe("historyIndicesForMenu", () => {
 });
 
 describe("WindowToolbar history controls", () => {
-  it("left-aligns the controls past the traffic lights across the expanded sidebar", () => {
+  it("left-aligns the controls past the traffic lights at a fixed width", () => {
     render(<WindowToolbar />, { wrapper: I18nWrapper });
 
     const toolbar = document.querySelector('[data-slot="window-toolbar"]');
+    expect(WINDOW_TOOLBAR_CLEARANCE).toBe(200);
     expect(toolbar).not.toHaveClass("justify-end");
-    expect(toolbar).toHaveStyle({
-      paddingLeft: "88px",
-      width:
-        "max(var(--sidebar-live-width, var(--sidebar-width)), 200px)",
-    });
-    expect(toolbar).toHaveAttribute("data-sidebar-resize-consumer");
-    expect(toolbar).not.toHaveClass("transition-[width]");
+    expect(toolbar).toHaveStyle({ paddingLeft: "88px", width: "200px" });
   });
 
-  it("keeps the controls clear of the traffic lights after toggling the sidebar", () => {
+  it("keeps the controls clear of the traffic lights after toggling the panel", () => {
     const { rerender } = render(<WindowToolbar />, { wrapper: I18nWrapper });
     sidebarState.state = "collapsed";
     rerender(<WindowToolbar />);
 
     const toolbar = document.querySelector('[data-slot="window-toolbar"]');
-    expect(WINDOW_TOOLBAR_CLEARANCE).toBe(200);
     expect(toolbar).toHaveStyle({ paddingLeft: "88px", width: "200px" });
+  });
+
+  // Inbox, Chat and Settings bring their own list column, so there is no
+  // shell panel for the toggle to collapse there.
+  it("disables the panel toggle in spaces without a shell panel", () => {
+    shellState.current = { hasPanel: false };
+    const { rerender } = render(<WindowToolbar />, { wrapper: I18nWrapper });
+    expect(screen.getByRole("button", { name: "Toggle sidebar" })).toBeDisabled();
+
+    // Below `md` the same toggle opens the nav sheet, which every space has.
+    sidebarState.isCompact = true;
+    rerender(<WindowToolbar />);
+    expect(screen.getByRole("button", { name: "Toggle sidebar" })).toBeEnabled();
   });
 
   it("orders Back, Forward, then the sidebar toggle with no separate History button", () => {

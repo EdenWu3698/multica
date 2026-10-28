@@ -57,16 +57,67 @@
     "invitation_decline": "Refuser",
     "log_out": "Se déconnecter",
     "new_issue": "Nouvelle tâche",
-    "new_issue_shortcut": "C",
     "pinned_label": "Épinglés",
-    "work_group": "Travail",
-    "ai_team_group": "Équipe IA",
     "show_more_pins": "Afficher {{count}} de plus…",
-    "show_fewer_pins": "Afficher moins",
-    "unread_overflow": "99+",
-    "discord_card": {
-      "title": "Rejoignez notre Discord",
-      "dismiss": "Ignorer"
+    "show_fewer_pins": "Afficher moins"
+  },
+  "spaces": {
+    "work": "Tâches",
+    "team": "Équipe"
+  },
+  "rail": {
+    "label": "Navigation de l'application",
+    "sheet_description": "Changer d'espace et d'espace de travail.",
+    "inbox": "Boîte",
+    "work": "Tâches",
+    "team": "Équipe",
+    "chat": "Chat",
+    "autopilots": "Auto",
+    "more_workspaces": "Autres espaces de travail",
+    "invitation_tooltip": "Invitation à {{workspace}}",
+    "invitation_from": "{{name}} vous a invité"
+  },
+  "panels": {
+    "work": {
+      "my_agents": "Travail de mes agents",
+      "all_issues": "Toutes les tâches",
+      "views": "Vues",
+      "new_project": "Nouveau projet",
+      "all_projects_one": "Tous les projets ({{count}})",
+      "all_projects_other": "Tous les projets ({{count}})"
+    },
+    "team": {
+      "new_agent": "Nouvel agent",
+      "needs_attention": "À traiter",
+      "stuck_one": "{{count}} tâche attend un runtime hors ligne",
+      "stuck_other": "{{count}} tâches attendent un runtime hors ligne",
+      "working_now": "En cours",
+      "running_tasks_one": "{{count}} tâche en cours",
+      "running_tasks_other": "{{count}} tâches en cours",
+      "all_agents": "Tous les agents",
+      "my_agents": "Mes agents",
+      "squads_and_members": "Squads et membres",
+      "members_one": "{{count}} membre",
+      "members_other": "{{count}} membres",
+      "resources": "Ressources",
+      "runtimes_offline_one": "{{count}} hors ligne",
+      "runtimes_offline_other": "{{count}} hors ligne"
+    },
+    "autopilots": {
+      "all": "Toutes les automatisations",
+      "list": "Automatisations"
     }
+  },
+  "account": {
+    "trigger": "Compte",
+    "profile": "Profil",
+    "theme": "Thème",
+    "themes": {
+      "light": "Clair",
+      "dark": "Sombre",
+      "system": "Système"
+    },
+    "language": "Langue",
+    "shortcuts": "Raccourcis clavier"
   }
 }

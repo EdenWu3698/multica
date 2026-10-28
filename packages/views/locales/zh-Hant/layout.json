@@ -57,16 +57,62 @@
     "invitation_decline": "拒絕",
     "log_out": "退出登入",
     "new_issue": "新建任務",
-    "new_issue_shortcut": "C",
     "pinned_label": "固定",
-    "work_group": "工作",
-    "ai_team_group": "AI 團隊",
     "show_more_pins": "再顯示 {{count}} 項...",
-    "show_fewer_pins": "收起",
-    "unread_overflow": "99+",
-    "discord_card": {
-      "title": "加入 Discord",
-      "dismiss": "關閉"
+    "show_fewer_pins": "收起"
+  },
+  "spaces": {
+    "work": "任務",
+    "team": "團隊"
+  },
+  "rail": {
+    "label": "應用導覽",
+    "sheet_description": "切換空間和工作區。",
+    "inbox": "收件箱",
+    "work": "任務",
+    "team": "團隊",
+    "chat": "聊天",
+    "autopilots": "自動化",
+    "more_workspaces": "更多工作區",
+    "invitation_tooltip": "來自 {{workspace}} 的邀請",
+    "invitation_from": "{{name}} 邀請你加入"
+  },
+  "panels": {
+    "work": {
+      "my_agents": "我的智慧體在做",
+      "all_issues": "全部任務",
+      "views": "檢視",
+      "new_project": "新建專案",
+      "all_projects_other": "全部 {{count}} 個專案"
+    },
+    "team": {
+      "new_agent": "新建智慧體",
+      "needs_attention": "需要處理",
+      "stuck_other": "{{count}} 個任務在等待離線的執行時",
+      "working_now": "正在工作",
+      "running_tasks_other": "{{count}} 個任務執行中",
+      "all_agents": "全部智慧體",
+      "my_agents": "我的智慧體",
+      "squads_and_members": "小隊與成員",
+      "members_other": "{{count}} 位成員",
+      "resources": "資源",
+      "runtimes_offline_other": "{{count}} 個離線"
+    },
+    "autopilots": {
+      "all": "全部自動化",
+      "list": "自動化"
     }
+  },
+  "account": {
+    "trigger": "帳戶",
+    "profile": "個人資料",
+    "theme": "主題",
+    "themes": {
+      "light": "淺色",
+      "dark": "深色",
+      "system": "跟隨系統"
+    },
+    "language": "語言",
+    "shortcuts": "快捷鍵"
   }
 }

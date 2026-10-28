@@ -83,7 +83,7 @@ describe("the UI Lab data boundary", () => {
   it("rejects unconfigured operations instead of reaching the network", async () => {
     const network = vi.spyOn(globalThis, "fetch");
     vi.spyOn(console, "warn").mockImplementation(() => {});
-    await expect(createFixtureApi().listSkills()).rejects.toThrow("UI Lab");
+    await expect(createFixtureApi().listPersonalAccessTokens()).rejects.toThrow("UI Lab");
     expect(network).not.toHaveBeenCalled();
   });
 });

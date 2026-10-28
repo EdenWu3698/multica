@@ -11,17 +11,14 @@ import { WorkspaceSlugProvider } from "@multica/core/paths";
 import { workspaceKeys } from "@multica/core/workspace/queries";
 import { setCurrentWorkspace } from "@multica/core/platform";
 import { getIssueSurfaceViewStore } from "@multica/core/issues/stores/surface-view-store";
-import { AppSidebar } from "@multica/views/layout";
+import { AppRail, AppShellCard, AppShellProvider } from "@multica/views/layout";
 import { IssueDetail, IssuesPage } from "@multica/views/issues/components";
 import {
   NavigationProvider,
   type NavigationAdapter,
 } from "@multica/views/navigation";
 import { RESOURCES } from "@multica/views/locales";
-import {
-  SidebarInset,
-  SidebarProvider,
-} from "@multica/ui/components/ui/sidebar";
+import { SidebarProvider } from "@multica/ui/components/ui/sidebar";
 import { TooltipProvider } from "@multica/ui/components/ui/tooltip";
 import { Toaster, toast } from "sonner";
 import {
@@ -106,15 +103,17 @@ export function ProductPreview({
           <WorkspaceSlugProvider slug={workspace.slug}>
             <NavigationProvider value={navigation}>
               <TooltipProvider>
-                <SidebarProvider className="h-svh bg-app-shell">
-                  <AppSidebar />
-                  <SidebarInset className="relative overflow-hidden">
-                    {issueId ? (
-                      <IssueDetail issueId={issueId} />
-                    ) : (
-                      <IssuesPage />
-                    )}
-                  </SidebarInset>
+                <SidebarProvider className="h-svh bg-app-shell [--sidebar-wrapper-fill:var(--app-shell)]">
+                  <AppShellProvider>
+                    <AppRail className="hidden md:flex" />
+                    <AppShellCard>
+                      {issueId ? (
+                        <IssueDetail issueId={issueId} />
+                      ) : (
+                        <IssuesPage />
+                      )}
+                    </AppShellCard>
+                  </AppShellProvider>
                 </SidebarProvider>
                 <Toaster />
               </TooltipProvider>
