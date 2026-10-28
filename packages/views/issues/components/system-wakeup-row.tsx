@@ -73,7 +73,7 @@ export function SystemWakeupRow({
           render={
             <button
               type="button"
-              className="col-span-2 col-start-1 row-start-1 grid min-w-0 grid-cols-subgrid rounded-md py-2 text-left text-caption hover:bg-accent/50 focus-visible:outline-2 focus-visible:outline-ring"
+              className="col-span-2 col-start-1 row-start-1 grid min-w-0 grid-cols-subgrid rounded-md py-2 text-left text-label hover:bg-accent/50 focus-visible:outline-2 focus-visible:outline-ring"
             />
           }
         >
@@ -82,7 +82,7 @@ export function SystemWakeupRow({
             <span className="line-clamp-2 min-w-0 break-words">{title}</span>
             <SystemBadge />
           </span>
-          <span className={`col-span-2 min-w-0 break-words pl-7.5 pr-2 text-micro ${paused ? "text-warning" : "text-muted-foreground"}`}>
+          <span className={`col-span-2 min-w-0 break-words pl-7.5 pr-2 text-caption ${paused ? "text-warning" : "text-muted-foreground"}`}>
             {summary}
           </span>
         </PopoverTrigger>
