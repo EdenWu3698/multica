@@ -19,7 +19,7 @@ import {
   GitPullRequestDraft,
   TriangleAlert,
   XCircle,
-} from "lucide-react";
+} from "@multica/ui/icons";
 import {
   issuePullRequestsOptions,
   derivePullRequestVerdict,

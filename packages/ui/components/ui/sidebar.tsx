@@ -24,7 +24,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@multica/ui/components/ui/tooltip"
-import { PanelLeftIcon } from "lucide-react"
+import { PanelLeftIcon } from "@multica/ui/icons"
 
 const SIDEBAR_WIDTH_DEFAULT = 256
 const SIDEBAR_WIDTH_MIN = 200

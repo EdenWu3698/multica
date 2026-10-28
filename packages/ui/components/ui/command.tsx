@@ -15,7 +15,7 @@ import {
   InputGroup,
   InputGroupAddon,
 } from "@multica/ui/components/ui/input-group"
-import { SearchIcon, CheckIcon } from "lucide-react"
+import { SearchIcon, CheckIcon } from "@multica/ui/icons"
 
 function Command({
   className,

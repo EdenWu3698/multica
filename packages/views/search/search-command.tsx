@@ -17,8 +17,8 @@ import {
   Monitor,
   Moon,
   Sun,
-  type LucideIcon,
-} from "lucide-react";
+  type IconComponent,
+} from "@multica/ui/icons";
 import { Command as CommandPrimitive } from "cmdk";
 import { useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -302,7 +302,7 @@ function IssueResultRow({
 interface CommandItem {
   key: string;
   label: string;
-  icon: LucideIcon;
+  icon: IconComponent;
   keywords: string[];
   trailing?: React.ReactNode;
   onSelect: () => void;

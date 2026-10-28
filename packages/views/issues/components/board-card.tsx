@@ -12,7 +12,7 @@ import { propertyListOptions } from "@multica/core/properties";
 import { CustomPropertyValueDisplay } from "./pickers/custom-property-picker";
 import { descriptionPreview } from "./description-preview";
 import { formatDateOnly, isPastDateOnly } from "@multica/core/issues/date";
-import { CalendarClock, CalendarDays } from "lucide-react";
+import { CalendarClock, CalendarDays } from "@multica/ui/icons";
 import { ActorAvatar } from "../../common/actor-avatar";
 import { PropertyIcon } from "../../common/property-icon";
 import { useWorkspacePaths } from "@multica/core/paths";

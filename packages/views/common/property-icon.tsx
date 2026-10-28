@@ -42,14 +42,14 @@ import {
   Wrench,
   X,
   Zap,
-  type LucideIcon,
-} from "lucide-react";
+  type IconComponent,
+} from "@multica/ui/icons";
 import { DeferredTooltip } from "./deferred-tooltip";
 
 interface PropertyIconOption {
   value: string;
   label: string;
-  Icon: LucideIcon;
+  Icon: IconComponent;
 }
 
 /**

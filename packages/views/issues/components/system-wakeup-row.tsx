@@ -1,7 +1,7 @@
 "use client";
 
 import { useId, useState } from "react";
-import { ListChecks, Pencil } from "lucide-react";
+import { ListChecks, Pencil } from "@multica/ui/icons";
 import { toast } from "sonner";
 import { useUpdateIssueSystemWakeup } from "@multica/core/issues";
 import type { SystemWakeup } from "@multica/core/types";

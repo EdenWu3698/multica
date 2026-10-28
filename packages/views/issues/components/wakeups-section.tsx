@@ -4,7 +4,7 @@ import { IssueSidebarSectionHeader } from "./issue-sidebar-section";
 
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Bell, Clock3, ChevronRight, GitPullRequest, Link2, ListChecks, CircleDot, Play } from "lucide-react";
+import { Bell, Clock3, ChevronRight, GitPullRequest, Link2, ListChecks, CircleDot, Play } from "@multica/ui/icons";
 import { toast } from "sonner";
 import {
   issueSystemWakeupsOptions,

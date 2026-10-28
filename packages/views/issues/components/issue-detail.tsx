@@ -34,7 +34,7 @@ import {
   Unlink,
   Users,
   ArrowDown,
-} from "lucide-react";
+} from "@multica/ui/icons";
 import { BreadcrumbHeader, type BreadcrumbSegment } from "../../layout/breadcrumb-header";
 import { Skeleton } from "@multica/ui/components/ui/skeleton";
 import { Button } from "@multica/ui/components/ui/button";
