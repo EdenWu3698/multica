@@ -91,6 +91,6 @@ pnpm exec playwright test e2e/task-contract.spec.ts --list
 
 runner 预期 exit 1；没有 skip，不吞失败，不把零用例算通过。日志中 go 工具路径和 Vitest 输出路径只是复现上下文，交付通过 issue 附件/远端源码，不用本地路径冒充交付链接。
 
-首轮 `wire-first` 有三处将 `testutil.Row.Scan` 当作返回 error 的编译错误；按既有 Row API 修正，原日志保留，不算产品红灯。根目录 ESLint 没有配置，`wire-lint.txt` 的 exit 2 是命令不适用；未改项目配置凑通过，JS 使用 node 语法检查及 8 个向量实跑。Go 完整编译/选定测试通过收集；gofmt、diff 检查作为交付门。浏览器 preflight exit 2 仍是缺固定预览前提，不能算功能红灯。
+首轮 `wire-first` 有三处将 `testutil.Row.Scan` 当作返回 error 的编译错误；按既有 Row API 修正，原日志保留，不算产品红灯。运行时响应夹具初版 changed_fields 在源码自查时由仅 /goal 补为完整初建业务字段列表；不改任何行为期望，04ed7271c 的固定实跑保留在 wire-fixed-04ed7271c。根目录 ESLint 没有配置，`wire-lint.txt` 的 exit 2 是命令不适用；未改项目配置凑通过，JS 使用 node 语法检查及 8 个向量实跑。Go 完整编译/选定测试通过收集；gofmt、diff 检查作为交付门。浏览器 preflight exit 2 仍是缺固定预览前提，不能算功能红灯。
 
 本轮需求级 wire 阻塞已解除。缺产品入口/接点继续作为真实红灯或局部待实现；任务保持 in_progress，不能因本轮运行结束或部分通过声称完整阶段验收。下一步由 Asurada 核验本测试交付及剩余接入顺序，未启动实现、其他包或部署。
