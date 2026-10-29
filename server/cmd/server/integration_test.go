@@ -42,6 +42,9 @@ const (
 )
 
 func TestMain(m *testing.M) {
+	if code, handled := w54RestartReaderProcess(); handled {
+		os.Exit(code)
+	}
 	ctx := context.Background()
 	dbURL := os.Getenv("DATABASE_URL")
 	if dbURL == "" {

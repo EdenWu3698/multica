@@ -1,0 +1,31 @@
+{
+  "sourceHead": "bb1b66494a2606b44f4b67930efb44e558e5db4a",
+  "worktree": "M server/cmd/server/task_contract_acceptance_test.go\n M server/cmd/server/task_contract_continuation_test.go\n M tests/task-contract/generate-fixtures.mjs\n?? server/cmd/server/task_contract_atomicity_test.go\n?? server/cmd/server/task_contract_binding_test.go\n?? server/cmd/server/task_contract_sources_test.go\n?? server/cmd/server/task_contract_wire_test.go\n?? server/internal/daemon/task_contract_wire_test.go\n?? tests/task-contract/evidence/wire-atomic-first/\n?? tests/task-contract/evidence/wire-complete-first/\n?? tests/task-contract/evidence/wire-corpus.txt\n?? tests/task-contract/evidence/wire-first/\n?? tests/task-contract/evidence/wire-lint.txt\n?? tests/task-contract/evidence/wire-recovery-first/\n?? tests/task-contract/evidence/wire-runtime-first/\n?? tests/task-contract/evidence/wire-second/\n?? tests/task-contract/evidence/wire-sources-first/\n?? tests/task-contract/evidence/wire-vectors.txt\n?? tests/task-contract/evidence/wire-views-first/\n?? tests/task-contract/specs/\n?? tests/task-contract/verify-wire-vectors.mjs",
+  "scope": "views",
+  "results": [
+    {
+      "name": "views",
+      "command": [
+        "pnpm",
+        "--filter",
+        "@multica/views",
+        "exec",
+        "vitest",
+        "run",
+        "issues/components/issue-detail.test.tsx",
+        "issues/components/revision-conflict-compare.test.tsx",
+        "issues/components/source-context-viewer.test.tsx",
+        "issues/actions/run-confirm-gate.test.ts",
+        "--reporter=json",
+        "--outputFile=/Users/wushihao/multica_workspaces_desktop-api.multica.ai/wush-d88ba37d678c/wush-54-c431a63450dd/workdir/multica/tests/task-contract/evidence/wire-views-first/views.json"
+      ],
+      "exit": 1,
+      "counts": {
+        "pass": 179,
+        "fail": 1,
+        "skip": 0
+      },
+      "status": "failed_requires_classification"
+    }
+  ]
+}

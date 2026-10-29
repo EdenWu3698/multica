@@ -1,3 +1,5 @@
+> 本轮 wire 补充与最新证据见 [WIRE-SUPPLEMENT.md](WIRE-SUPPLEMENT.md)；以下保留历史结论，不再作为接口规格阻塞依据。
+
 > 2026-10-29 续测状态：整项已恢复 `in_progress`。本文件保留首轮历史记录；当前范围、结果和逐项待接入清单以 [CONTINUATION.md](CONTINUATION.md) 为准。首轮的“整项 blocked”结论已被 Asurada 撤销，不能据此停工。
 
 # WUSH-54 正式测试首轮证据（部分交付）

@@ -1,0 +1,31 @@
+{
+  "sourceHead": "bb1b66494a2606b44f4b67930efb44e558e5db4a",
+  "worktree": "M server/cmd/server/task_contract_acceptance_test.go\n M server/cmd/server/task_contract_continuation_test.go\n?? server/cmd/server/task_contract_wire_test.go\n?? tests/task-contract/evidence/wire-first/",
+  "scope": "server",
+  "results": [
+    {
+      "name": "server",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "/Users/wushihao/multica_workspaces_desktop-api.multica.ai/wush-d88ba37d678c/wush-54-3deace8afab7/workdir/tools-cache/go/bin/go",
+        "-C",
+        "server",
+        "test",
+        "./cmd/server",
+        "-run",
+        "^TestW54Contract",
+        "-count=1",
+        "-json"
+      ],
+      "exit": 1,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "status": "environment_or_harness_error"
+    }
+  ]
+}

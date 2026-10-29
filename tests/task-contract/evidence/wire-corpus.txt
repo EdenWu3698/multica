@@ -1,0 +1,1 @@
+{"output":"/Users/wushihao/multica_workspaces_desktop-api.multica.ai/wush-d88ba37d678c/wush-54-c431a63450dd/workdir/multica/tests/task-contract/generated","commitA":"a34817f8faa8b0262a538552c02f12540ce6680c","commitB":"4471e199f4b357e606a8ced11b785ce52a474917","patchSha256":"adc44bcd857a59933e923f018a6fbb6be27b2cd9426f02a2bb0118550056af14"}

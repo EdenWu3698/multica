@@ -1,0 +1,109 @@
+{
+  "spec": "W54-SPEC-0.1",
+  "generatedAt": "2026-10-29T00:00:00Z",
+  "ids": {
+    "w1": "0f1be345-eaf2-4af2-9fbc-7cabde4deaeb",
+    "w2": "fb24f1dc-ea93-47d5-bbdb-3ff605c991ac",
+    "initiator": "9a19c627-7372-4b3c-bb71-56aa0c77cf2e",
+    "receiver": "08338e0d-2553-4566-ab3c-15987c8f81b6",
+    "returnTo": "fa871f40-09eb-4c5d-a458-688b34fa5431",
+    "outsider": "dcc828f5-7284-479f-ba44-8633ec16fdb9",
+    "callableAgent": "f5c11948-fadf-4a64-9d91-74f919f9913f",
+    "privateAgent": "478b4490-7c19-4acd-8632-9b34d556f88a",
+    "runtime": "5479be75-7577-4fe9-8351-eeae2b4a2f67",
+    "legacyRuntime": "a50e2595-d277-476c-8dd2-8ebc3e4077e7",
+    "ordinaryIssue": "d796071e-3fcc-42da-99a6-812cb547d90f",
+    "protectedIssue": "dffd1327-b9cc-410c-a55c-04c6abe0c82b",
+    "comment": "e7925320-8118-44b8-8dfe-f712e67501aa",
+    "readableAttachment": "da9326e0-e8ce-41c2-89cc-cdfe4259589f",
+    "expiredAttachment": "2d0afad9-efe6-4f4a-b899-b71588d97038"
+  },
+  "identities": [
+    {
+      "id": "9a19c627-7372-4b3c-bb71-56aa0c77cf2e",
+      "workspace": "0f1be345-eaf2-4af2-9fbc-7cabde4deaeb",
+      "kind": "member"
+    },
+    {
+      "id": "08338e0d-2553-4566-ab3c-15987c8f81b6",
+      "workspace": "0f1be345-eaf2-4af2-9fbc-7cabde4deaeb",
+      "kind": "member"
+    },
+    {
+      "id": "fa871f40-09eb-4c5d-a458-688b34fa5431",
+      "workspace": "0f1be345-eaf2-4af2-9fbc-7cabde4deaeb",
+      "kind": "member"
+    },
+    {
+      "id": "dcc828f5-7284-479f-ba44-8633ec16fdb9",
+      "workspace": "fb24f1dc-ea93-47d5-bbdb-3ff605c991ac",
+      "kind": "member"
+    }
+  ],
+  "agents": [
+    {
+      "id": "f5c11948-fadf-4a64-9d91-74f919f9913f",
+      "workspace": "0f1be345-eaf2-4af2-9fbc-7cabde4deaeb",
+      "callable": true,
+      "executable": "TEST_CREATED_FAKE_ONLY"
+    },
+    {
+      "id": "478b4490-7c19-4acd-8632-9b34d556f88a",
+      "workspace": "0f1be345-eaf2-4af2-9fbc-7cabde4deaeb",
+      "callable": false,
+      "executable": "TEST_CREATED_FAKE_ONLY"
+    }
+  ],
+  "runtimes": [
+    {
+      "id": "5479be75-7577-4fe9-8351-eeae2b4a2f67",
+      "protocol": "task-contract-v1"
+    },
+    {
+      "id": "a50e2595-d277-476c-8dd2-8ebc3e4077e7",
+      "protocol": "legacy"
+    }
+  ],
+  "code": {
+    "commitA": "a34817f8faa8b0262a538552c02f12540ce6680c",
+    "commitB": "4471e199f4b357e606a8ced11b785ce52a474917",
+    "dirtyPatch": {
+      "file": "dirty.patch",
+      "sha256": "adc44bcd857a59933e923f018a6fbb6be27b2cd9426f02a2bb0118550056af14"
+    }
+  },
+  "documents": [
+    {
+      "id": "D1",
+      "path": "docs/requirement.md",
+      "commit": "a34817f8faa8b0262a538552c02f12540ce6680c",
+      "sha256": "d3ddd6011ab9f930554ff4ff9c60d76a00360b36a7cff3f3af0257c98f16bdb4"
+    },
+    {
+      "id": "D2",
+      "path": "docs/requirement.md",
+      "commit": "4471e199f4b357e606a8ced11b785ce52a474917",
+      "sha256": "8b5b846a30b4329f2e7512d450469b27462b63eabbe283e2f18c6660031c9297"
+    }
+  ],
+  "comments": [
+    {
+      "id": "e7925320-8118-44b8-8dfe-f712e67501aa",
+      "revision": 1,
+      "content": "Synthetic approved decision C1",
+      "sha256": "5f75eaca6a35681d242516176f8714ff5e1b249420d16d53c1ef04756b175a1b"
+    }
+  ],
+  "attachments": [
+    {
+      "id": "da9326e0-e8ce-41c2-89cc-cdfe4259589f",
+      "available": true
+    },
+    {
+      "id": "2d0afad9-efe6-4f4a-b899-b71588d97038",
+      "available": false
+    }
+  ],
+  "note": "IDs are synthetic and unseeded. The supported runtime capability is task-contract-v1. Use existing fixtures/TestApiClient to seed isolated storage; never send to a live workspace.",
+  "wire_spec": "W54-SPEC-0.1-wire-supplement"
+}

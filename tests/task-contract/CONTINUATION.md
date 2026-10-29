@@ -1,3 +1,5 @@
+> 本轮 wire 补充与最新证据见 [WIRE-SUPPLEMENT.md](WIRE-SUPPLEMENT.md)；以下保留历史结论，不再作为接口规格阻塞依据。
+
 # WUSH-54 续测交接
 
 本轮依据 WUSH-54 revision 20、W54-SPEC-0.1 和上轮 `d2038e096eff7cf4963e1ba7912efa6a4d3891cc` 继续。原产品 base 为 `8305976793097a3d38e3a2f29bc1626abe76130d`。不改产品、Schema、迁移、生成客户端或部署脚本，不启动 JARVIS/WUSH-56。**整项保持 in_progress；局部待接入不等于整项 blocked。**

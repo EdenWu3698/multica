@@ -1,0 +1,16 @@
+✔ approved supplement fingerprint is unchanged (1.47675ms)
+✔ WS-01 byte vector "abc" (0.050459ms)
+✔ WS-01 byte vector "abc\n" (0.037041ms)
+✔ WS-01 byte vector "abc\r\n" (0.037666ms)
+✔ WS-01 byte vector "{\"description\":null,\"title\":\"abc\"}" (0.036042ms)
+✔ WS-01 byte vector "\"abc\"" (0.0265ms)
+✔ WS-01 byte vector "null" (0.068666ms)
+✔ WS-03 independently reproduces the supplement input_digest (0.476875ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 41.337125

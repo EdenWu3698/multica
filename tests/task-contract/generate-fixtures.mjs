@@ -41,7 +41,7 @@ const manifest = {
     { id: ids.callableAgent, workspace: ids.w1, callable: true, executable: "TEST_CREATED_FAKE_ONLY" },
     { id: ids.privateAgent, workspace: ids.w1, callable: false, executable: "TEST_CREATED_FAKE_ONLY" },
   ],
-  runtimes: [{ id: ids.runtime, protocol: "contract-capable-semantic-fixture" }, { id: ids.legacyRuntime, protocol: "legacy" }],
+  runtimes: [{ id: ids.runtime, protocol: "task-contract-v1" }, { id: ids.legacyRuntime, protocol: "legacy" }],
   code: { commitA, commitB, dirtyPatch: { file: "dirty.patch", sha256: digest(patch) } },
   documents: [{ id: "D1", path: "docs/requirement.md", commit: commitA, sha256: digest(d1) }, { id: "D2", path: "docs/requirement.md", commit: commitB, sha256: digest(d2) }],
   comments: [{ id: ids.comment, revision: 1, content: "Synthetic approved decision C1", sha256: digest("Synthetic approved decision C1") }],
@@ -49,7 +49,7 @@ const manifest = {
   outOfScopePlans: ["unknown-operation", "unapproved-action", "../outside", "/absolute", "src/../private", "denied-overlap", "wrong-receiver"],
   history: Array.from({ length: 200 }, (_, i) => ({ version: i + 1, goal: `Synthetic historical goal ${i + 1}` })),
   repeatedEvents: Array.from({ length: 10 }, () => ({ idempotency_key: "same-synthetic-event", version: 1 })),
-  note: "IDs are synthetic and unseeded. Runtime protocol names are semantic labels, not wire constants. Use existing fixtures/TestApiClient to seed isolated storage; never send to a live workspace.",
+  note: "IDs are synthetic and unseeded. The supported runtime capability is task-contract-v1. Use existing fixtures/TestApiClient to seed isolated storage; never send to a live workspace.",
 };
 writeFileSync(join(destination, "manifest.json"), JSON.stringify(manifest, null, 2) + "\n");
 console.log(JSON.stringify({ output: destination, commitA, commitB, patchSha256: digest(patch) }));

@@ -18,9 +18,7 @@ import (
 	"github.com/multica-ai/multica/server/internal/testutil"
 )
 
-// W54-SPEC-0.1 semantic fixtures, not a second production schema. The candidate
-// App API uses a full snapshot in the PUT body alongside its concurrency fields.
-// Keep wire adaptation here if the approved canonical implementation differs.
+// W54-SPEC-0.1 + approved wire supplement fixtures; no production validator.
 type w54Fixture struct {
 	fx       *testutil.Fixture
 	issueID  string
@@ -36,9 +34,10 @@ func w54New(t *testing.T) w54Fixture {
 	t.Helper()
 	fx := testutil.New(testPool, testWorkspaceID, testUserID)
 	id := fx.Issue(t, "W54 synthetic task", testutil.Cols{"description": "Synthetic approved requirement", "status": "backlog"})
+	issue := w54Body(t, authRequest(t, "GET", "/api/issues/"+id, nil), 200)
 	actor := map[string]any{"type": "member", "id": testUserID}
-	source := map[string]any{"kind": "issue", "locator": id, "version": 1,
-		"digest": w54Digest("Synthetic approved requirement"), "supplied_by": actor}
+	source := map[string]any{"kind": "issue", "locator": id, "version": issue["revision"],
+		"digest": w54JSONDigest(t, map[string]any{"title": issue["title"], "description": issue["description"]}), "supplied_by": actor}
 	resource := map[string]any{"kind": "issue", "locator": id, "match": "exact"}
 	refs := []any{source}
 	stops := []any{}
@@ -324,7 +323,7 @@ func TestW54Contract_TC09_UnknownActionAndReceiver(t *testing.T) {
 			f := w54New(t)
 			f.noNewRuns(t)
 			f.publish(t, 0, 201)
-			body := map[string]any{"current_version": 1, "planned_action_ids": []string{"read-input"}, "target": f.snapshot["next_owner"], "idempotency_key": "invalid-" + mode}
+			body := map[string]any{"current_version": 1, "planned_action_ids": []string{"read-input"}, "resources": f.snapshot["allowed_actions"].([]any)[0].(map[string]any)["resources"], "target": f.snapshot["next_owner"], "idempotency_key": "invalid-" + mode}
 			wantCode := "contract_out_of_scope"
 			if mode == "action" {
 				body["planned_action_ids"] = []string{"unapproved-edit"}

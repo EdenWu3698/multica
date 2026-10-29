@@ -13,8 +13,8 @@ import (
 	"github.com/multica-ai/multica/server/internal/testutil"
 )
 
-// Use the original candidate builder until WUSH-59's wire supplement is
-// approved. Failures before publication do not prove the later assertions ran.
+// Approved WS-01 wire adaptation preserves the original behavior assertions.
+// Failures before publication do not prove later assertions ran.
 func TestW54Contract_TC02_BlankAndNestedRequirements(t *testing.T) {
 	for _, tc := range []struct {
 		name   string
@@ -45,8 +45,15 @@ func TestW54Contract_TC02_BlankAndNestedRequirements(t *testing.T) {
 			f := w54New(t)
 			f.noNewRuns(t)
 			tc.mutate(f.snapshot)
-			body := f.publish(t, 0, 400, 422)
-			if body["code"] != "invalid_request" && body["code"] != "contract_incomplete" {
+			status, code := 422, "contract_incomplete"
+			if strings.HasSuffix(tc.name, "_unknown") && tc.name != "action_operation_unknown" {
+				status, code = 409, "contract_conflict"
+			}
+			if tc.name == "action_operation_unknown" || tc.name == "next_owner_unresolved" || tc.name == "return_to_invalid_id" {
+				status, code = 400, "invalid_request"
+			}
+			body := f.publish(t, 0, status)
+			if body["code"] != code {
 				t.Errorf("missing stable validation code: %v", body)
 			}
 			errors, ok := body["field_errors"].([]any)
@@ -86,7 +93,7 @@ func TestW54Contract_TC04_BlockingAndNonblockingAssumptions(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			f := w54New(t)
 			f.noNewRuns(t)
-			f.snapshot["assumptions"] = []any{map[string]any{"assertion": "Synthetic input needs confirmation", "validation": "Ask the designated owner", "owner": f.snapshot["return_to"], "blocks_start": blocking}}
+			f.snapshot["assumptions"] = []any{map[string]any{"id": "assumption1", "assertion": "Synthetic input needs confirmation", "validation": "Ask the designated owner", "owner": f.snapshot["return_to"], "blocks_start": blocking}}
 			f.publish(t, 0, 201)
 			if !blocking {
 				f.handoff(t, 1, name, 200, 201)
@@ -117,7 +124,7 @@ func TestW54Contract_TC09_DeclaredResourceBoundary(t *testing.T) {
 			f := w54New(t)
 			f.noNewRuns(t)
 			const repository = "https://example.invalid/synthetic.git"
-			resource := map[string]any{"kind": "repository", "locator": map[string]any{"repository": repository, "path": "src/"}, "match": "directory"}
+			resource := map[string]any{"kind": "repository", "locator": map[string]any{"repository": repository, "path": "src"}, "match": "directory"}
 			f.snapshot["allowed_actions"].([]any)[0].(map[string]any)["resources"] = []any{resource}
 			if tc.denied {
 				f.snapshot["prohibitions"].(map[string]any)["denied_actions"] = []any{map[string]any{"id": "denied-read", "operation": "read", "resources": []any{resource}, "acceptance_ids": []any{"a1"}}}

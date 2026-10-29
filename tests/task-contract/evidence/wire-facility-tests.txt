@@ -1,0 +1,18 @@
+✔ preview preflight refuses remote API and non-test databases before any network access (0.551792ms)
+✔ preview preflight requires a fixed source identity and isolation handoff (1.3225ms)
+✔ approved supplement fingerprint is unchanged (0.543875ms)
+✔ WS-01 byte vector "abc" (0.05325ms)
+✔ WS-01 byte vector "abc\n" (0.038042ms)
+✔ WS-01 byte vector "abc\r\n" (0.03575ms)
+✔ WS-01 byte vector "{\"description\":null,\"title\":\"abc\"}" (0.038708ms)
+✔ WS-01 byte vector "\"abc\"" (0.0305ms)
+✔ WS-01 byte vector "null" (0.079084ms)
+✔ WS-03 independently reproduces the supplement input_digest (0.461458ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 39.269833
