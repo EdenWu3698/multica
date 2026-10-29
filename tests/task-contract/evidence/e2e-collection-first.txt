@@ -1,0 +1,14 @@
+Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'dotenv' imported from <workdir>/multica/e2e/env.ts
+    at Object.getPackageJSONURL (node:internal/modules/package_json_reader:267:9)
+    at packageResolve (node:internal/modules/esm/resolve:768:81)
+    at moduleResolve (node:internal/modules/esm/resolve:854:18)
+    at defaultResolve (node:internal/modules/esm/resolve:984:11)
+    at nextResolve (node:internal/modules/esm/hooks:748:28)
+    at resolve (<workdir>/multica/node_modules/.pnpm/playwright@1.58.2/node_modules/playwright/lib/transform/esmLoader.js:39:24)
+    at nextResolve (node:internal/modules/esm/hooks:748:28)
+    at Hooks.resolve (node:internal/modules/esm/hooks:240:30)
+    at handleMessage (node:internal/modules/esm/worker:199:24)
+    at Immediate.checkForMessages (node:internal/modules/esm/worker:141:28)
+    at process.processImmediate (node:internal/timers:511:21) {
+  code: 'ERR_MODULE_NOT_FOUND'
+}

@@ -1,0 +1,27 @@
+{
+  "sourceHead": "8305976793097a3d38e3a2f29bc1626abe76130d",
+  "scope": "core",
+  "results": [
+    {
+      "name": "core",
+      "command": [
+        "pnpm",
+        "--filter",
+        "@multica/core",
+        "exec",
+        "vitest",
+        "run",
+        "api/task-contract-acceptance.test.ts",
+        "--reporter=json",
+        "--outputFile=<workdir>/multica/tests/task-contract/evidence/core-verified/core.json"
+      ],
+      "exit": 1,
+      "counts": {
+        "pass": 3,
+        "fail": 6,
+        "skip": 0
+      },
+      "status": "failed_requires_classification"
+    }
+  ]
+}

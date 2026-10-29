@@ -1,0 +1,961 @@
+{
+  "spec": "W54-SPEC-0.1",
+  "generatedAt": "2026-10-29T00:00:00Z",
+  "ids": {
+    "w1": "86c9c02e-964c-4b5b-8f07-2031769b1f6a",
+    "w2": "2f89794f-cb5a-425b-8893-d5e3e743b91a",
+    "initiator": "95c11117-cff7-48a0-8a5c-8a4d293c99d3",
+    "receiver": "0eb2c38d-49b8-45ee-a61d-7c72ff057766",
+    "returnTo": "782e5623-2e38-46c0-9ed3-e674325fc63a",
+    "outsider": "07572489-b424-4882-a89c-81c6d930e063",
+    "callableAgent": "d9de65a7-dd9c-4f0c-bcfa-0b6b6259dbf1",
+    "privateAgent": "43140041-9bb6-41b6-8949-68234d4af97d",
+    "runtime": "d5650a27-adbf-4197-8af8-e9b49df75b8b",
+    "legacyRuntime": "769e3b00-dfe1-41cf-a071-5b650194c55a",
+    "ordinaryIssue": "1644be25-b0da-4635-9016-300a93dbe108",
+    "protectedIssue": "e01acbd4-580b-4017-81ab-61162ccc313c",
+    "comment": "0c0c4778-661d-4bc1-abf6-8edca5342516",
+    "readableAttachment": "13831952-3735-4c2c-9651-2a36dc1b343f",
+    "expiredAttachment": "e4361ea8-922a-49c2-abdf-23648d5c9e7c"
+  },
+  "identities": [
+    {
+      "id": "95c11117-cff7-48a0-8a5c-8a4d293c99d3",
+      "workspace": "86c9c02e-964c-4b5b-8f07-2031769b1f6a",
+      "kind": "member"
+    },
+    {
+      "id": "0eb2c38d-49b8-45ee-a61d-7c72ff057766",
+      "workspace": "86c9c02e-964c-4b5b-8f07-2031769b1f6a",
+      "kind": "member"
+    },
+    {
+      "id": "782e5623-2e38-46c0-9ed3-e674325fc63a",
+      "workspace": "86c9c02e-964c-4b5b-8f07-2031769b1f6a",
+      "kind": "member"
+    },
+    {
+      "id": "07572489-b424-4882-a89c-81c6d930e063",
+      "workspace": "2f89794f-cb5a-425b-8893-d5e3e743b91a",
+      "kind": "member"
+    }
+  ],
+  "agents": [
+    {
+      "id": "d9de65a7-dd9c-4f0c-bcfa-0b6b6259dbf1",
+      "workspace": "86c9c02e-964c-4b5b-8f07-2031769b1f6a",
+      "callable": true,
+      "executable": "TEST_CREATED_FAKE_ONLY"
+    },
+    {
+      "id": "43140041-9bb6-41b6-8949-68234d4af97d",
+      "workspace": "86c9c02e-964c-4b5b-8f07-2031769b1f6a",
+      "callable": false,
+      "executable": "TEST_CREATED_FAKE_ONLY"
+    }
+  ],
+  "runtimes": [
+    {
+      "id": "d5650a27-adbf-4197-8af8-e9b49df75b8b",
+      "protocol": "contract-capable-semantic-fixture"
+    },
+    {
+      "id": "769e3b00-dfe1-41cf-a071-5b650194c55a",
+      "protocol": "legacy"
+    }
+  ],
+  "code": {
+    "commitA": "a34817f8faa8b0262a538552c02f12540ce6680c",
+    "commitB": "4471e199f4b357e606a8ced11b785ce52a474917",
+    "dirtyPatch": {
+      "file": "dirty.patch",
+      "sha256": "adc44bcd857a59933e923f018a6fbb6be27b2cd9426f02a2bb0118550056af14"
+    }
+  },
+  "documents": [
+    {
+      "id": "D1",
+      "path": "docs/requirement.md",
+      "commit": "a34817f8faa8b0262a538552c02f12540ce6680c",
+      "sha256": "d3ddd6011ab9f930554ff4ff9c60d76a00360b36a7cff3f3af0257c98f16bdb4"
+    },
+    {
+      "id": "D2",
+      "path": "docs/requirement.md",
+      "commit": "4471e199f4b357e606a8ced11b785ce52a474917",
+      "sha256": "8b5b846a30b4329f2e7512d450469b27462b63eabbe283e2f18c6660031c9297"
+    }
+  ],
+  "comments": [
+    {
+      "id": "0c0c4778-661d-4bc1-abf6-8edca5342516",
+      "revision": 1,
+      "content": "Synthetic approved decision C1",
+      "sha256": "5f75eaca6a35681d242516176f8714ff5e1b249420d16d53c1ef04756b175a1b"
+    }
+  ],
+  "attachments": [
+    {
+      "id": "13831952-3735-4c2c-9651-2a36dc1b343f",
+      "available": true
+    },
+    {
+      "id": "e4361ea8-922a-49c2-abdf-23648d5c9e7c",
+      "available": false
+    }
+  ],
+  "outOfScopePlans": [
+    "unknown-operation",
+    "unapproved-action",
+    "../outside",
+    "/absolute",
+    "src/../private",
+    "denied-overlap",
+    "wrong-receiver"
+  ],
+  "history": [
+    {
+      "version": 1,
+      "goal": "Synthetic historical goal 1"
+    },
+    {
+      "version": 2,
+      "goal": "Synthetic historical goal 2"
+    },
+    {
+      "version": 3,
+      "goal": "Synthetic historical goal 3"
+    },
+    {
+      "version": 4,
+      "goal": "Synthetic historical goal 4"
+    },
+    {
+      "version": 5,
+      "goal": "Synthetic historical goal 5"
+    },
+    {
+      "version": 6,
+      "goal": "Synthetic historical goal 6"
+    },
+    {
+      "version": 7,
+      "goal": "Synthetic historical goal 7"
+    },
+    {
+      "version": 8,
+      "goal": "Synthetic historical goal 8"
+    },
+    {
+      "version": 9,
+      "goal": "Synthetic historical goal 9"
+    },
+    {
+      "version": 10,
+      "goal": "Synthetic historical goal 10"
+    },
+    {
+      "version": 11,
+      "goal": "Synthetic historical goal 11"
+    },
+    {
+      "version": 12,
+      "goal": "Synthetic historical goal 12"
+    },
+    {
+      "version": 13,
+      "goal": "Synthetic historical goal 13"
+    },
+    {
+      "version": 14,
+      "goal": "Synthetic historical goal 14"
+    },
+    {
+      "version": 15,
+      "goal": "Synthetic historical goal 15"
+    },
+    {
+      "version": 16,
+      "goal": "Synthetic historical goal 16"
+    },
+    {
+      "version": 17,
+      "goal": "Synthetic historical goal 17"
+    },
+    {
+      "version": 18,
+      "goal": "Synthetic historical goal 18"
+    },
+    {
+      "version": 19,
+      "goal": "Synthetic historical goal 19"
+    },
+    {
+      "version": 20,
+      "goal": "Synthetic historical goal 20"
+    },
+    {
+      "version": 21,
+      "goal": "Synthetic historical goal 21"
+    },
+    {
+      "version": 22,
+      "goal": "Synthetic historical goal 22"
+    },
+    {
+      "version": 23,
+      "goal": "Synthetic historical goal 23"
+    },
+    {
+      "version": 24,
+      "goal": "Synthetic historical goal 24"
+    },
+    {
+      "version": 25,
+      "goal": "Synthetic historical goal 25"
+    },
+    {
+      "version": 26,
+      "goal": "Synthetic historical goal 26"
+    },
+    {
+      "version": 27,
+      "goal": "Synthetic historical goal 27"
+    },
+    {
+      "version": 28,
+      "goal": "Synthetic historical goal 28"
+    },
+    {
+      "version": 29,
+      "goal": "Synthetic historical goal 29"
+    },
+    {
+      "version": 30,
+      "goal": "Synthetic historical goal 30"
+    },
+    {
+      "version": 31,
+      "goal": "Synthetic historical goal 31"
+    },
+    {
+      "version": 32,
+      "goal": "Synthetic historical goal 32"
+    },
+    {
+      "version": 33,
+      "goal": "Synthetic historical goal 33"
+    },
+    {
+      "version": 34,
+      "goal": "Synthetic historical goal 34"
+    },
+    {
+      "version": 35,
+      "goal": "Synthetic historical goal 35"
+    },
+    {
+      "version": 36,
+      "goal": "Synthetic historical goal 36"
+    },
+    {
+      "version": 37,
+      "goal": "Synthetic historical goal 37"
+    },
+    {
+      "version": 38,
+      "goal": "Synthetic historical goal 38"
+    },
+    {
+      "version": 39,
+      "goal": "Synthetic historical goal 39"
+    },
+    {
+      "version": 40,
+      "goal": "Synthetic historical goal 40"
+    },
+    {
+      "version": 41,
+      "goal": "Synthetic historical goal 41"
+    },
+    {
+      "version": 42,
+      "goal": "Synthetic historical goal 42"
+    },
+    {
+      "version": 43,
+      "goal": "Synthetic historical goal 43"
+    },
+    {
+      "version": 44,
+      "goal": "Synthetic historical goal 44"
+    },
+    {
+      "version": 45,
+      "goal": "Synthetic historical goal 45"
+    },
+    {
+      "version": 46,
+      "goal": "Synthetic historical goal 46"
+    },
+    {
+      "version": 47,
+      "goal": "Synthetic historical goal 47"
+    },
+    {
+      "version": 48,
+      "goal": "Synthetic historical goal 48"
+    },
+    {
+      "version": 49,
+      "goal": "Synthetic historical goal 49"
+    },
+    {
+      "version": 50,
+      "goal": "Synthetic historical goal 50"
+    },
+    {
+      "version": 51,
+      "goal": "Synthetic historical goal 51"
+    },
+    {
+      "version": 52,
+      "goal": "Synthetic historical goal 52"
+    },
+    {
+      "version": 53,
+      "goal": "Synthetic historical goal 53"
+    },
+    {
+      "version": 54,
+      "goal": "Synthetic historical goal 54"
+    },
+    {
+      "version": 55,
+      "goal": "Synthetic historical goal 55"
+    },
+    {
+      "version": 56,
+      "goal": "Synthetic historical goal 56"
+    },
+    {
+      "version": 57,
+      "goal": "Synthetic historical goal 57"
+    },
+    {
+      "version": 58,
+      "goal": "Synthetic historical goal 58"
+    },
+    {
+      "version": 59,
+      "goal": "Synthetic historical goal 59"
+    },
+    {
+      "version": 60,
+      "goal": "Synthetic historical goal 60"
+    },
+    {
+      "version": 61,
+      "goal": "Synthetic historical goal 61"
+    },
+    {
+      "version": 62,
+      "goal": "Synthetic historical goal 62"
+    },
+    {
+      "version": 63,
+      "goal": "Synthetic historical goal 63"
+    },
+    {
+      "version": 64,
+      "goal": "Synthetic historical goal 64"
+    },
+    {
+      "version": 65,
+      "goal": "Synthetic historical goal 65"
+    },
+    {
+      "version": 66,
+      "goal": "Synthetic historical goal 66"
+    },
+    {
+      "version": 67,
+      "goal": "Synthetic historical goal 67"
+    },
+    {
+      "version": 68,
+      "goal": "Synthetic historical goal 68"
+    },
+    {
+      "version": 69,
+      "goal": "Synthetic historical goal 69"
+    },
+    {
+      "version": 70,
+      "goal": "Synthetic historical goal 70"
+    },
+    {
+      "version": 71,
+      "goal": "Synthetic historical goal 71"
+    },
+    {
+      "version": 72,
+      "goal": "Synthetic historical goal 72"
+    },
+    {
+      "version": 73,
+      "goal": "Synthetic historical goal 73"
+    },
+    {
+      "version": 74,
+      "goal": "Synthetic historical goal 74"
+    },
+    {
+      "version": 75,
+      "goal": "Synthetic historical goal 75"
+    },
+    {
+      "version": 76,
+      "goal": "Synthetic historical goal 76"
+    },
+    {
+      "version": 77,
+      "goal": "Synthetic historical goal 77"
+    },
+    {
+      "version": 78,
+      "goal": "Synthetic historical goal 78"
+    },
+    {
+      "version": 79,
+      "goal": "Synthetic historical goal 79"
+    },
+    {
+      "version": 80,
+      "goal": "Synthetic historical goal 80"
+    },
+    {
+      "version": 81,
+      "goal": "Synthetic historical goal 81"
+    },
+    {
+      "version": 82,
+      "goal": "Synthetic historical goal 82"
+    },
+    {
+      "version": 83,
+      "goal": "Synthetic historical goal 83"
+    },
+    {
+      "version": 84,
+      "goal": "Synthetic historical goal 84"
+    },
+    {
+      "version": 85,
+      "goal": "Synthetic historical goal 85"
+    },
+    {
+      "version": 86,
+      "goal": "Synthetic historical goal 86"
+    },
+    {
+      "version": 87,
+      "goal": "Synthetic historical goal 87"
+    },
+    {
+      "version": 88,
+      "goal": "Synthetic historical goal 88"
+    },
+    {
+      "version": 89,
+      "goal": "Synthetic historical goal 89"
+    },
+    {
+      "version": 90,
+      "goal": "Synthetic historical goal 90"
+    },
+    {
+      "version": 91,
+      "goal": "Synthetic historical goal 91"
+    },
+    {
+      "version": 92,
+      "goal": "Synthetic historical goal 92"
+    },
+    {
+      "version": 93,
+      "goal": "Synthetic historical goal 93"
+    },
+    {
+      "version": 94,
+      "goal": "Synthetic historical goal 94"
+    },
+    {
+      "version": 95,
+      "goal": "Synthetic historical goal 95"
+    },
+    {
+      "version": 96,
+      "goal": "Synthetic historical goal 96"
+    },
+    {
+      "version": 97,
+      "goal": "Synthetic historical goal 97"
+    },
+    {
+      "version": 98,
+      "goal": "Synthetic historical goal 98"
+    },
+    {
+      "version": 99,
+      "goal": "Synthetic historical goal 99"
+    },
+    {
+      "version": 100,
+      "goal": "Synthetic historical goal 100"
+    },
+    {
+      "version": 101,
+      "goal": "Synthetic historical goal 101"
+    },
+    {
+      "version": 102,
+      "goal": "Synthetic historical goal 102"
+    },
+    {
+      "version": 103,
+      "goal": "Synthetic historical goal 103"
+    },
+    {
+      "version": 104,
+      "goal": "Synthetic historical goal 104"
+    },
+    {
+      "version": 105,
+      "goal": "Synthetic historical goal 105"
+    },
+    {
+      "version": 106,
+      "goal": "Synthetic historical goal 106"
+    },
+    {
+      "version": 107,
+      "goal": "Synthetic historical goal 107"
+    },
+    {
+      "version": 108,
+      "goal": "Synthetic historical goal 108"
+    },
+    {
+      "version": 109,
+      "goal": "Synthetic historical goal 109"
+    },
+    {
+      "version": 110,
+      "goal": "Synthetic historical goal 110"
+    },
+    {
+      "version": 111,
+      "goal": "Synthetic historical goal 111"
+    },
+    {
+      "version": 112,
+      "goal": "Synthetic historical goal 112"
+    },
+    {
+      "version": 113,
+      "goal": "Synthetic historical goal 113"
+    },
+    {
+      "version": 114,
+      "goal": "Synthetic historical goal 114"
+    },
+    {
+      "version": 115,
+      "goal": "Synthetic historical goal 115"
+    },
+    {
+      "version": 116,
+      "goal": "Synthetic historical goal 116"
+    },
+    {
+      "version": 117,
+      "goal": "Synthetic historical goal 117"
+    },
+    {
+      "version": 118,
+      "goal": "Synthetic historical goal 118"
+    },
+    {
+      "version": 119,
+      "goal": "Synthetic historical goal 119"
+    },
+    {
+      "version": 120,
+      "goal": "Synthetic historical goal 120"
+    },
+    {
+      "version": 121,
+      "goal": "Synthetic historical goal 121"
+    },
+    {
+      "version": 122,
+      "goal": "Synthetic historical goal 122"
+    },
+    {
+      "version": 123,
+      "goal": "Synthetic historical goal 123"
+    },
+    {
+      "version": 124,
+      "goal": "Synthetic historical goal 124"
+    },
+    {
+      "version": 125,
+      "goal": "Synthetic historical goal 125"
+    },
+    {
+      "version": 126,
+      "goal": "Synthetic historical goal 126"
+    },
+    {
+      "version": 127,
+      "goal": "Synthetic historical goal 127"
+    },
+    {
+      "version": 128,
+      "goal": "Synthetic historical goal 128"
+    },
+    {
+      "version": 129,
+      "goal": "Synthetic historical goal 129"
+    },
+    {
+      "version": 130,
+      "goal": "Synthetic historical goal 130"
+    },
+    {
+      "version": 131,
+      "goal": "Synthetic historical goal 131"
+    },
+    {
+      "version": 132,
+      "goal": "Synthetic historical goal 132"
+    },
+    {
+      "version": 133,
+      "goal": "Synthetic historical goal 133"
+    },
+    {
+      "version": 134,
+      "goal": "Synthetic historical goal 134"
+    },
+    {
+      "version": 135,
+      "goal": "Synthetic historical goal 135"
+    },
+    {
+      "version": 136,
+      "goal": "Synthetic historical goal 136"
+    },
+    {
+      "version": 137,
+      "goal": "Synthetic historical goal 137"
+    },
+    {
+      "version": 138,
+      "goal": "Synthetic historical goal 138"
+    },
+    {
+      "version": 139,
+      "goal": "Synthetic historical goal 139"
+    },
+    {
+      "version": 140,
+      "goal": "Synthetic historical goal 140"
+    },
+    {
+      "version": 141,
+      "goal": "Synthetic historical goal 141"
+    },
+    {
+      "version": 142,
+      "goal": "Synthetic historical goal 142"
+    },
+    {
+      "version": 143,
+      "goal": "Synthetic historical goal 143"
+    },
+    {
+      "version": 144,
+      "goal": "Synthetic historical goal 144"
+    },
+    {
+      "version": 145,
+      "goal": "Synthetic historical goal 145"
+    },
+    {
+      "version": 146,
+      "goal": "Synthetic historical goal 146"
+    },
+    {
+      "version": 147,
+      "goal": "Synthetic historical goal 147"
+    },
+    {
+      "version": 148,
+      "goal": "Synthetic historical goal 148"
+    },
+    {
+      "version": 149,
+      "goal": "Synthetic historical goal 149"
+    },
+    {
+      "version": 150,
+      "goal": "Synthetic historical goal 150"
+    },
+    {
+      "version": 151,
+      "goal": "Synthetic historical goal 151"
+    },
+    {
+      "version": 152,
+      "goal": "Synthetic historical goal 152"
+    },
+    {
+      "version": 153,
+      "goal": "Synthetic historical goal 153"
+    },
+    {
+      "version": 154,
+      "goal": "Synthetic historical goal 154"
+    },
+    {
+      "version": 155,
+      "goal": "Synthetic historical goal 155"
+    },
+    {
+      "version": 156,
+      "goal": "Synthetic historical goal 156"
+    },
+    {
+      "version": 157,
+      "goal": "Synthetic historical goal 157"
+    },
+    {
+      "version": 158,
+      "goal": "Synthetic historical goal 158"
+    },
+    {
+      "version": 159,
+      "goal": "Synthetic historical goal 159"
+    },
+    {
+      "version": 160,
+      "goal": "Synthetic historical goal 160"
+    },
+    {
+      "version": 161,
+      "goal": "Synthetic historical goal 161"
+    },
+    {
+      "version": 162,
+      "goal": "Synthetic historical goal 162"
+    },
+    {
+      "version": 163,
+      "goal": "Synthetic historical goal 163"
+    },
+    {
+      "version": 164,
+      "goal": "Synthetic historical goal 164"
+    },
+    {
+      "version": 165,
+      "goal": "Synthetic historical goal 165"
+    },
+    {
+      "version": 166,
+      "goal": "Synthetic historical goal 166"
+    },
+    {
+      "version": 167,
+      "goal": "Synthetic historical goal 167"
+    },
+    {
+      "version": 168,
+      "goal": "Synthetic historical goal 168"
+    },
+    {
+      "version": 169,
+      "goal": "Synthetic historical goal 169"
+    },
+    {
+      "version": 170,
+      "goal": "Synthetic historical goal 170"
+    },
+    {
+      "version": 171,
+      "goal": "Synthetic historical goal 171"
+    },
+    {
+      "version": 172,
+      "goal": "Synthetic historical goal 172"
+    },
+    {
+      "version": 173,
+      "goal": "Synthetic historical goal 173"
+    },
+    {
+      "version": 174,
+      "goal": "Synthetic historical goal 174"
+    },
+    {
+      "version": 175,
+      "goal": "Synthetic historical goal 175"
+    },
+    {
+      "version": 176,
+      "goal": "Synthetic historical goal 176"
+    },
+    {
+      "version": 177,
+      "goal": "Synthetic historical goal 177"
+    },
+    {
+      "version": 178,
+      "goal": "Synthetic historical goal 178"
+    },
+    {
+      "version": 179,
+      "goal": "Synthetic historical goal 179"
+    },
+    {
+      "version": 180,
+      "goal": "Synthetic historical goal 180"
+    },
+    {
+      "version": 181,
+      "goal": "Synthetic historical goal 181"
+    },
+    {
+      "version": 182,
+      "goal": "Synthetic historical goal 182"
+    },
+    {
+      "version": 183,
+      "goal": "Synthetic historical goal 183"
+    },
+    {
+      "version": 184,
+      "goal": "Synthetic historical goal 184"
+    },
+    {
+      "version": 185,
+      "goal": "Synthetic historical goal 185"
+    },
+    {
+      "version": 186,
+      "goal": "Synthetic historical goal 186"
+    },
+    {
+      "version": 187,
+      "goal": "Synthetic historical goal 187"
+    },
+    {
+      "version": 188,
+      "goal": "Synthetic historical goal 188"
+    },
+    {
+      "version": 189,
+      "goal": "Synthetic historical goal 189"
+    },
+    {
+      "version": 190,
+      "goal": "Synthetic historical goal 190"
+    },
+    {
+      "version": 191,
+      "goal": "Synthetic historical goal 191"
+    },
+    {
+      "version": 192,
+      "goal": "Synthetic historical goal 192"
+    },
+    {
+      "version": 193,
+      "goal": "Synthetic historical goal 193"
+    },
+    {
+      "version": 194,
+      "goal": "Synthetic historical goal 194"
+    },
+    {
+      "version": 195,
+      "goal": "Synthetic historical goal 195"
+    },
+    {
+      "version": 196,
+      "goal": "Synthetic historical goal 196"
+    },
+    {
+      "version": 197,
+      "goal": "Synthetic historical goal 197"
+    },
+    {
+      "version": 198,
+      "goal": "Synthetic historical goal 198"
+    },
+    {
+      "version": 199,
+      "goal": "Synthetic historical goal 199"
+    },
+    {
+      "version": 200,
+      "goal": "Synthetic historical goal 200"
+    }
+  ],
+  "repeatedEvents": [
+    {
+      "idempotency_key": "same-synthetic-event",
+      "version": 1
+    },
+    {
+      "idempotency_key": "same-synthetic-event",
+      "version": 1
+    },
+    {
+      "idempotency_key": "same-synthetic-event",
+      "version": 1
+    },
+    {
+      "idempotency_key": "same-synthetic-event",
+      "version": 1
+    },
+    {
+      "idempotency_key": "same-synthetic-event",
+      "version": 1
+    },
+    {
+      "idempotency_key": "same-synthetic-event",
+      "version": 1
+    },
+    {
+      "idempotency_key": "same-synthetic-event",
+      "version": 1
+    },
+    {
+      "idempotency_key": "same-synthetic-event",
+      "version": 1
+    },
+    {
+      "idempotency_key": "same-synthetic-event",
+      "version": 1
+    },
+    {
+      "idempotency_key": "same-synthetic-event",
+      "version": 1
+    }
+  ],
+  "note": "IDs are synthetic and unseeded. Runtime protocol names are semantic labels, not wire constants. Use existing fixtures/TestApiClient to seed isolated storage; never send to a live workspace."
+}

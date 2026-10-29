@@ -1,0 +1,30 @@
+{
+  "sourceHead": "8305976793097a3d38e3a2f29bc1626abe76130d",
+  "scope": "runtime",
+  "results": [
+    {
+      "name": "runtime",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "<workdir>/multica/../tools-cache/go/bin/go",
+        "-C",
+        "server",
+        "test",
+        "./internal/daemon",
+        "-run",
+        "^TestW54Runtime",
+        "-count=1",
+        "-json"
+      ],
+      "exit": 0,
+      "counts": {
+        "pass": 9,
+        "fail": 0,
+        "skip": 0
+      },
+      "status": "baseline_pass"
+    }
+  ]
+}

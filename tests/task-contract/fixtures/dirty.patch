@@ -1,0 +1,7 @@
+diff --git a/src/synthetic.txt b/src/synthetic.txt
+index bb29311..cde5b92 100644
+--- a/src/synthetic.txt
++++ b/src/synthetic.txt
+@@ -1 +1 @@
+-synthetic source B
++synthetic source B plus uncommitted change

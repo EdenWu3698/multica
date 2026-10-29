@@ -1,0 +1,4 @@
+◇ injected env (17) from .env.worktree // tip: ⌘ suppress logs { quiet: true }
+Listing tests:
+  [chromium] › task-contract.spec.ts:6:3 › W54 TC-16/18 isolated Web entry › login, create, comment and refresh preserve the same synthetic task
+Total: 1 test in 1 file

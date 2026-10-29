@@ -1,0 +1,30 @@
+{
+  "sourceHead": "8305976793097a3d38e3a2f29bc1626abe76130d",
+  "scope": "server",
+  "results": [
+    {
+      "name": "server",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "<workdir>/multica/../tools-cache/go/bin/go",
+        "-C",
+        "server",
+        "test",
+        "./cmd/server",
+        "-run",
+        "^TestW54Contract",
+        "-count=1",
+        "-json"
+      ],
+      "exit": 1,
+      "counts": {
+        "pass": 3,
+        "fail": 57,
+        "skip": 0
+      },
+      "status": "failed_requires_classification"
+    }
+  ]
+}
