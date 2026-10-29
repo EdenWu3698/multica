@@ -1,0 +1,4 @@
+JSON report written to <checkout>/tests/task-contract/evidence/wire-final/core.json
+undefined
+<checkout>/packages/core:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run api/task-contract-acceptance.test.ts --reporter=json --outputFile=<checkout>/tests/task-contract/evidence/wire-final/core.json

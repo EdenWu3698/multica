@@ -1,0 +1,5 @@
+◇ injected env (17) from .env.worktree // tip: ⌘ override existing { override: true }
+Listing tests:
+  [chromium] › task-contract.spec.ts:6:3 › W54 TC-16/18 isolated Web entry › login, create, comment and refresh preserve the same synthetic task
+  [chromium] › task-contract.spec.ts:31:3 › W54 TC-16/18 isolated Web entry › TC-16 loaded task exposes an explicit contract authoring action
+Total: 2 tests in 1 file
