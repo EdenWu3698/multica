@@ -770,6 +770,17 @@ describe("IssueDetail (shared)", () => {
     }));
   });
 
+  it("W54 TC-16 offers an explicit contract authoring entry from the loaded issue", async () => {
+    renderIssueDetail();
+    await screen.findByText("Implement authentication");
+    await screen.findByText("Started working on this");
+    // Assert the user's entry point, not an unimplemented component import.
+    const entry = screen.queryByRole("button", { name: /(?:create|edit|task).*contract|合同/i })
+      ?? screen.queryByRole("link", { name: /(?:create|edit|task).*contract|合同/i });
+    expect(entry, "A loaded issue must expose contract authoring (W54-SPEC-0.1 §6.2)").not.toBeNull();
+    expect(mockApiObj.rerunIssue).not.toHaveBeenCalled();
+  });
+
   it("counts comment files as deliverables, a re-upload once as v2, never the description's (MUL-7649)", async () => {
     const file = (id: string, over: Partial<Attachment>): Attachment => ({
       id,

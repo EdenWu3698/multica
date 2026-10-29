@@ -11,13 +11,14 @@ const selections = {
   core: ["pnpm", ["--filter", "@multica/core", "exec", "vitest", "run", "api/task-contract-acceptance.test.ts", "--reporter=json", `--outputFile=${join(out, "core.json")}`]],
   runtime: ["bash", ["scripts/go-test-with-agent-cli-guard.sh", "--", env.W54_GO ?? "go", "-C", "server", "test", "./internal/daemon", "-run", "^TestW54Runtime", "-count=1", "-json"]],
   server: ["bash", ["scripts/go-test-with-agent-cli-guard.sh", "--", env.W54_GO ?? "go", "-C", "server", "test", "./cmd/server", "-run", "^TestW54Contract", "-count=1", "-json"]],
-  views: ["pnpm", ["--filter", "@multica/views", "exec", "vitest", "run", "issues/components/revision-conflict-compare.test.tsx", "issues/components/source-context-viewer.test.tsx", "issues/actions/run-confirm-gate.test.ts", "--reporter=json", `--outputFile=${join(out, "views.json")}`]],
+  recovery: ["bash", ["scripts/go-test-with-agent-cli-guard.sh", "--", env.W54_GO ?? "go", "-C", "server", "test", "./internal/handler", "-run", "^TestStartClaim(LostResponseAndOwnership|ReclaimedGeneration|ConcurrentReplay|CancellationRace|InvalidBodiesAndLegacy|WirePrecision)$", "-count=1", "-json"]],
+  views: ["pnpm", ["--filter", "@multica/views", "exec", "vitest", "run", "issues/components/issue-detail.test.tsx", "issues/components/revision-conflict-compare.test.tsx", "issues/components/source-context-viewer.test.tsx", "issues/actions/run-confirm-gate.test.ts", "--reporter=json", `--outputFile=${join(out, "views.json")}`]],
 };
 if (scope !== "all" && !Object.hasOwn(selections, scope)) throw new Error(`Unknown scope: ${scope}`);
 const summary = [];
 for (const [name, [command, args]] of Object.entries(selections)) {
   if (scope !== "all" && scope !== name) continue;
-  if (name === "server") {
+  if (["server", "recovery"].includes(name)) {
     const url = env.DATABASE_URL ? new URL(env.DATABASE_URL) : null;
     if (!url || !["localhost", "127.0.0.1", "[::1]"].includes(url.hostname) || !/^\/multica_wush54_[a-z0-9_]+$/.test(url.pathname)) {
       summary.push({ name, status: "environment_blocked", reason: "explicit isolated multica_wush54_ DATABASE_URL required" });
@@ -30,7 +31,7 @@ for (const [name, [command, args]] of Object.entries(selections)) {
   writeFileSync(join(out, `${name}.stderr`), (result.stderr ?? "").replaceAll(root, "<checkout>"));
   let counts;
   try {
-    if (["server", "runtime"].includes(name)) {
+    if (["server", "runtime", "recovery"].includes(name)) {
       const events = stdout.split("\n").filter(Boolean).map((line) => JSON.parse(line));
       const results = events.filter((event) => event.Test && ["pass", "fail", "skip"].includes(event.Action));
       const leaves = results.filter((event) => !results.some((other) => other.Test.startsWith(event.Test + "/")));
@@ -45,6 +46,7 @@ for (const [name, [command, args]] of Object.entries(selections)) {
     status: !ran || result.error ? "environment_or_harness_error" : counts.skip ? "incomplete_with_skips" : result.status === 0 ? "baseline_pass" : "failed_requires_classification" });
 }
 const head = spawnSync("git", ["rev-parse", "HEAD"], { cwd: root, encoding: "utf8" }).stdout.trim();
-writeFileSync(join(out, "summary.json"), JSON.stringify({ sourceHead: head, scope, results: summary }, null, 2) + "\n");
+const worktree = spawnSync("git", ["status", "--porcelain", "--untracked-files=normal"], { cwd: root, encoding: "utf8" }).stdout.trim();
+writeFileSync(join(out, "summary.json"), JSON.stringify({ sourceHead: head, worktree, scope, results: summary }, null, 2) + "\n");
 console.log(JSON.stringify(summary, null, 2));
 if (summary.some((entry) => entry.status !== "baseline_pass")) process.exitCode = 1;

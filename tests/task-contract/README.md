@@ -1,3 +1,5 @@
+> 2026-10-29 续测状态：整项已恢复 `in_progress`。本文件保留首轮历史记录；当前范围、结果和逐项待接入清单以 [CONTINUATION.md](CONTINUATION.md) 为准。首轮的“整项 blocked”结论已被 Asurada 撤销，不能据此停工。
+
 # WUSH-54 正式测试首轮证据（部分交付）
 
 本目录由 MOSS 维护。依据 W54-SPEC-0.1 与 WUSH-54 revision 11 已批准范围；不修改产品实现、Schema、迁移、生成客户端或部署脚本。**不是全部 TC 验收完成，不得据此启动 JARVIS/WUSH-56。**

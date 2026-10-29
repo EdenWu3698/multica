@@ -106,9 +106,12 @@ func (f w54Fixture) handoff(t *testing.T, version int, key string, want ...int) 
 
 func (f w54Fixture) noNewRuns(t *testing.T) {
 	t.Helper()
-	before := f.fx.Count(t, "SELECT count(*) FROM agent_task_queue WHERE issue_id = $1", f.issueID)
+	// Observe the whole isolated workspace: a downstream run can target a
+	// different issue (or no issue) and must not escape the negative assertion.
+	const query = `SELECT count(*) FROM agent_task_queue q JOIN agent a ON a.id = q.agent_id WHERE a.workspace_id = $1`
+	before := f.fx.Count(t, query, testWorkspaceID)
 	t.Cleanup(func() {
-		after := f.fx.Count(t, "SELECT count(*) FROM agent_task_queue WHERE issue_id = $1", f.issueID)
+		after := f.fx.Count(t, query, testWorkspaceID)
 		if after != before {
 			t.Errorf("N: run count changed from %d to %d", before, after)
 		}

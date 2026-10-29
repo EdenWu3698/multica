@@ -86,6 +86,23 @@ beforeEach(() => {
 });
 
 describe("SourceContextBadge", () => {
+  it("W54 TC-17 leaves 200 historical bodies closed until the reader requests them", async () => {
+    const context = structuredClone(baseContext);
+    context.snapshot.comment_thread = Array.from({ length: 200 }, (_, index) => ({
+      ...baseContext.snapshot.comment_thread[0]!,
+      id: index === 0 ? "selected" : `history-${index}`,
+      parent_id: index === 0 ? null : "selected",
+      content: `W54 historical instruction ${index}: synthetic evidence only`,
+    }));
+    renderBadge(context);
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    expect(screen.queryByText(/W54 historical instruction/)).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Context snapshot" }));
+    await screen.findByRole("dialog");
+    expect(screen.getByText("W54 historical instruction 0: synthetic evidence only")).toBeVisible();
+    expect(navigationPush).not.toHaveBeenCalled();
+  });
+
   it("groups the parent relation, progress, and snapshot action into one quiet summary", () => {
     const parentIssue = {
       id: "source-issue",
