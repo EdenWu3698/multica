@@ -1,0 +1,31 @@
+{
+  "sourceHead": "ea108a1e8fe5d189ddfd86237134379e2ca02b03",
+  "worktree": "?? tests/task-contract/evidence/continuation-e2e-collection.txt\n?? tests/task-contract/evidence/continuation-fixed/\n?? tests/task-contract/evidence/continuation-lint.txt\n?? tests/task-contract/evidence/continuation-preview-preflight.txt\n?? tests/task-contract/evidence/continuation-recovery-first/\n?? tests/task-contract/evidence/continuation-runtime-first/\n?? tests/task-contract/evidence/continuation-runtime-observed/\n?? tests/task-contract/evidence/continuation-server-first/\n?? tests/task-contract/evidence/continuation-typecheck.txt\n?? tests/task-contract/evidence/continuation-ui-harness-first.json\n?? tests/task-contract/evidence/continuation-views-first/",
+  "scope": "recovery",
+  "results": [
+    {
+      "name": "recovery",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "<checkout>/../tools-cache/go/bin/go",
+        "-C",
+        "server",
+        "test",
+        "./internal/handler",
+        "-run",
+        "^TestStartClaim(LostResponseAndOwnership|ReclaimedGeneration|ConcurrentReplay|CancellationRace|InvalidBodiesAndLegacy|WirePrecision)$",
+        "-count=1",
+        "-json"
+      ],
+      "exit": 0,
+      "counts": {
+        "pass": 10,
+        "fail": 0,
+        "skip": 0
+      },
+      "status": "baseline_pass"
+    }
+  ]
+}

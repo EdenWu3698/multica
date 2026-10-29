@@ -1,0 +1,3 @@
+
+> @multica/views@0.0.0 typecheck <checkout>/packages/views
+> tsc --noEmit

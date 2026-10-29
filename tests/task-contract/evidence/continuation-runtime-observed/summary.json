@@ -1,0 +1,31 @@
+{
+  "sourceHead": "d2038e096eff7cf4963e1ba7912efa6a4d3891cc",
+  "worktree": "M e2e/task-contract.spec.ts\n M packages/views/issues/components/issue-detail.test.tsx\n M packages/views/issues/components/source-context-viewer.test.tsx\n M server/cmd/server/task_contract_acceptance_test.go\n M server/internal/daemon/task_contract_acceptance_test.go\n M tests/task-contract/run.mjs\n?? server/cmd/server/task_contract_continuation_test.go\n?? tests/task-contract/evidence/continuation-e2e-collection.txt\n?? tests/task-contract/evidence/continuation-preview-preflight.txt\n?? tests/task-contract/evidence/continuation-recovery-first/\n?? tests/task-contract/evidence/continuation-runtime-first/\n?? tests/task-contract/evidence/continuation-runtime-observed/\n?? tests/task-contract/evidence/continuation-server-first/\n?? tests/task-contract/evidence/continuation-ui-harness-first.json\n?? tests/task-contract/evidence/continuation-views-first/",
+  "scope": "runtime",
+  "results": [
+    {
+      "name": "runtime",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "<checkout>/../tools-cache/go/bin/go",
+        "-C",
+        "server",
+        "test",
+        "./internal/daemon",
+        "-run",
+        "^TestW54Runtime",
+        "-count=1",
+        "-json"
+      ],
+      "exit": 0,
+      "counts": {
+        "pass": 18,
+        "fail": 0,
+        "skip": 0
+      },
+      "status": "baseline_pass"
+    }
+  ]
+}

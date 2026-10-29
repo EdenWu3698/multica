@@ -1,0 +1,2189 @@
+{
+  "tested_source_sha": "ea108a1e8fe5d189ddfd86237134379e2ca02b03",
+  "product_base": "8305976793097a3d38e3a2f29bc1626abe76130d",
+  "previous_test_head": "d2038e096eff7cf4963e1ba7912efa6a4d3891cc",
+  "counts": {
+    "fail": 96,
+    "pass": 214,
+    "skip": 0
+  },
+  "checks": {
+    "views_typecheck_exit": 0,
+    "changed_views_eslint_exit": 0,
+    "playwright_collection_tests": 2,
+    "browser_tests_executed": 0,
+    "preview_preflight_exit": 2
+  },
+  "tests": [
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC01_MissingIsMachineReadable",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC01_MemberPublishReadAccept",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC02_RequiredFields/schema_version/missing",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC02_RequiredFields/schema_version/null",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC02_RequiredFields/goal/missing",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC02_RequiredFields/goal/null",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC02_RequiredFields/goal_sources/missing",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC02_RequiredFields/goal_sources/null",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC02_RequiredFields/allowed_actions/missing",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC02_RequiredFields/allowed_actions/null",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC02_RequiredFields/prohibitions/missing",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC02_RequiredFields/prohibitions/null",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC02_RequiredFields/acceptance/missing",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC02_RequiredFields/acceptance/null",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC02_RequiredFields/effective_inputs/missing",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC02_RequiredFields/effective_inputs/null",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC02_RequiredFields/confirmed_facts/missing",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC02_RequiredFields/confirmed_facts/null",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC02_RequiredFields/assumptions/missing",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC02_RequiredFields/assumptions/null",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC02_RequiredFields/versions/missing",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC02_RequiredFields/versions/null",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC02_RequiredFields/deliverables/missing",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC02_RequiredFields/deliverables/null",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC02_RequiredFields/open_questions/missing",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC02_RequiredFields/open_questions/null",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC02_RequiredFields/stop_conditions/missing",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC02_RequiredFields/stop_conditions/null",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC02_RequiredFields/next_owner/missing",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC02_RequiredFields/next_owner/null",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC02_RequiredFields/return_to/missing",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC02_RequiredFields/return_to/null",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC02_RequiredFields/decision_sources/missing",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC02_RequiredFields/decision_sources/null",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC02_RequiredFields/change/missing",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC02_RequiredFields/change/null",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC03_ExplicitEmptyOptionalArrays",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC03_RequiredCollectionsCannotBeEmpty/goal_sources",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC03_RequiredCollectionsCannotBeEmpty/allowed_actions",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC03_RequiredCollectionsCannotBeEmpty/acceptance",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC03_RequiredCollectionsCannotBeEmpty/effective_inputs",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC03_RequiredCollectionsCannotBeEmpty/deliverables",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC03_RequiredCollectionsCannotBeEmpty/stop_conditions",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC03_RequiredCollectionsCannotBeEmpty/decision_sources",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC04_BlockingQuestion",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC05_OldVersionAndImmutableHistory",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC06_ConcurrentPublish",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC07_CommentRevisionVersusContent",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC08_FloatingCodeBaseline",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC09_UnknownActionAndReceiver/action",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC09_UnknownActionAndReceiver/receiver",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC10_AnonymousCannotRead",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC11_IdempotentMemberHandoff",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC13_AdoptionCannotBeUnsetByOrdinaryUpdate",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC14_ActiveRunBlocksPublish/dispatched",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC14_ActiveRunBlocksPublish/running",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC14_ActiveRunBlocksPublish/waiting_local_directory",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC17_OrdinaryIssueBaseline",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC18_SeparateRequestsPreserveSnapshot",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC17_ReadLatencyBaseline",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC02_BlankAndNestedRequirements/goal_whitespace",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC02_BlankAndNestedRequirements/goal_placeholder",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC02_BlankAndNestedRequirements/prohibition_blank",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC02_BlankAndNestedRequirements/change_reason_blank",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC02_BlankAndNestedRequirements/change_sources_empty",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC02_BlankAndNestedRequirements/acceptance_assertion_blank",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC02_BlankAndNestedRequirements/acceptance_evidence_empty",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC02_BlankAndNestedRequirements/action_resources_empty",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC02_BlankAndNestedRequirements/action_acceptance_unknown",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC02_BlankAndNestedRequirements/action_operation_unknown",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC02_BlankAndNestedRequirements/action_id_duplicate",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC02_BlankAndNestedRequirements/deliverable_acceptance_unknown",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC02_BlankAndNestedRequirements/document_basis_empty",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC02_BlankAndNestedRequirements/no_code_reason_blank",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC02_BlankAndNestedRequirements/next_owner_unresolved",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC02_BlankAndNestedRequirements/return_to_invalid_id",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC02_PublishRequiresBothConcurrencyPreconditions/expected_version",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC02_PublishRequiresBothConcurrencyPreconditions/expected_issue_revision",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC04_BlockingAndNonblockingAssumptions/blocking",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC04_BlockingAndNonblockingAssumptions/nonblocking",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC09_DeclaredResourceBoundary/outside_directory",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC09_DeclaredResourceBoundary/parent_escape",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC09_DeclaredResourceBoundary/normalized_escape",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC09_DeclaredResourceBoundary/absolute_path",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC09_DeclaredResourceBoundary/glob_not_supported",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC09_DeclaredResourceBoundary/deny_overrides_allow",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC10_CrossWorkspaceReadBaseline",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC10_RevokedMemberCannotReadContract",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC11_SameKeyDifferentPayload",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC10_RequestBodyCannotImpersonateReceiver",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC10_RevocationPrecedesIdempotencyLookup",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC13_LegacyStartCannotBypassAdoption/dispatched",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC13_LegacyStartCannotBypassAdoption/waiting_local_directory",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC14_TerminalRunAllowsExplicitNewVersion/completed",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC14_TerminalRunAllowsExplicitNewVersion/failed",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC14_TerminalRunAllowsExplicitNewVersion/cancelled",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC13_ClaimEntrypointsRequireCurrentAdmission/single/ordinary_control",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC13_ClaimEntrypointsRequireCurrentAdmission/single/adopted_missing_binding",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC13_ClaimEntrypointsRequireCurrentAdmission/batch/ordinary_control",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC13_ClaimEntrypointsRequireCurrentAdmission/batch/adopted_missing_binding",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC13_ClaimEntrypointsRequireCurrentAdmission/legacy_batch/ordinary_control",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "server",
+      "test": "TestW54Contract_TC13_ClaimEntrypointsRequireCurrentAdmission/legacy_batch/adopted_missing_binding",
+      "result": "fail",
+      "classification": "contract_api_entry_missing_later_assertions_unreached",
+      "evidence": "server/server.stdout"
+    },
+    {
+      "suite": "runtime",
+      "test": "TestW54Runtime_TC15_RefusalHasNoLocalExecution/contract_stale",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "runtime/runtime.stdout"
+    },
+    {
+      "suite": "runtime",
+      "test": "TestW54Runtime_TC15_RefusalHasNoLocalExecution/source_changed",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "runtime/runtime.stdout"
+    },
+    {
+      "suite": "runtime",
+      "test": "TestW54Runtime_TC15_RefusalHasNoLocalExecution/input_version_mismatch",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "runtime/runtime.stdout"
+    },
+    {
+      "suite": "runtime",
+      "test": "TestW54Runtime_TC15_RefusalHasNoLocalExecution/contract_out_of_scope",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "runtime/runtime.stdout"
+    },
+    {
+      "suite": "runtime",
+      "test": "TestW54Runtime_TC15_RefusalHasNoLocalExecution/contract_protocol_unsupported",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "runtime/runtime.stdout"
+    },
+    {
+      "suite": "runtime",
+      "test": "TestW54Runtime_TC15_RefusalHasNoLocalExecution/blocking_question",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "runtime/runtime.stdout"
+    },
+    {
+      "suite": "runtime",
+      "test": "TestW54Runtime_TC15_RefusalHasNoLocalExecution/permission_denied",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "runtime/runtime.stdout"
+    },
+    {
+      "suite": "runtime",
+      "test": "TestW54Runtime_TC15_RefusalHasNoLocalExecution/validation_unavailable",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "runtime/runtime.stdout"
+    },
+    {
+      "suite": "runtime",
+      "test": "TestW54Runtime_TC15_RefusalHasNoLocalExecution/positive_probe_control",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "runtime/runtime.stdout"
+    },
+    {
+      "suite": "runtime",
+      "test": "TestW54Runtime_TC15_RefusalHasNoLocalExecution/resumed_contract_stale",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "runtime/runtime.stdout"
+    },
+    {
+      "suite": "runtime",
+      "test": "TestW54Runtime_TC15_RefusalHasNoLocalExecution/resumed_validation_unavailable",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "runtime/runtime.stdout"
+    },
+    {
+      "suite": "runtime",
+      "test": "TestW54Runtime_TC15_RefusalHasNoLocalExecution/claimed_contract_stale",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "runtime/runtime.stdout"
+    },
+    {
+      "suite": "runtime",
+      "test": "TestW54Runtime_TC15_RefusalHasNoLocalExecution/resumed_claimed_contract_stale",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "runtime/runtime.stdout"
+    },
+    {
+      "suite": "runtime",
+      "test": "TestW54Runtime_TC15_RefusalHasNoLocalExecution/authentication_revoked",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "runtime/runtime.stdout"
+    },
+    {
+      "suite": "runtime",
+      "test": "TestW54Runtime_TC15_RefusalHasNoLocalExecution/contract_missing",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "runtime/runtime.stdout"
+    },
+    {
+      "suite": "runtime",
+      "test": "TestW54Runtime_TC15_RefusalHasNoLocalExecution/contract_incomplete",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "runtime/runtime.stdout"
+    },
+    {
+      "suite": "runtime",
+      "test": "TestW54Runtime_TC15_RefusalHasNoLocalExecution/unknown_rejection",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "runtime/runtime.stdout"
+    },
+    {
+      "suite": "runtime",
+      "test": "TestW54Runtime_TC15_RefusalHasNoLocalExecution/response_lost_result_unknown",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "runtime/runtime.stdout"
+    },
+    {
+      "suite": "recovery",
+      "test": "TestStartClaimLostResponseAndOwnership/dispatched",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "recovery/recovery.stdout"
+    },
+    {
+      "suite": "recovery",
+      "test": "TestStartClaimLostResponseAndOwnership/waiting_local_directory",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "recovery/recovery.stdout"
+    },
+    {
+      "suite": "recovery",
+      "test": "TestStartClaimReclaimedGeneration",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "recovery/recovery.stdout"
+    },
+    {
+      "suite": "recovery",
+      "test": "TestStartClaimConcurrentReplay",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "recovery/recovery.stdout"
+    },
+    {
+      "suite": "recovery",
+      "test": "TestStartClaimCancellationRace/replay=false",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "recovery/recovery.stdout"
+    },
+    {
+      "suite": "recovery",
+      "test": "TestStartClaimCancellationRace/replay=true",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "recovery/recovery.stdout"
+    },
+    {
+      "suite": "recovery",
+      "test": "TestStartClaimInvalidBodiesAndLegacy",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "recovery/recovery.stdout"
+    },
+    {
+      "suite": "recovery",
+      "test": "TestStartClaimWirePrecision/UTC",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "recovery/recovery.stdout"
+    },
+    {
+      "suite": "recovery",
+      "test": "TestStartClaimWirePrecision/UTC+08",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "recovery/recovery.stdout"
+    },
+    {
+      "suite": "recovery",
+      "test": "TestStartClaimWirePrecision/UTC-07",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "recovery/recovery.stdout"
+    },
+    {
+      "suite": "views",
+      "test": "resolveStatusCategory prefers the category the payload carries",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "resolveStatusCategory resolves a built-in key without a catalog",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "resolveStatusCategory resolves a custom key through the catalog",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "resolveStatusCategory answers null — never a guess — for a custom key nothing can resolve",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "runConfirmIntent — assign confirms when the issue is not parked",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "runConfirmIntent — assign applies directly for a parked issue (built-in backlog) — assigning there never starts a run",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "runConfirmIntent — assign confirms when the issue's own category is unresolvable",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "runConfirmIntent — assign applies directly for a member assignee",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "runConfirmIntent — promote confirms the promotion (built-in todo)",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "runConfirmIntent — promote confirms the promotion (custom Todo-category status)",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "runConfirmIntent — promote confirms the promotion (custom unstarted target is not parked)",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "runConfirmIntent — promote confirms the promotion (a non-todo target that still starts a run)",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "runConfirmIntent — promote confirms the promotion (a custom in_review target)",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "runConfirmIntent — promote confirms when unresolvable origin leaves it unknown whether a run starts",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "runConfirmIntent — promote confirms when unresolvable target leaves it unknown whether a run starts",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "runConfirmIntent — promote applies directly when no run starts (no owner)",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "runConfirmIntent — promote applies directly when no run starts (member owner)",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "runConfirmIntent — promote applies directly when no run starts (already active)",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "runConfirmIntent — promote applies directly when no run starts (closing the issue)",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "runConfirmIntent — promote applies directly when no run starts (cancelling the issue)",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "runConfirmIntent — promote applies directly when no run starts (custom unstarted origin has no promotion trigger)",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "runConfirmIntent — promote applies directly when no run starts (the same status again)",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) passes the issue's agent assignment to the local-directory hint",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) W54 TC-16 offers an explicit contract authoring entry from the loaded issue",
+      "result": "fail",
+      "classification": "contract_ui_entry_missing",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) counts comment files as deliverables, a re-upload once as v2, never the description's (MUL-7649)",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) opens source-context creation from both a root comment and a reply",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) does not offer source-context creation for system comments",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) shows loading skeleton while data is loading",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) gives the skeleton the same horizontal gutters as the loaded column",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) wires the description selection toolbar to annotation collection",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) renders issue title and description after loading",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) reconciles a cached list snapshot so source context appears on first entry",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) opts the description editor into the unmount flush",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) remounts the eager description on issue switch without carrying stale content",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) renders the issue title leaf as a link to the issue detail page",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) omits the project breadcrumb segment when the issue has no project_id",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) renders the project breadcrumb segment when the issue belongs to a project",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) renders properties sidebar with all core rows plus set optional rows",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) hides every optional property row when none are set",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) keeps the Properties header free of add and settings buttons",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) adds an optional field from the inline Add property row and closes the popover",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) uses a non-resizable layout with the sidebar sheet closed by default on mobile",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) keeps the peek's host controls while the issue is loading",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) keeps the peek's host controls when the issue cannot be loaded",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) renders the peek variant as one column with property pills and host actions",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) pins the comment composer to the scroll viewport on a wide screen",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) lets the composer ride the end of the timeline on mobile",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) realigns after Virtuoso measures the newly posted row",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) keeps metadata collapsed by default when the bag has keys",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) expands metadata inline from the shared sidebar header",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) hides the Metadata button entirely when the bag is empty",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) keeps execution in an agent block before and after its persisted reply arrives",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) places one coalesced queued block after the batch's latest reply",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) keeps the running block after its delivered comment and one queued block after later replies",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) shows an assignment reply once in its run slot when posted under null",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) shows an assignment reply once in its run slot when posted under comment-1",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) keeps each queued run after its request and moves it in place to its reply's time",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) keeps a downstream run in the thread after its triggering agent reply is projected there",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) orders thread replies by send time and quotes the request a late reply answers",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) keeps a failed run outside the user reply that triggered it",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) keeps a cancelled run outside the user reply that triggered it",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) jumps from a header chip row to the run's block in its thread",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) a run's failure notice (MUL-7692) renders the run block in the notice's thread slot and retries that run",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) a run's failure notice (MUL-7692) renders a top-level notice as the run block",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) a run's failure notice (MUL-7692) keeps a replied-to notice as its thread, without the raw body",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) orders the Details section after the execution log",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) shows 'not found' message when issue does not exist",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) shows 'Back' button when issue is not found and no onDelete prop",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) renders comments from timeline",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) does not re-render comment cards when unrelated page state changes",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) prefers timeline identity when the actor is absent from the member directory",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) reruns the source task from an agent failure comment",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) does not show retry for child-done system comments",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) does not show retry for successful agent task comments",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) does not show retry for agent system comments without a source task",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) collapses non-trailing activity blocks and expands the last one by default",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) links a duplicate mark to the issue it names",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) explains PR merge automation activity",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) renders activity rows with unknown status values without crashing",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) paints a status-change activity in the custom status's own colour",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) leaves a built-in status-change activity on its semantic token colour",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) truncates the trailing activity block to the most recent 8 entries with a show-more toggle",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) does not show the show-more toggle when the trailing block has 8 or fewer entries",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) expanding a non-trailing block shows every entry — only the trailing block truncates older ones",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) highlightCommentId scroll-to-comment folds an assignment reply with its resolved parent and unfolds that thread for a notification",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) highlightCommentId scroll-to-comment unfolds an assignment run with a resolved root when a notification targets a hidden reply",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) highlightCommentId scroll-to-comment unfolds an assignment run with a resolved reply when a notification targets a hidden reply",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) highlightCommentId scroll-to-comment lands on the reply above a deleted one when a notification targets it",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) highlightCommentId scroll-to-comment scrolls to the highlighted comment after both issue and timeline finish loading",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) highlightCommentId scroll-to-comment highlights only the target root comment, not the whole thread",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) highlightCommentId scroll-to-comment still scrolls when the timeline is ready before the issue (regression for inbox click)",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) highlightCommentId scroll-to-comment auto-expands a folded resolved thread when deep-link target is a reply inside it",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) marks a reply-resolved thread as resolved on the quick-jump rail",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) quick-jump rail replies unfolds a resolved thread and lands on the reply picked from the rail",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) quick-jump rail replies reopens a collapsed thread when a file's reply is located from the overview",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) quick-jump rail replies unfolds a resolved thread when a file on its root is located from the overview",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) quick-jump rail replies reopens a thread the reader collapsed before landing on its reply",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) sends empty description when editor is cleared",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) keeps editing after a failed description save without a compare panel",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) serializes description saves and rebases the queued draft on submitted content",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) ignores a late description callback after switching issues",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) keeps a title draft visible when its captured content conflicts",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) restores the server title when the user takes the latest version",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) returns to the issue title and description from the outline",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) sub-issues list jumps from the outline to the expanded sub-issues section without comments",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) sub-issues list renders priority, labels, due date and nested progress on rows",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) sub-issues list hides fields the user toggled off in the display preference",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) sub-issues list renders opted-in custom property chips on rows that carry a value",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) sub-issues list drives the inline batch toolbar from row checkboxes inside a surface peek",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) sub-issues list mutes the due date on done sub-issues even when past",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) unsubscribe menu unsubscribes the current member when the single-issue item is clicked",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) unsubscribe menu unsubscribes from the whole subtree when the subtree item is clicked",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) unsubscribe menu still offers the menu while the child count is unknown",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) unsubscribe without sub-issues unsubscribes in one click, with no menu",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) unsubscribe without sub-issues uses the root-only route, never the subtree one",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) unsubscribe without sub-issues sends one request for a rapid double-click",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) unsubscribe without sub-issues disables the button while the toggle is in flight, then reports failure",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) subscription state before the query resolves renders no subscribe control while subscribers are loading",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) subscription state before the query resolves renders Subscribe once the query says the user is not subscribed",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) subscriber picker before the query resolves disables the rows while subscribers are loading",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) subscriber picker before the query resolves disables the rows when the subscribers query failed",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) subscriber picker before the query resolves enables the rows once the query has a real answer",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) keeps the initial assignment block before a later mention and its run (MUL-7632)",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) renders an assignment run's reply after the comments it followed",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) renders every comment of a run in posting order when posted 'top-level'",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "IssueDetail (shared) renders every comment of a run in posting order when posted 'in the trigger\\'s thread'",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "groupSubIssuesByStage returns a single null-stage group when nothing is staged",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "groupSubIssuesByStage orders staged groups ascending with the unstaged group last",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "groupSubIssuesByStage omits the unstaged group when every child is staged",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "RevisionConflictCompare aligns replacements and keeps every line in the comparison",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "RevisionConflictCompare renders a scrollable full diff with explicit additions and removals",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "RevisionConflictCompare puts each action in the column of the preview it applies to",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "SourceContextBadge W54 TC-17 leaves 200 historical bodies closed until the reader requests them",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "SourceContextBadge groups the parent relation, progress, and snapshot action into one quiet summary",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "SourceContextBadge keeps the snapshot and live-source actions distinct",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "SourceContextBadge keeps the snapshot open when live-source revalidation fails",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "SourceContextBadge supports expanding the viewer and keeps source navigation in the header",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "SourceContextBadge does not render separate attachment lists in the captured-context viewer",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "SourceContextBadge opens the frozen viewer with a structured change summary",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "SourceContextBadge distinguishes added, changed, and deleted comment nodes",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "SourceContextBadge structures Chinese field and issue-attachment changes",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "SourceContextBadge keeps a single changed object in the same structured layout",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "SourceContextBadge formats the complete public change-object set in a stable order",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "SourceContextBadge labels unavailable comparison state independently from source navigation",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "SourceContextBadge keeps the snapshot readable without a live action after source issue deletion",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "SourceContextBadge treats anchor deletion as a thread change and disables navigation",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "SourceContextBadge updates the badge when focus refetch supplies fresher source state",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "SourceContextBadge renders the captured-author archived state",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "SourceContextBadge renders the captured-author deleted_agent state",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "SourceContextBadge renders the captured-author no_longer_in_workspace state",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "SourceContextBadge covers 'unchanged' source × 'unchanged' author",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "SourceContextBadge covers 'unchanged' source × 'renamed' author",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "SourceContextBadge covers 'unchanged' source × 'archived' author",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "SourceContextBadge covers 'unchanged' source × 'deleted agent' author",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "SourceContextBadge covers 'unchanged' source × 'left workspace' author",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "SourceContextBadge covers 'unchanged' source × 'unavailable' author",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "SourceContextBadge covers 'changed' source × 'unchanged' author",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "SourceContextBadge covers 'changed' source × 'renamed' author",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "SourceContextBadge covers 'changed' source × 'archived' author",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "SourceContextBadge covers 'changed' source × 'deleted agent' author",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "SourceContextBadge covers 'changed' source × 'left workspace' author",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "SourceContextBadge covers 'changed' source × 'unavailable' author",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "SourceContextBadge covers 'anchor deleted' source × 'unchanged' author",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "SourceContextBadge covers 'anchor deleted' source × 'renamed' author",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "SourceContextBadge covers 'anchor deleted' source × 'archived' author",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "SourceContextBadge covers 'anchor deleted' source × 'deleted agent' author",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "SourceContextBadge covers 'anchor deleted' source × 'left workspace' author",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "SourceContextBadge covers 'anchor deleted' source × 'unavailable' author",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "SourceContextBadge covers 'issue deleted' source × 'unchanged' author",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "SourceContextBadge covers 'issue deleted' source × 'renamed' author",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "SourceContextBadge covers 'issue deleted' source × 'archived' author",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "SourceContextBadge covers 'issue deleted' source × 'deleted agent' author",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "SourceContextBadge covers 'issue deleted' source × 'left workspace' author",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "SourceContextBadge covers 'issue deleted' source × 'unavailable' author",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "SourceContextBadge covers 'unavailable' source × 'unchanged' author",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "SourceContextBadge covers 'unavailable' source × 'renamed' author",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "SourceContextBadge covers 'unavailable' source × 'archived' author",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "SourceContextBadge covers 'unavailable' source × 'deleted agent' author",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "SourceContextBadge covers 'unavailable' source × 'left workspace' author",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    },
+    {
+      "suite": "views",
+      "test": "SourceContextBadge covers 'unavailable' source × 'unavailable' author",
+      "result": "pass",
+      "classification": "existing_behavior_baseline",
+      "evidence": "views/views.json"
+    }
+  ]
+}

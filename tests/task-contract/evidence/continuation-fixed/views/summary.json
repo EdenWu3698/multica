@@ -1,0 +1,31 @@
+{
+  "sourceHead": "ea108a1e8fe5d189ddfd86237134379e2ca02b03",
+  "worktree": "?? tests/task-contract/evidence/continuation-e2e-collection.txt\n?? tests/task-contract/evidence/continuation-fixed/\n?? tests/task-contract/evidence/continuation-lint.txt\n?? tests/task-contract/evidence/continuation-preview-preflight.txt\n?? tests/task-contract/evidence/continuation-recovery-first/\n?? tests/task-contract/evidence/continuation-runtime-first/\n?? tests/task-contract/evidence/continuation-runtime-observed/\n?? tests/task-contract/evidence/continuation-server-first/\n?? tests/task-contract/evidence/continuation-typecheck.txt\n?? tests/task-contract/evidence/continuation-ui-harness-first.json\n?? tests/task-contract/evidence/continuation-views-first/",
+  "scope": "views",
+  "results": [
+    {
+      "name": "views",
+      "command": [
+        "pnpm",
+        "--filter",
+        "@multica/views",
+        "exec",
+        "vitest",
+        "run",
+        "issues/components/issue-detail.test.tsx",
+        "issues/components/revision-conflict-compare.test.tsx",
+        "issues/components/source-context-viewer.test.tsx",
+        "issues/actions/run-confirm-gate.test.ts",
+        "--reporter=json",
+        "--outputFile=<checkout>/tests/task-contract/evidence/continuation-fixed/views/views.json"
+      ],
+      "exit": 1,
+      "counts": {
+        "pass": 179,
+        "fail": 1,
+        "skip": 0
+      },
+      "status": "failed_requires_classification"
+    }
+  ]
+}
