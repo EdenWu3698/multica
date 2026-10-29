@@ -1,0 +1,31 @@
+{
+  "sourceHead": "6ca5f8cae7a9e532b115aa66ef78756cd0e2020d",
+  "worktree": "?? server/internal/daemon/task_contract_transport_test.go\n?? tests/task-contract/evidence/wire-transport-first/",
+  "scope": "runtime",
+  "results": [
+    {
+      "name": "runtime",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "/Users/wushihao/multica_workspaces_desktop-api.multica.ai/wush-d88ba37d678c/wush-54-3deace8afab7/workdir/tools-cache/go/bin/go",
+        "-C",
+        "server",
+        "test",
+        "./internal/daemon",
+        "-run",
+        "^TestW54Runtime",
+        "-count=1",
+        "-json"
+      ],
+      "exit": 1,
+      "counts": {
+        "pass": 18,
+        "fail": 27,
+        "skip": 0
+      },
+      "status": "failed_requires_classification"
+    }
+  ]
+}

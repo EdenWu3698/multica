@@ -12,18 +12,18 @@
 - W54-SPEC-0.1-wire-supplement：`59190fd9a3f1b54e108d3437b28c32c4118192d43f6d38263cc9f84b5a1de71c`。
 - 6 个字节摘要向量、示例 input_digest 和附件指纹共 8 项测试设施校验通过；不计作产品行为通过。正式 API 回执预期按实际 seed 的 contract ID、Issue 内容、revision 和 Source 重算。
 
-固定 SHA 的最终实跑以 `evidence/wire-fixed/summary.json`、`leaf-results.json` 及 `WIRE-RESULT.md` 为准；首轮日志独立保留。源码提交前实跑如下：
+固定 SHA 的最终实跑以 `evidence/wire-final/summary.json`、`leaf-results.json` 及 `WIRE-RESULT.md` 为准；首轮日志独立保留。源码提交前实跑如下：
 
 | 套件 | 通过 | 失败 | 跳过 | 分类 |
 | --- | ---: | ---: | ---: | --- |
 | server | 11 | 222 | 0 | 217 项合同路由缺失；5 项明确的产品接点映射待实现 |
-| runtime | 18 | 19 | 0 | 原 18 项基线保留；19 项新增握手红灯 |
+| runtime | 19 | 26 | 0 | 原 18 项基线、1 新 generation 对照通过；19 握手、5 传输能力、2 重复派发红灯 |
 | recovery | 10 | 0 | 0 | 既有 generation、丢响应、取消与并发基线 |
 | views | 179 | 1 | 0 | 原合同编辑入口红灯保留 |
 | core | 3 | 6 | 0 | 首轮非法 adoption 类型红灯复跑保留 |
-| 合计 | 221 | 248 | 0 | 469 项；其中 243 项产品红灯、5 项局部待实现，不能统称 248 项业务缺陷 |
+| 合计 | 222 | 255 | 0 | 477 项；其中 250 项产品红灯、5 项局部待实现，不能统称 255 项业务缺陷 |
 
-此前 96 项红灯和 core 6 项历史红灯均保留。新增 150 个叶子用例；core 9 项只是重新纳入本轮，不能算新增覆盖。API 的 217 个失败大多在首次 PUT 404，后续逻辑并未各自被证伪。5 个 LOCAL_PENDING 是 WS-05 映射缺失及首次发布故障接入，命中数 0；不是导入错误、事务通过或存储回滚已验证。
+此前 96 项红灯和 core 6 项历史红灯均保留。新增 158 个叶子用例；core 9 项只是重新纳入本轮，不能算新增覆盖。API 的 217 个失败大多在首次 PUT 404，后续逻辑并未各自被证伪。5 个 LOCAL_PENDING 是 WS-05 映射缺失及首次发布故障接入，命中数 0；不是导入错误、事务通过或存储回滚已验证。
 
 新增 runtime 19 项运行真实 `Daemon.runTask`：合法回执阳性对照的假进程确实执行一次，但实际 start 缺 `task-contract-v1`/contract_admission，因此仍失败；其他 18 个非法/缺失/未知/错绑定 HTTP 200 均实际启动假进程并改写合成源码。它们证明当前客户端未实现受保护握手，不证明服务端已作合同裁决。没有调用真实智能体或模型。
 
@@ -35,7 +35,7 @@ S=`server/cmd/server/`，D=`server/internal/daemon/`。表中函数前缀 `TestW
 | --- | --- | --- | --- |
 | WS-01 | FR/A-01/02/04 → FD-01/02/04 → SP-01/02/04 | S `task_contract_wire_test.go`：完整 PUT/GET/no-op/CAS/change、只读/未知字段、重复 JSON key、完整 Source、引用矛盾、评论原字节/编辑 revision、非法路径；S `task_contract_sources_test.go`：真实附件/代码语料 | 合同入口缺失；结构/摘要/版本业务断言未到达 |
 | WS-02 | FR/A-03/04/06 → FD-03/04/06 → SP-03/04/06 | wire：成员 pending/accept/receipt、同键持久拒绝、handoff/admission 单项/列表/过滤、撤权；S `task_contract_restart_test.go`：新 OS 进程/新连接读取当前、历史、回执和拒绝 | 普通 Issue 独立进程重读基线通过；完整合同持久性用例停在 PUT |
-| WS-03 | FR/A-03/05 → FD-03/05 → SP-03/05 | S `task_contract_binding_test.go`：单/批/legacy claim、持久及连接能力、认证 mdt、member/mat/其他 runtime、版本/digest/plan/generation、恢复入口；sources：实际 Git A/B/dirty；D `task_contract_wire_test.go`：真实 start 请求与 200 回执失败关闭 | mdt 普通路径阳性对照通过；合同服务端入口缺失；运行时 19 项真实红灯 |
+| WS-03 | FR/A-03/05 → FD-03/05 → SP-03/05 | S `task_contract_binding_test.go`：单/批/legacy claim、持久及连接能力、认证 mdt、member/mat/其他 runtime、版本/digest/plan/generation、恢复入口；sources：实际 Git A/B/dirty；D `task_contract_wire_test.go`：真实 start 请求与 200 回执失败关闭；D `task_contract_transport_test.go`：实际注册/HTTP/WS 声明及真实 poller 重复派发 | mdt 普通路径阳性对照通过；合同服务端入口缺失；运行时 26 项真实红灯 |
 | WS-04 | FR/A-03/04/07 → FD-03/04/07 → SP-03/04/07 | wire：精确 RFC6901 Pointer/稳定码、权限撤回及只读；sources：包装真实 LocalStorage.GetReader 的计数/故障；既有 N 加工作区队列/评论/inbox/assignee/status 观察 | 现有附件读取合法计数 1、跨工作区计数 0；合同路径仍未到达，不冒报完整 N |
 | WS-05 | FR/A-02/03/07 → FD-02/03/07 → SP-02/03/07 | S `task_contract_atomicity_test.go`：受控两写者、发布/claim 顺序、三个 before_commit、start 源变化重查、取消、逐持久步骤故障、丢响应/结果未知后原键确认 | 只有测试侧 channel/计数/清理与真实 API/DB 断言；产品映射为空，全部语义 hook 命中 0，未验证事务 |
 
@@ -55,7 +55,7 @@ S=`server/cmd/server/`，D=`server/internal/daemon/`。表中函数前缀 `TestW
 | 10 | WS03 MemberCannotSubmitRuntimeObservation；WS02 AcceptRejectsForgedBinding；WS04 ReadProjectionRevocation/ResourceReadSpyBaseline | 普通 mdt/附件权限阳性基线通过；合同权限/所有不可见字段仍未验证 |
 | 11 | 原同键/异载荷/撤权优先；WS02 RejectionBeforeHandoffIsQueryableAndReplayStable；WS05 同键故障恢复 | 去重及拒绝持久断言在缺入口之后；同键真实并发的产品竞争仍未命中 |
 | 12 | WS03 OldGenerationCannotCancelReclaimedRun；WS05 PublishAndClaimOrder/UncommittedPublishIsInvisible/ClaimCommitProtectsActiveVersion | 实际 generation 取真实 claim；后续原 ID cancelled/receipt 不覆盖/无 retry 未到达 |
-| 13 | 单/批/legacy；issue_rerun、task_rerun、真实 MaybeRetryFailedTask、真实 wakeup trigger、旧会话 claim；runtime resumed 分支 | 恢复测试先建立有效 receipt，现停在发布；WS 连接侧/真实 daemon 调度去重未独立覆盖 |
+| 13 | 单/批/legacy；issue_rerun、task_rerun、真实 MaybeRetryFailedTask、真实 wakeup trigger、旧会话 claim；runtime resumed 分支 | 恢复测试先建立有效 receipt，现停在发布；实际 WS 建连及 HTTP 单/批/legacy/注册均缺能力；真实调度重放重复执行，同批重复有多余失败回报；新 generation 对照通过。服务端 WS 合同裁决仍未验证 |
 | 14 | 原三活跃/三终态；WS05 StartCommitAndCancellation | start/发布互斥与“请求取消≠终态”尚未到达 |
 | 15 | 所有规定发布/交接/拒绝/接手写入故障；operation.after_commit_before_response、commit.outcome_unknown × publish/handoff/start | 未命中注入，不声称回滚/提交唯一；未知结果始终按原版本/键/generation 确认 |
 | 16 | 原组件入口红灯；原 E2E 两条重新收集 | 无预览，浏览器未执行；完整表单/旧标签页/错误操作脚本仍须真实 UI 交接后补齐，不把入口脚本冒充全流程 |
@@ -83,8 +83,8 @@ set -a
 . ./.env.worktree
 set +a
 # 若 go 不在 PATH，W54_GO 指向 Go 1.26.9 二进制
-node tests/task-contract/run.mjs all tests/task-contract/evidence/wire-fixed
-node tests/task-contract/report-wire.mjs tests/task-contract/evidence/wire-fixed
+node tests/task-contract/run.mjs all tests/task-contract/evidence/wire-final
+node tests/task-contract/report-wire.mjs tests/task-contract/evidence/wire-final
 node --test tests/task-contract/verify-wire-vectors.mjs tests/task-contract/preflight.test.mjs
 pnpm exec playwright test e2e/task-contract.spec.ts --list
 ```
@@ -94,3 +94,9 @@ runner 预期 exit 1；没有 skip，不吞失败，不把零用例算通过。�
 首轮 `wire-first` 有三处将 `testutil.Row.Scan` 当作返回 error 的编译错误；按既有 Row API 修正，原日志保留，不算产品红灯。运行时响应夹具初版 changed_fields 在源码自查时由仅 /goal 补为完整初建业务字段列表；不改任何行为期望，04ed7271c 的固定实跑保留在 wire-fixed-04ed7271c。根目录 ESLint 没有配置，`wire-lint.txt` 的 exit 2 是命令不适用；未改项目配置凑通过，JS 使用 node 语法检查及 8 个向量实跑。Go 完整编译/选定测试通过收集；gofmt、diff 检查作为交付门。浏览器 preflight exit 2 仍是缺固定预览前提，不能算功能红灯。
 
 本轮需求级 wire 阻塞已解除。缺产品入口/接点继续作为真实红灯或局部待实现；任务保持 in_progress，不能因本轮运行结束或部分通过声称完整阶段验收。下一步由 Asurada 核验本测试交付及剩余接入顺序，未启动实现、其他包或部署。
+
+## 交付核对追加：实际传输与重复派发
+
+`task_contract_transport_test.go` 新增 8 项：5 个真实客户端传输缺能力红灯；单 slot 重放同一 task/generation 实际执行假进程 2 次并上报 complete 2 次；同批重复的并发样本执行 1 次但额外上报 fail 1 次；不同 generation 的阳性对照执行/complete 各 2 次。后两项重复派发断言要求恰好一次执行且无额外终态回报，不把环境锁拒绝当业务去重。它们运行真实 runBatchPoller→handleTask→runTask，仅服务端响应与业务可执行文件为固定合成夹具。
+
+传输首轮的三个调度超时源于 New 默认用测试二进制启动 CLI 环境 helper；首败 `wire-transport-first` 与诊断日志保留。改用现有测试支持的真实进程内 execenv.Prepare 后得到 `wire-transport-second` 的产品行为红灯，不把原超时计入产品结论。WS 连接调用等待全部读写/心跳退出；poller 停止后显式等待所有 task worker。没有新增业务实现。

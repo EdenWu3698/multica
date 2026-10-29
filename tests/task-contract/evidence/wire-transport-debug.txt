@@ -1,0 +1,16 @@
+=== RUN   TestW54Runtime_WS03_TC13_DispatchGenerationOnce
+=== RUN   TestW54Runtime_WS03_TC13_DispatchGenerationOnce/same_generation_replay
+time=2026-10-29T23:26:16.449+08:00 level=INFO msg="task received" task=d1dfd2e6-4e39-4782-abb7-05e3da5cabc2 target=9fc83512-ac4c-49bd-9fbc-d019d00beb7e
+time=2026-10-29T23:26:16.449+08:00 level=INFO msg="task phase recorded" task=d1dfd2e6-4e39-4782-abb7-05e3da5cabc2 task_id=d1dfd2e6-4e39-4782-abb7-05e3da5cabc2 runtime_id=fac60629-e229-4a1d-b005-e8cb62d3bdf1 task_phase=claimed phase_elapsed_ms=0 total_elapsed_ms=0
+time=2026-10-29T23:26:16.449+08:00 level=INFO msg="picked task" task=d1dfd2e6-4e39-4782-abb7-05e3da5cabc2 issue=9fc83512-ac4c-49bd-9fbc-d019d00beb7e agent=Synthetic provider=claude
+time=2026-10-29T23:26:16.450+08:00 level=INFO msg="task phase recorded" task=d1dfd2e6-4e39-4782-abb7-05e3da5cabc2 task_id=d1dfd2e6-4e39-4782-abb7-05e3da5cabc2 runtime_id=fac60629-e229-4a1d-b005-e8cb62d3bdf1 task_phase=prepare_started phase_elapsed_ms=0 total_elapsed_ms=0
+time=2026-10-29T23:26:16.450+08:00 level=INFO msg="task phase recorded" task=d1dfd2e6-4e39-4782-abb7-05e3da5cabc2 task_id=d1dfd2e6-4e39-4782-abb7-05e3da5cabc2 runtime_id=fac60629-e229-4a1d-b005-e8cb62d3bdf1 task_phase=skills_ready phase_elapsed_ms=0 total_elapsed_ms=0
+time=2026-10-29T23:26:31.452+08:00 level=ERROR msg="task failed" task=d1dfd2e6-4e39-4782-abb7-05e3da5cabc2 error="prepare execution environment: context deadline exceeded"
+time=2026-10-29T23:26:31.480+08:00 level=INFO msg="task phase recorded" task=d1dfd2e6-4e39-4782-abb7-05e3da5cabc2 task_id=d1dfd2e6-4e39-4782-abb7-05e3da5cabc2 runtime_id=fac60629-e229-4a1d-b005-e8cb62d3bdf1 task_phase=finished phase_elapsed_ms=15030 total_elapsed_ms=15031
+    task_contract_transport_test.go:211: W54_DISPATCH_COUNTERS claims=1 starts=0 completed=0 failures=1
+    task_contract_transport_test.go:213: scheduler did not finish: context deadline exceeded
+--- FAIL: TestW54Runtime_WS03_TC13_DispatchGenerationOnce (15.04s)
+    --- FAIL: TestW54Runtime_WS03_TC13_DispatchGenerationOnce/same_generation_replay (15.04s)
+FAIL
+FAIL	github.com/multica-ai/multica/server/internal/daemon	15.855s
+FAIL

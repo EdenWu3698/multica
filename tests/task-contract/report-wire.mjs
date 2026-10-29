@@ -16,10 +16,13 @@ for (const suite of summary.results) {
         output.includes("LOCAL_PENDING") ? "product_seam_mapping_pending" :
         output.includes("404 page not found") ? "missing_contract_route_later_assertions_unreached" :
         output.includes("actual start omitted protected admission") ? "missing_runtime_admission_wire" :
-        output.includes("protected task accepted unbound HTTP 200") ? "unsafe_runtime_acceptance_and_observed_local_effects" : "needs_manual_classification";
+        output.includes("protected task accepted unbound HTTP 200") ? "unsafe_runtime_acceptance_and_observed_local_effects" :
+        /actual (HTTP claim|runtime registration|WS handshake) omitted task-contract-v1/.test(output) ? "missing_runtime_transport_capability" :
+        output.includes("actual scheduler process executions=") ? "duplicate_generation_local_execution" :
+        output.includes("terminal effects complete=") ? "duplicate_dispatch_terminal_side_effect" : "needs_manual_classification";
       rows.push({ suite: suite.name, test: result.Test, tc: result.Test.match(/TC\d\d/)?.[0] ?? null,
         ws: result.Test.match(/WS\d\d/)?.[0] ?? null, result: result.Action, classification,
-        firstFailure: result.Action === "fail" ? output.split("\n").find((line) => /\.go:\d+:/.test(line) && !/W54_(PERF|CODE_SEED|READ_SPY|RESTART)/.test(line))?.trim() ?? null : null,
+        firstFailure: result.Action === "fail" ? output.split("\n").find((line) => /\.go:\d+:/.test(line) && !/W54_/.test(line))?.trim() ?? null : null,
         evidence: `${suite.name}.stdout`, sourceSHA: summary.sourceHead });
     }
   } else {
