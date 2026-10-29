@@ -1,0 +1,124 @@
+{
+  "sourceHead": "fb57b833e202dd291d75b4b270afef9328dd3d2d",
+  "worktree": "?? tests/task-contract/evidence/wire-fixed/",
+  "scope": "all",
+  "results": [
+    {
+      "name": "core",
+      "command": [
+        "pnpm",
+        "--filter",
+        "@multica/core",
+        "exec",
+        "vitest",
+        "run",
+        "api/task-contract-acceptance.test.ts",
+        "--reporter=json",
+        "--outputFile=/Users/wushihao/multica_workspaces_desktop-api.multica.ai/wush-d88ba37d678c/wush-54-c431a63450dd/workdir/multica/tests/task-contract/evidence/wire-fixed/core.json"
+      ],
+      "exit": 1,
+      "counts": {
+        "pass": 3,
+        "fail": 6,
+        "skip": 0
+      },
+      "status": "failed_requires_classification"
+    },
+    {
+      "name": "runtime",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "/Users/wushihao/multica_workspaces_desktop-api.multica.ai/wush-d88ba37d678c/wush-54-3deace8afab7/workdir/tools-cache/go/bin/go",
+        "-C",
+        "server",
+        "test",
+        "./internal/daemon",
+        "-run",
+        "^TestW54Runtime",
+        "-count=1",
+        "-json"
+      ],
+      "exit": 1,
+      "counts": {
+        "pass": 18,
+        "fail": 19,
+        "skip": 0
+      },
+      "status": "failed_requires_classification"
+    },
+    {
+      "name": "server",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "/Users/wushihao/multica_workspaces_desktop-api.multica.ai/wush-d88ba37d678c/wush-54-3deace8afab7/workdir/tools-cache/go/bin/go",
+        "-C",
+        "server",
+        "test",
+        "./cmd/server",
+        "-run",
+        "^TestW54Contract",
+        "-count=1",
+        "-json"
+      ],
+      "exit": 1,
+      "counts": {
+        "pass": 11,
+        "fail": 222,
+        "skip": 0
+      },
+      "status": "failed_requires_classification"
+    },
+    {
+      "name": "recovery",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "/Users/wushihao/multica_workspaces_desktop-api.multica.ai/wush-d88ba37d678c/wush-54-3deace8afab7/workdir/tools-cache/go/bin/go",
+        "-C",
+        "server",
+        "test",
+        "./internal/handler",
+        "-run",
+        "^TestStartClaim(LostResponseAndOwnership|ReclaimedGeneration|ConcurrentReplay|CancellationRace|InvalidBodiesAndLegacy|WirePrecision)$",
+        "-count=1",
+        "-json"
+      ],
+      "exit": 0,
+      "counts": {
+        "pass": 10,
+        "fail": 0,
+        "skip": 0
+      },
+      "status": "baseline_pass"
+    },
+    {
+      "name": "views",
+      "command": [
+        "pnpm",
+        "--filter",
+        "@multica/views",
+        "exec",
+        "vitest",
+        "run",
+        "issues/components/issue-detail.test.tsx",
+        "issues/components/revision-conflict-compare.test.tsx",
+        "issues/components/source-context-viewer.test.tsx",
+        "issues/actions/run-confirm-gate.test.ts",
+        "--reporter=json",
+        "--outputFile=/Users/wushihao/multica_workspaces_desktop-api.multica.ai/wush-d88ba37d678c/wush-54-c431a63450dd/workdir/multica/tests/task-contract/evidence/wire-fixed/views.json"
+      ],
+      "exit": 1,
+      "counts": {
+        "pass": 179,
+        "fail": 1,
+        "skip": 0
+      },
+      "status": "failed_requires_classification"
+    }
+  ]
+}
