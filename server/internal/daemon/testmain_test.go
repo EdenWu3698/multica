@@ -43,7 +43,10 @@ func TestMain(m *testing.M) {
 		os.Exit(1)
 	}
 
-	code := m.Run()
+	code, bridge := w54BridgeProcess()
+	if !bridge {
+		code = m.Run()
+	}
 	_ = os.RemoveAll(scratchHome)
 	os.Exit(code)
 }

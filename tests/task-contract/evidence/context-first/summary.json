@@ -1,0 +1,31 @@
+{
+  "sourceHead": "c0a34bffb282bfddbed76f71c593d74e807cce1c",
+  "worktree": "?? server/internal/daemon/task_contract_context_test.go\n?? tests/task-contract/evidence/context-first/",
+  "scope": "runtime",
+  "results": [
+    {
+      "name": "runtime",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "/Users/wushihao/multica_workspaces_desktop-api.multica.ai/wush-d88ba37d678c/wush-54-3deace8afab7/workdir/tools-cache/go/bin/go",
+        "-C",
+        "server",
+        "test",
+        "./internal/daemon",
+        "-run",
+        "^TestW54Runtime",
+        "-count=1",
+        "-json"
+      ],
+      "exit": 1,
+      "counts": {
+        "pass": 19,
+        "fail": 35,
+        "skip": 0
+      },
+      "status": "failed_requires_classification"
+    }
+  ]
+}

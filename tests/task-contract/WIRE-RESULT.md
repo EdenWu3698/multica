@@ -1,3 +1,5 @@
+最新接续：2026-10-30 的启动上下文、实际 Git 观测与跨进程 N 测试见 [CONTEXT-SUPPLEMENT.md](CONTEXT-SUPPLEMENT.md)，固定实跑见 [CONTEXT-RESULT.md](CONTEXT-RESULT.md)。以下保留前轮记录。
+
 # WUSH-54 wire 接续固定版本结果
 
 2026-10-29，MOSS。测试源码 SHA：`37204f34a84b8527a9efdee731251f53a6f4cb12`。产品 base：`8305976793097a3d38e3a2f29bc1626abe76130d`；接续起点：`bb1b66494a2606b44f4b67930efb44e558e5db4a`。仓库 `https://github.com/EdenWu3698/multica`；本地分支 `agent/moss/c431a63450dd`，交付远端分支 `agent/moss/f8df4ba4dfb0`。最后证据提交的 head 在 issue 最终评论列出；与实跑 SHA 之间只增加报告和运行证据。

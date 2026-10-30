@@ -1,3 +1,5 @@
+最新接续：2026-10-30 的启动上下文、实际 Git 观测与跨进程 N 测试见 [CONTEXT-SUPPLEMENT.md](CONTEXT-SUPPLEMENT.md)，固定实跑见 [CONTEXT-RESULT.md](CONTEXT-RESULT.md)。以下保留前轮记录。
+
 # WUSH-54：已核验 wire 补充的正式测试接续
 
 依据 WUSH-54 revision 25 继续 MOSS 正式测试工作。产品 base 为 `8305976793097a3d38e3a2f29bc1626abe76130d`；接续 head 为 `bb1b66494a2606b44f4b67930efb44e558e5db4a`。实际本地分支为平台创建的 `agent/moss/c431a63450dd`，交付仍快进至原远端 `agent/moss/f8df4ba4dfb0`，不操作旧 checkout。

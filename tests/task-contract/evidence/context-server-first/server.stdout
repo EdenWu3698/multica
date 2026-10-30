@@ -1,0 +1,6 @@
+{"ImportPath":"github.com/multica-ai/multica/server/cmd/server [github.com/multica-ai/multica/server/cmd/server.test]","Action":"build-output","Output":"# github.com/multica-ai/multica/server/cmd/server [github.com/multica-ai/multica/server/cmd/server.test]\n"}
+{"ImportPath":"github.com/multica-ai/multica/server/cmd/server [github.com/multica-ai/multica/server/cmd/server.test]","Action":"build-output","Output":"cmd/server/task_contract_process_test.go:103:15: spy.Delete(context.Background(), key) (no value) used as value\n"}
+{"ImportPath":"github.com/multica-ai/multica/server/cmd/server [github.com/multica-ai/multica/server/cmd/server.test]","Action":"build-fail"}
+{"Time":"2026-10-30T08:40:48.46322+08:00","Action":"start","Package":"github.com/multica-ai/multica/server/cmd/server"}
+{"Time":"2026-10-30T08:40:48.463291+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/cmd/server","Output":"FAIL\tgithub.com/multica-ai/multica/server/cmd/server [build failed]\n"}
+{"Time":"2026-10-30T08:40:48.463299+08:00","Action":"fail","Package":"github.com/multica-ai/multica/server/cmd/server","Elapsed":0,"FailedBuild":"github.com/multica-ai/multica/server/cmd/server [github.com/multica-ai/multica/server/cmd/server.test]"}
